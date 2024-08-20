@@ -19,6 +19,7 @@ public class BooksManager
     public void UpdateBook(Book book)
     {
         var existingBook = _books.FirstOrDefault(b => b.Title == book.Title);
+        
         if (existingBook != null)
         {
             existingBook.Author = book.Author;
