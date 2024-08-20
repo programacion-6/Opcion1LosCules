@@ -1,13 +1,14 @@
 namespace Opcion1LosCules;
-
 public class PatronsManager
 {
     private readonly List<Patron> _patrons;
 
-    public PatronsManager()    
+    public PatronsManager()
     {
         _patrons = new List<Patron>();
     }
+
+
     public void AddPatron(Patron patron)
     {
         if (!_patrons.Contains(patron))
@@ -27,6 +28,7 @@ public class PatronsManager
             existingPatron.ContactDetails = patron.ContactDetails;
         }
     }
+
     public void RemovePatron(Patron patron)
     {
         if (_patrons.Contains(patron))
@@ -34,5 +36,8 @@ public class PatronsManager
             _patrons.Remove(patron);
         }
     }
-}    
-
+    public List<Patron> GetAllPatrons()
+    {
+        return _patrons;
+    }
+}

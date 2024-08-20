@@ -1,13 +1,12 @@
 namespace Opcion1LosCules;
-
 public class BooksManager
 {
     private readonly List<Book> _books;
+
     public BooksManager()
     {
-        _books = [];
+        _books = new List<Book>();
     }
-
     public void AddBook(Book book)
     {
         if (!_books.Contains(book))
@@ -35,5 +34,10 @@ public class BooksManager
         {
             _books.Remove(book);
         }
+    }
+
+    public List<Book> GetAllBooks()
+    {
+        return _books;
     }
 }
