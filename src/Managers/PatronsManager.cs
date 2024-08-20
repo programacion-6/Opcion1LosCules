@@ -1,39 +1,43 @@
-namespace Opcion1LosCules
+namespace Opcion1LosCules;
+public class PatronsManager
 {
-    public class PatronsManager
+    private readonly List<Patron> _patrons;
+
+    public PatronsManager()
     {
-        private readonly List<Patron> _patrons;
+        _patrons = new List<Patron>();
+    }
 
-        public PatronsManager()
+    public void AddPatron(Patron patron)
+    {
+        if (!_patrons.Contains(patron))
         {
-            _patrons = new List<Patron>();
+            _patrons.Add(patron);
         }
+    }
 
-        public void AddPatron(Patron patron)
+    public void UpdatePatron(Patron patron)
+    {
+        var existingPatron = _patrons.FirstOrDefault(p => p.MembershipNumber == patron.MembershipNumber);
+        
+        if (existingPatron != null)
         {
-            if (!_patrons.Contains(patron))
-            {
-                _patrons.Add(patron);
-            }
+            existingPatron.Name = patron.Name;
+            existingPatron.MembershipNumber = patron.MembershipNumber;
+            existingPatron.ContactDetails = patron.ContactDetails;
         }
+    }
 
-        public void UpdatePatron(Patron patron)
+    public void RemovePatron(Patron patron)
+    {
+        if (_patrons.Contains(patron))
         {
-            var existingPatron = _patrons.FirstOrDefault(p => p.MembershipNumber == patron.MembershipNumber);
-            if (existingPatron != null)
-            {
-                existingPatron.Name = patron.Name;
-                existingPatron.MembershipNumber = patron.MembershipNumber;
-                existingPatron.ContactDetails = patron.ContactDetails;
-            }
+            _patrons.Remove(patron);
         }
+    }
 
-        public void RemovePatron(Patron patron)
-        {
-            if (_patrons.Contains(patron))
-            {
-                _patrons.Remove(patron);
-            }
-        }
+    public List<Patron> GetAllPatrons()
+    {
+        return _patrons;
     }
 }
