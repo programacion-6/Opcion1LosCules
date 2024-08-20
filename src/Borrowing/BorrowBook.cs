@@ -2,16 +2,13 @@ public class BorrowBook : BorrowingOperation
 {
     private bool CheckAvailability()
     {
-        // Check if the book is available
         return Book.IsAvailable();
     }
 
     protected override bool Validate()
     {
-        // Validate if the book can be borrowed
         if (CheckAvailability())
         {
-            // Check if the patron has already borrowed this book
             if (Patron.BorrowedBooks.Contains(Book))
             {
                 Console.WriteLine($"Patron already borrowed the book {Book.Title}.");
