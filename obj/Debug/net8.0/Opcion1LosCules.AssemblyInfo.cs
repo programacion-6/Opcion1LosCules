@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Opcion1LosCules")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2f5601b3966780dffed7e560096a29dfcd380e3b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+256addeed650ffea0cd2f3cdac2dd5b10a43eb82")]
 [assembly: System.Reflection.AssemblyProductAttribute("Opcion1LosCules")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Opcion1LosCules")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
