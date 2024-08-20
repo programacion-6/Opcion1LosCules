@@ -8,6 +8,7 @@ public class PatronsManager
         _patrons = new List<Patron>();
     }
 
+
     public void AddPatron(Patron patron)
     {
         if (!_patrons.Contains(patron))
@@ -19,7 +20,7 @@ public class PatronsManager
     public void UpdatePatron(Patron patron)
     {
         var existingPatron = _patrons.FirstOrDefault(p => p.MembershipNumber == patron.MembershipNumber);
-        
+
         if (existingPatron != null)
         {
             existingPatron.Name = patron.Name;
@@ -35,7 +36,6 @@ public class PatronsManager
             _patrons.Remove(patron);
         }
     }
-
     public List<Patron> GetAllPatrons()
     {
         return _patrons;
