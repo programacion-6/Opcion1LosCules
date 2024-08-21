@@ -1,0 +1,92 @@
+@startuml Library Console
+package "Library Console" {
+    class BookMenu {
+        - BooksManagementMenu _bookManagement
+        - Library _library
+        + BookMenu(Library library)
+        + ShowBookMenu()
+    }
+
+    class BooksManagementMenu {
+        - Library _library
+        + BooksManagementMenu(Library library)
+        + AddBook()
+        + UpdateBook()
+        + RemoveBook()
+    }
+
+    class PatronMenu {
+        - PatronsManagementMenu _patronsManagement
+        - Library _library
+        + PatronMenu(Library library)
+        + showPatronMenu()
+    }
+
+    class PatronsManagementMenu {
+        - Library _library
+        + PatronsManagementMenu(Library library)
+        + AddPatron()
+        + UpdatePatron()
+        + RemovePatron()
+    }
+
+    class ReportMenu {
+        - BooksManager _booksManager
+        - PatronsManager _patronsManager
+        + ReportMenu(BooksManager booksManager, PatronsManager patronsManager)
+        + DisplayReportMenu()
+        + ShowBorrowPatronHistory()
+        + ShowCurrentBorrowedBooksReport()
+        + ShowOverdueBooksReport()
+    }
+
+    class BookSearchMenu {
+        - BooksManager _bookManager
+        + BookSearchMenu(BooksManager bookManager)
+        + DisplaySearchMenu()
+        + SearchByTitle(string title)
+        + SearchByAuthor(string author)
+        + SearchByISBN(string isbn)
+        + DisplaySearchResults(List<Book> books)
+    }
+
+    class PatronSearchMenu {
+        - PatronsManager _patronManager
+        + PatronSearchMenu(PatronsManager patronManager)
+        + DisplaySearchMenu()
+        + SearchByName(string name)
+        + SearchByMembershipNumber(string membershipNumber)
+        + DisplaySearchResults(List<Patron> patrons)
+    }
+    
+    class PatronBorrowMenu {
+        - Library _library
+        - SearchByISBN _searchByISBN
+        - SearchByMembershipNumber _searchByMemebership
+        + PatronBorrowMenu(Library library)
+        + BorrowBook()
+        + ReturnBook()
+    }
+
+    class HomePage {
+        - BookMenu _bookMenu
+        - PatronMenu _patronMenu
+        - PatronBorrowMenu _patronBorrowMenu
+        - Library _library
+        - BookSearchMenu _bookSearchMenu
+        - PatronSearchMenu _patronSearchMenu
+        - ReportMenu _reportMenu
+        + HomePage()
+        + DisplayMenu()
+    }
+}
+ 
+HomePage --> BookMenu 
+HomePage --> PatronMenu 
+HomePage --> PatronBorrowMenu 
+HomePage --> BookSearchMenu 
+HomePage --> PatronSearchMenu 
+HomePage --> ReportMenu 
+BookMenu --> BooksManagementMenu 
+PatronMenu --> PatronsManagementMenu 
+@enduml

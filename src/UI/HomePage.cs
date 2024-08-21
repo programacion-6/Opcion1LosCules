@@ -1,4 +1,3 @@
-using System;
 namespace Opcion1LosCules;
 
     public class HomePage

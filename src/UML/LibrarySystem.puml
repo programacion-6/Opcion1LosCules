@@ -1,0 +1,46 @@
+@startuml LibraryManagementSystem
+
+' Define modules
+    !include Reporting.puml
+    !include Search.puml
+    !include BorrowingSystem.puml
+    !include BookManagement.puml
+    !include PatronManagement.puml
+    !include LibraryConsole.puml
+    !include Exceptions.puml
+    !include Validators.puml
+
+
+package "Library System" {
+    class Library {
+        - BooksManager _booksManager
+        - PatronsManager _patronsManager
+        - BorrowBook _borrowBook
+        - ReturnBook _returnBook
+        - BorrowingOperation _borrowingOperation
+        + Library()
+        + patronsManager()
+        + booksManager()
+        + BorrowBook()
+        + ReturnBook()
+        + BorrowOperation()
+    }
+}
+
+Library --> BorrowBook 
+Library --> ReturnBook 
+Library --> BorrowingOperation 
+Library --> HomePage
+Library --> ReportContext
+Library --> BookSearchStrategy
+Library --> PatronSearchStrategy
+Library --> BooksManager
+Library --> PatronsManager
+Patron --> Book 
+BooksManager --> Book
+PatronsManager --> Patron
+Validator --> BooksManager 
+Validator --> PatronsManager 
+ValidationException --> Validator
+Validator --> BorrowingOperation
+@enduml

@@ -1,0 +1,19 @@
+@startuml Patron Management
+package "Patron Management" {
+    class Patron {
+        -String name
+        -String membershipNumber
+        -String contactDetails
+        +List<Book> borrowedBooks
+    }
+
+    class PatronsManager {
+        +ErrorHandler errorHandler
+        +List<Patron> patrons
+        +PatronsManager(List<Patron> patrons)
+        +void addPatron(Patron patron)
+        +void updatePatron(Patron patron)
+        +void removePatron(Patron patron)
+    }
+}
+@enduml

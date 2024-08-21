@@ -1,0 +1,31 @@
+@startuml Reporting
+package "Reporting" {
+    interface IReportStrategy {
+        +List<object> GenerateReport(booksManager: BooksManager, patronsManager: PatronsManager)
+    }
+
+    class BorrowingHistoryReport {
+        - Patron _patron
+        +BorrowingHistoryReport(patron: Patron)
+        +List<object> GenerateReport(booksManager: BooksManager, patronsManager: PatronsManager)
+    }
+
+    class CurrentlyBorrowedBooksReport {
+        +List<object> GenerateReport(booksManager: BooksManager, patronsManager: PatronsManager)
+    }
+
+    class OverdueBooksReport {
+        +List<object> GenerateReport(booksManager: BooksManager, patronsManager: PatronsManager)
+    }
+
+    class ReportContext {
+        - IReportStrategy _reportStrategy
+        +ReportContext(reportStrategy: IReportStrategy)
+        +List<object> GenerateReport(booksManager: BooksManager, patronsManager: PatronsManager)
+    }
+}
+IReportStrategy <|.. BorrowingHistoryReport
+IReportStrategy <|.. CurrentlyBorrowedBooksReport
+IReportStrategy <|.. OverdueBooksReport
+ReportContext --> IReportStrategy
+@enduml
