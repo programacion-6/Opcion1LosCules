@@ -15,12 +15,12 @@ public class PatronBorrowMenu
         Console.Write("Enter patron membership number: ");
         var membershipNumber = Console.ReadLine();
         {
-            var patron = _patronSearchStrategy.Search(membershipNumber,_library.GetAllPatrons());
+            var patron = _patronSearchStrategy.Search(membershipNumber,_library.patronsManager().GetAllPatrons());
             if (patron != null)
             {
                 Console.Write("Enter book ISBN to borrow: ");
                 var isbn = Console.ReadLine();
-                var book = _bookSearchStrategy.Search(isbn,_library.GetAllBooks());
+                var book = _bookSearchStrategy.Search(isbn,_library.booksManager().GetAllBooks());
                 if (book != null)
                 {
                     _library.BorrowOperation();
@@ -43,7 +43,7 @@ public class PatronBorrowMenu
     {
         Console.Write("Enter book ISBN to return: ");
         var isbn = Console.ReadLine();
-        var book = _bookSearchStrategy.Search(isbn,_library.GetAllBooks());
+        var book = _bookSearchStrategy.Search(isbn,_library.booksManager().GetAllBooks());
         if (book != null)
         {
             _library.BorrowOperation();

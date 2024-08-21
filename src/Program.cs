@@ -6,8 +6,7 @@ public class Program
 {
     static void Main(string[] arg) 
     {
-        Library library = new Library();
-        HomePage homePage = new HomePage(library);
+        HomePage homePage = new HomePage();
         homePage.DisplayMenu();
     }
 }
