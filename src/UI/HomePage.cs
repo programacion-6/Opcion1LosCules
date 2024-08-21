@@ -8,10 +8,17 @@ namespace Opcion1LosCules
 
         private PatronBorrowMenu _patronBorrowMenu;
         private Library _library;
+        BookSearchMenu bookSearchMenu;
+        PatronSearchMenu patronSearchMenu;
 
-        public HomePage(Library library)
+        public HomePage()
         {
-            _patronBorrowMenu = new PatronBorrowMenu(library);
+            _library = new Library();
+            _patronBorrowMenu = new PatronBorrowMenu(_library);
+            _patronMenu = new PatronMenu(_library);
+            _bookMenu = new BookMenu(_library);
+            bookSearchMenu = new BookSearchMenu(_library.booksManager());
+            patronSearchMenu = new PatronSearchMenu(_library.patronsManager());
         }
 
         public void DisplayMenu()
@@ -33,10 +40,10 @@ namespace Opcion1LosCules
                 switch (option)
                 {
                     case "1":
-
+                        _bookMenu.ShowBookMenu();
                         break;
                     case "2":
-
+                        _patronMenu.showPatronMenu();
                         break;
                     case "3":
                         _patronBorrowMenu.BorrowBook();
@@ -45,10 +52,10 @@ namespace Opcion1LosCules
                         _patronBorrowMenu.ReturnBook();
                         break;
                     case "5":
-
+                        bookSearchMenu.DisplaySearchMenu();
                         break;
                     case "6":
-
+                        patronSearchMenu.DisplaySearchMenu();
                         break;
                     case "7":
 

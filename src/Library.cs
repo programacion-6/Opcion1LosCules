@@ -2,28 +2,24 @@ namespace Opcion1LosCules;
 
 public class Library
 {
-    private readonly List<Book> _books;
-    private readonly List<Patron> _patrons;
     private BooksManager _booksManager;
     private PatronsManager _patronsManager;
     private BorrowingOperation _borrowingOperation;
 
     public Library()
     {
-        _books = new List<Book>();
-        _patrons = new List<Patron>();
         _booksManager = new BooksManager();
         _patronsManager = new PatronsManager();
     }
 
-    public List<Patron> GetAllPatrons() 
+    public PatronsManager patronsManager() 
     {
-        return _patronsManager.GetAllPatrons();
+        return _patronsManager;
     }
 
-    public List<Book> GetAllBooks() 
+    public BooksManager booksManager() 
     {
-        return _booksManager.GetAllBooks(); 
+        return _booksManager; 
     }
 
     public BorrowingOperation BorrowOperation() 
