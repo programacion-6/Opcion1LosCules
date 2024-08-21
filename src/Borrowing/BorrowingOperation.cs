@@ -5,6 +5,28 @@ public abstract class BorrowingOperation
     protected Book Book { get; private set; }
     protected DateTime Date { get; private set; }
 
+    private readonly BorrowingSystemValidator _validator;
+
+    public BorrowingOperation()
+    {
+        _validator = new BorrowingSystemValidator(); 
+    }
+
+    public Patron GetPatron() 
+    {
+        return Patron;
+    }
+
+    public Book GetBook() 
+    {
+        return Book;
+    }
+
+    public DateTime GetDate() 
+    {
+        return Date;
+    }
+
     public void SetPatron(Patron patron)
     {
         Patron = patron;
@@ -22,14 +44,23 @@ public abstract class BorrowingOperation
 
     public void Execute()
     {
-        if (Validate())
+        try
         {
-            UpdateRecords();
-            NotifyPatron();
+            _validator.Validate(this);
+
+            if (Validate())
+            {
+                UpdateRecords();
+                NotifyPatron();
+            }
+            else
+            {
+                Console.WriteLine("Operation failed due to specific validation errors.");
+            }
         }
-        else
+        catch (ValidationException ex)
         {
-            Console.WriteLine("Operation failed due to validation errors.");
+            Console.WriteLine($"Validation failed: {ex.Message}");
         }
     }
 
