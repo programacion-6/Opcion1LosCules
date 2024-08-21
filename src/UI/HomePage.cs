@@ -1,15 +1,16 @@
-namespace Opcion1LosCules
-{
+using System;
+namespace Opcion1LosCules;
+
     public class HomePage
     {
 
         private BookMenu _bookMenu;
         private PatronMenu _patronMenu;
-
         private PatronBorrowMenu _patronBorrowMenu;
         private Library _library;
-        BookSearchMenu bookSearchMenu;
-        PatronSearchMenu patronSearchMenu;
+        private BookSearchMenu _bookSearchMenu;
+        private PatronSearchMenu _patronSearchMenu;
+        private ReportMenu _reportMenu;
 
         public HomePage()
         {
@@ -17,8 +18,9 @@ namespace Opcion1LosCules
             _patronBorrowMenu = new PatronBorrowMenu(_library);
             _patronMenu = new PatronMenu(_library);
             _bookMenu = new BookMenu(_library);
-            bookSearchMenu = new BookSearchMenu(_library.booksManager());
-            patronSearchMenu = new PatronSearchMenu(_library.patronsManager());
+            _bookSearchMenu = new BookSearchMenu(_library.booksManager());
+            _patronSearchMenu = new PatronSearchMenu(_library.patronsManager());
+            _reportMenu = new ReportMenu(_library.booksManager() , _library.patronsManager());
         }
 
         public void DisplayMenu()
@@ -52,13 +54,13 @@ namespace Opcion1LosCules
                         _patronBorrowMenu.ReturnBook();
                         break;
                     case "5":
-                        bookSearchMenu.DisplaySearchMenu();
+                        _bookSearchMenu.DisplaySearchMenu();
                         break;
                     case "6":
-                        patronSearchMenu.DisplaySearchMenu();
+                        _patronSearchMenu.DisplaySearchMenu();
                         break;
                     case "7":
-
+                        _reportMenu.DisplayReportMenu();
                         break;
                     case "0":
                         return;
@@ -69,4 +71,3 @@ namespace Opcion1LosCules
             }
         }
     }
-}
