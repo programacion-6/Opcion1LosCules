@@ -1,7 +1,6 @@
 namespace Opcion1LosCules;
 public class PatronMenu 
 {
-    private PatronSearchMenu _patronSearchMenu;
     private PatronsManagementMenu _patronsManagement;
     private Library _library;
     

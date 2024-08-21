@@ -33,46 +33,34 @@ namespace Opcion1LosCules
 
         public void UpdatePatron()
         {
-            Patron existingPatron = null;
-            string searchMembershipNumber;
+            Console.Write("Enter the membership number of the patron to update: ");
             int membershipNumber;
-
-            do
+            while (!int.TryParse(Console.ReadLine(), out membershipNumber))
             {
-                Console.Write("Enter new membership number : ");
-                while (!int.TryParse(Console.ReadLine(), out membershipNumber))
-                {
                 Console.WriteLine("Invalid input. Please enter a valid number.");
-                }
-                Patron patron = _library.patronsManager().GetAllPatrons()
-                .FirstOrDefault(p => p.MembershipNumber == membershipNumber);
+            }
 
+            var existingPatron = _library.patronsManager().GetAllPatrons()
+                .FirstOrDefault(p => p.MembershipNumber == membershipNumber);
 
             if (existingPatron == null)
             {
-            Console.WriteLine("No patron found with that membership number. Please try again.");
+                Console.WriteLine("No patron found with that membership number. Please try again.");
+                return;
             }
+
+            Console.Write("Enter new patron name: ");
+            string name = Console.ReadLine();
+
+            Console.Write("Enter new contact details (email): ");
+            string contactDetails = Console.ReadLine();
+
+            Patron updatedPatron = new Patron(name, membershipNumber, contactDetails);
+
+            _library.patronsManager().UpdatePatron(updatedPatron);
+            Console.WriteLine("Patron updated successfully.");
         }
-        while (existingPatron == null);
 
-        Console.Write("Enter new membership number : ");
-        while (!int.TryParse(Console.ReadLine(), out membershipNumber))
-        {
-            Console.WriteLine("Invalid input. Please enter a valid number.");
-        }
-
-        Console.Write("Enter new patron name: ");
-        string name = Console.ReadLine();
-
-        Console.Write("Enter new contact details (email): ");
-        string contactDetails = Console.ReadLine();
-
-        Patron updatedPatron = new Patron(name, membershipNumber,contactDetails);
-    
-
-    _library.patronsManager().UpdatePatron(updatedPatron);
-    Console.WriteLine("Patron updated successfully.");
-}
 
 
         public void RemovePatron()
