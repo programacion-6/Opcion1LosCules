@@ -1,4 +1,4 @@
-using Opcion1LosCules;
+namespace Opcion1LosCules;
 public abstract class BorrowingOperation
 {
     protected Patron Patron { get; private set; }
