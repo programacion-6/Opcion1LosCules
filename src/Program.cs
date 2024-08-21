@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Opcion1LosCules;
+﻿namespace Opcion1LosCules;
 
 public class Program 
 {
