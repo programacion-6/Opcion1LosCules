@@ -64,7 +64,7 @@ public abstract class BorrowingOperation
         }
     }
 
-    protected abstract bool Validate();
-    protected abstract void UpdateRecords();
+    public abstract bool Validate();
+    public abstract void UpdateRecords();
     protected abstract void NotifyPatron();
 }
