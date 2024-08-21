@@ -1,12 +1,12 @@
 namespace Opcion1LosCules;
 public class ReturnBook : BorrowingOperation
 {
-    protected override bool Validate()
+    public override bool Validate()
     {
         return Patron.BorrowedBooks.Contains(Book) && !Book.IsAvailable();
     }
 
-    protected override void UpdateRecords()
+    public override void UpdateRecords()
     {
         Console.WriteLine($"Updating records for returning book {Book.Title}.");
         

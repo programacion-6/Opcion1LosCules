@@ -6,7 +6,7 @@ public class BorrowBook : BorrowingOperation
         return Book.IsAvailable();
     }
 
-    protected override bool Validate()
+    public override bool Validate()
     {
         if (CheckAvailability())
         {
@@ -21,7 +21,7 @@ public class BorrowBook : BorrowingOperation
         return false;
     }
 
-    protected override void UpdateRecords()
+    public override void UpdateRecords()
     {
         
         Console.WriteLine($"Updating records for borrowing book {Book.Title}.");
