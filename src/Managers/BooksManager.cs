@@ -2,13 +2,16 @@ namespace Opcion1LosCules;
 public class BooksManager
 {
     private readonly List<Book> _books;
+    private readonly BookValidator _bookValidator;
 
     public BooksManager()
     {
         _books = new List<Book>();
+        _bookValidator = new BookValidator();
     }
     public void AddBook(Book book)
     {
+        _bookValidator.Validate(book);
         if (!_books.Contains(book))
         {
             _books.Add(book);
@@ -17,6 +20,7 @@ public class BooksManager
 
     public void UpdateBook(Book book)
     {
+        _bookValidator.Validate(book);
         var existingBook = _books.FirstOrDefault(b => b.Title == book.Title);
         
         if (existingBook != null)
