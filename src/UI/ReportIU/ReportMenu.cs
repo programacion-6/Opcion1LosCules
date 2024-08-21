@@ -17,7 +17,7 @@ namespace Opcion1LosCules
             Console.WriteLine("1. Show Borrowing History Report for a Patron");
             Console.WriteLine("2. Show Currently Borrowed Books Report");
             Console.WriteLine("3. Show Overdue Books Report");
-            Console.WriteLine("0. Back to Main Menu");
+            Console.WriteLine("0. Exit");
             Console.Write("Select an option: ");
             var option = Console.ReadLine();
 
@@ -40,6 +40,45 @@ namespace Opcion1LosCules
             }
         }
 
+        private void DisplayReport(string title, List<object> reportItems)
+        {
+            Console.WriteLine($"\n{title}");
+            Console.WriteLine(new string('-', title.Length));
+            
+            if (reportItems.Any())
+            {
+                foreach (var item in reportItems)
+                {
+                    dynamic reportItem = item;
+
+                    if (HasProperty(reportItem, "Title")) 
+                        Console.WriteLine($"Title     : {reportItem.Title}");
+                    if (HasProperty(reportItem, "Author")) 
+                        Console.WriteLine($"Author    : {reportItem.Author}");
+                    if (HasProperty(reportItem, "ISBN")) 
+                        Console.WriteLine($"ISBN      : {reportItem.ISBN}");
+                    if (HasProperty(reportItem, "Genre")) 
+                        Console.WriteLine($"Genre     : {reportItem.Genre}");
+                    if (HasProperty(reportItem, "BorrowedOn")) 
+                        Console.WriteLine($"BorrowedOn: {reportItem.BorrowedOn}");
+                    if (HasProperty(reportItem, "DueDate")) 
+                        Console.WriteLine($"DueDate   : {reportItem.DueDate}");
+                    
+                    Console.WriteLine(); 
+                }
+            }
+            else
+            {
+                Console.WriteLine("No data available.");
+            }
+            Console.WriteLine();
+        }
+
+        private bool HasProperty(dynamic obj, string propertyName)
+        {
+            return obj.GetType().GetProperty(propertyName) != null;
+        }
+
         public void ShowBorrowPatronHistory()
         {
             Console.Write("Enter Patron Membership Number: ");
@@ -51,12 +90,7 @@ namespace Opcion1LosCules
                 {
                     var reportContext = new ReportContext(new BorrowingHistoryReport(patron));
                     var report = reportContext.GenerateReport(_booksManager, _patronsManager);
-
-                    Console.WriteLine("Borrowing History Report:");
-                    foreach (var item in report)
-                    {
-                        Console.WriteLine(item);
-                    }
+                    DisplayReport($"Borrowing History Report for {patron.Name}", report);
                 }
                 else
                 {
@@ -73,24 +107,14 @@ namespace Opcion1LosCules
         {
             var reportContext = new ReportContext(new CurrentlyBorrowedBooksReport());
             var report = reportContext.GenerateReport(_booksManager, _patronsManager);
-
-            Console.WriteLine("Currently Borrowed Books Report:");
-            foreach (var item in report)
-            {
-                Console.WriteLine(item);
-            }
+            DisplayReport("Currently Borrowed Books Report", report);
         }
 
         public void ShowOverdueBooksReport()
         {
             var reportContext = new ReportContext(new OverdueBooksReport());
             var report = reportContext.GenerateReport(_booksManager, _patronsManager);
-
-            Console.WriteLine("Overdue Books Report:");
-            foreach (var item in report)
-            {
-                Console.WriteLine(item);
-            }
+            DisplayReport("Overdue Books Report", report);
         }
     }
 }
