@@ -3,11 +3,13 @@ namespace Opcion1LosCules;
 public class PatronBorrowMenu
 {
     private Library _library;
-    private IBookSearchStrategy _bookSearchStrategy;
-    private IPatronSearchStrategy _patronSearchStrategy;
+    private SearchByISBN _searchByISBN;
+    private SearchByMembershipNumber _searchByMemebership;
     public PatronBorrowMenu(Library library)
     {
         _library = library;
+        _searchByISBN = new();
+        _searchByMemebership = new();
     }
 
     public void BorrowBook()
@@ -15,15 +17,17 @@ public class PatronBorrowMenu
         Console.Write("Enter patron membership number: ");
         var membershipNumber = Console.ReadLine();
         {
-            var patron = _patronSearchStrategy.Search(membershipNumber,_library.patronsManager().GetAllPatrons());
+            var patron = _searchByMemebership.Search(membershipNumber, _library.patronsManager().GetAllPatrons());
             if (patron != null)
             {
                 Console.Write("Enter book ISBN to borrow: ");
                 var isbn = Console.ReadLine();
-                var book = _bookSearchStrategy.Search(isbn,_library.booksManager().GetAllBooks());
+                var book = _searchByISBN.Search(isbn, _library.booksManager().GetAllBooks());
                 if (book != null)
                 {
-                    _library.BorrowOperation();
+                    _library.BorrowBook().SetPatron(patron[0]);
+                    _library.BorrowBook().SetBook(book[0]);
+                    _library.BorrowBook().UpdateRecords();
                     Console.WriteLine("Book borrowed successfully.");
                 }
                 else
@@ -43,10 +47,15 @@ public class PatronBorrowMenu
     {
         Console.Write("Enter book ISBN to return: ");
         var isbn = Console.ReadLine();
-        var book = _bookSearchStrategy.Search(isbn,_library.booksManager().GetAllBooks());
+        var book = _searchByISBN.Search(isbn, _library.booksManager().GetAllBooks());
+        Console.Write("Enter patron membership number: ");
+        var membershipNumber = Console.ReadLine();
+        var patron = _searchByMemebership.Search(membershipNumber, _library.patronsManager().GetAllPatrons());
         if (book != null)
         {
-            _library.BorrowOperation();
+            _library.ReturnBook().SetBook(book[0]);
+            _library.ReturnBook().SetPatron(patron[0]);
+            _library.ReturnBook().UpdateRecords();
             Console.WriteLine("Book returned successfully.");
         }
         else
