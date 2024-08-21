@@ -1,0 +1,12 @@
+@startuml Exceptions
+package "Exceptions" {
+    class ValidationException {
+        + ValidationException()
+        + ValidationException(message: string)
+        + ValidationException(message: string, inner: Exception)
+    }
+    
+    ValidationException : - message: string
+    ValidationException : - inner: Exception
+}
+@enduml

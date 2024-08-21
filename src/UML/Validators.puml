@@ -1,0 +1,33 @@
+@startuml Validators
+package "Validators" {
+    abstract class Validator {
+        - Validations: Dictionary<string, Func<T, bool>>
+        + Validate(item: T): bool
+        - InitializeValidations()
+    }
+
+    class BookValidator {
+        - InitializeValidations()
+    }
+
+    class BorrowingSystemValidator {
+        - InitializeValidations()
+    }
+
+    class PatronValidator {
+        - InitializeValidations()
+    }
+
+    Validator <|-- BookValidator
+    Validator <|-- BorrowingSystemValidator
+    Validator <|-- PatronValidator
+
+    BookValidator : + Validate(book: Book): bool
+    BorrowingSystemValidator : + Validate(operation: BorrowingOperation): bool
+    PatronValidator : + Validate(patron: Patron): bool
+
+    BookValidator : - InitializeValidations()
+    BorrowingSystemValidator : - InitializeValidations()
+    PatronValidator : - InitializeValidations()
+}
+@enduml

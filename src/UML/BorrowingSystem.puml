@@ -1,0 +1,27 @@
+@startuml Borrowing System
+package "Borrowing System" {
+    abstract class BorrowingOperation {
+        +Patron patron
+        +Book book
+        +Date date
+        +execute()
+        -validate()
+        -updateRecords()
+        -notifyPatron()
+    }
+
+    class BorrowBook extends BorrowingOperation {
+        -checkAvailability()
+        +validate()
+        +updateRecords()
+        +notifyPatron()
+    }
+
+    class ReturnBook extends BorrowingOperation {
+        -calculateFine()
+        +validate()
+        +updateRecords()
+        +notifyPatron()
+    }
+}
+@enduml

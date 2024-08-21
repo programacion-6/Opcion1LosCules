@@ -1,0 +1,31 @@
+@startuml Search
+package "Search" {
+    interface BookSearchStrategy {
+        +List<Book> search(String query)
+    }
+
+    class SearchByTitle implements BookSearchStrategy {
+        +List<Book> search(String title)
+    }
+
+    class SearchByAuthor implements BookSearchStrategy {
+        +List<Book> search(String author)
+    }
+
+    class SearchByISBN implements BookSearchStrategy {
+        +List<Book> search(String ISBN)
+    }
+
+    interface PatronSearchStrategy {
+        +List<Patron> search(String query)
+    }
+
+    class SearchByName implements PatronSearchStrategy {
+        +List<Patron> search(String name)
+    }
+
+    class SearchByMembershipNumber implements PatronSearchStrategy {
+        +List<Patron> search(String membershipNumber)
+    }
+}
+@enduml
