@@ -107,10 +107,10 @@ The goal of the project is to develop a console application for library manageme
 
 
 ### Examples:
-- `git commit -m 'feat: add new button component; add new button components to templates'`
-- `git commit -m 'fix: add the stop directive to button component to prevent propagation'`
-- `git commit -m 'refactor: rewrite button component in TypeScript'`
-- `git commit -m 'chore: write button documentation'`
+- `git commit -m 'feat: implement user authentication'`
+- `git commit -m 'fix: resolve null pointer exception in user service'`
+- `git commit -m 'refactor: optimize database queries'`
+- `git commit -m 'chore: update README with setup instructions; clean up obsolete code'`
 
 ---
 
