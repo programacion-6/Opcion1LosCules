@@ -1,5 +1,5 @@
 namespace Opcion1LosCules;
-
+using Spectre.Console;
     public class HomePage
     {
 
@@ -24,47 +24,58 @@ namespace Opcion1LosCules;
 
         public void DisplayMenu()
         {
+            AnsiConsole.Write(new FigletText("Library Management System")
+                    .Centered()
+                    .Color(Color.Green));
+
             while (true)
             {
-                Console.WriteLine("Library Management System");
-                Console.WriteLine("1. Manage Books");
-                Console.WriteLine("2. Manage Patrons");
-                Console.WriteLine("3. Borrow Books");
-                Console.WriteLine("4. Return Books");
-                Console.WriteLine("5. Search Books");
-                Console.WriteLine("6. Search Patrons");
-                Console.WriteLine("7. Generate Reports");
-                Console.WriteLine("0. Exit");
-                Console.Write("Select an option: ");
-                var option = Console.ReadLine();
+                var option = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                        .Title("[yellow]Select an option:[/]")
+                        .AddChoices(new[]
+                        {
+                            "Manage Books", "Manage Patrons", "Borrow Books",
+                            "Return Books", "Search Books", "Search Patrons",
+                            "Generate Reports", "Exit"
+                        }));
+
+                var panel = new Panel(option)
+                {
+                    Header = new PanelHeader("Election", Justify.Center),
+                    Border = BoxBorder.Rounded,
+                    Padding = new Padding(1, 1)
+                };
+
+                AnsiConsole.Write(panel);
 
                 switch (option)
                 {
-                    case "1":
+                    case "Manage Books":
                         _bookMenu.ShowBookMenu();
                         break;
-                    case "2":
+                    case "Manage Patrons":
                         _patronMenu.showPatronMenu();
                         break;
-                    case "3":
+                    case "Borrow Books":
                         _patronBorrowMenu.BorrowBook();
                         break;
-                    case "4":
+                    case "Return Books":
                         _patronBorrowMenu.ReturnBook();
                         break;
-                    case "5":
+                    case "Search Books":
                         _bookSearchMenu.DisplaySearchMenu();
                         break;
-                    case "6":
+                    case "Search Patrons":
                         _patronSearchMenu.DisplaySearchMenu();
                         break;
-                    case "7":
+                    case "Generate Reports":
                         _reportMenu.DisplayReportMenu();
                         break;
-                    case "0":
+                    case "Exit":
                         return;
                     default:
-                        Console.WriteLine("Invalid option. Please try again.");
+                        AnsiConsole.MarkupLine("[red]Invalid option. Please try again.[/]");
                         break;
                 }
             }
