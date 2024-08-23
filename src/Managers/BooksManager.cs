@@ -1,4 +1,10 @@
 namespace Opcion1LosCules;
+
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
 public class BooksManager
 {
     private readonly List<Book> _books;
@@ -8,6 +14,7 @@ public class BooksManager
     {
         _books = new List<Book>();
         _bookValidator = new BookValidator();
+        LoadBooksFromDB("src/DataBase/BookStorage.json");
     }
     public void AddBook(Book book)
     {
@@ -43,5 +50,23 @@ public class BooksManager
     public List<Book> GetAllBooks()
     {
         return _books;
+    }
+
+    private void LoadBooksFromDB(string filePath)
+    {
+        if (File.Exists(filePath))
+        {
+            var jsonData = File.ReadAllText(filePath);
+            var booksFromJson = JsonConvert.DeserializeObject<List<Book>>(jsonData);
+
+            if (booksFromJson != null)
+            {
+                _books.AddRange(booksFromJson);
+            }
+        }
+        else
+        {
+            throw new FileNotFoundException($"El archivo {filePath} no fue encontrado.");
+        }
     }
 }
