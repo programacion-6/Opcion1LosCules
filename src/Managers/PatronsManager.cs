@@ -1,4 +1,10 @@
 namespace Opcion1LosCules;
+
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
 public class PatronsManager
 {
     private readonly List<Patron> _patrons;
@@ -9,6 +15,7 @@ public class PatronsManager
     {
         _patrons = new List<Patron>();
         _patronValidator = new PatronValidator();
+        LoadPatronsFromDB("src/DataBase/Patrons.json");
     }
 
 
@@ -44,5 +51,23 @@ public class PatronsManager
     public List<Patron> GetAllPatrons()
     {
         return _patrons;
+    }
+
+    private void LoadPatronsFromDB(string filePath)
+    {
+        if (File.Exists(filePath))
+        {
+            var jsonData = File.ReadAllText(filePath);
+            var patronsFromJson = JsonConvert.DeserializeObject<List<Patron>>(jsonData);
+
+            if (patronsFromJson != null)
+            {
+                _patrons.AddRange(patronsFromJson);
+            }
+        }
+        else
+        {
+            throw new FileNotFoundException($"El archivo {filePath} no fue encontrado.");
+        }
     }
 }
