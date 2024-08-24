@@ -57,6 +57,7 @@ public class PatronBorrowMenu
                 _library.ReturnBook().SetBook(book[0]);
                 _library.ReturnBook().SetPatron(patron[0]);
                 _library.ReturnBook().SetDate(DateTime.Now);
+                _library.ReturnBook().GetBook().IsBorrowed = false;
                 _library.ReturnBook().UpdateRecords();
                 AnsiConsole.MarkupLine("[bold green]Book returned successfully.[/]");
             }
