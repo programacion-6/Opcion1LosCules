@@ -5,7 +5,7 @@ public class Patron
     private string _name;
     private int _membershipNumber;
     private string _contactDetails;
-    private readonly List<Book> borrowedBooks;
+    private readonly List<Book> _borrowedBooks;
     private readonly List<Book> _historyBorrowedBooks;
 
     public Patron(string name,int membershipNumber, string contactDetails)
@@ -13,7 +13,7 @@ public class Patron
         _name = name;
         _membershipNumber = membershipNumber;
         _contactDetails = contactDetails;
-        borrowedBooks = new();
+        _borrowedBooks = new();
         _historyBorrowedBooks = new();
     }
     public string Name 
@@ -33,11 +33,27 @@ public class Patron
     }
     public List<Book> BorrowedBooks 
     {
-        get { return borrowedBooks ; }
+        get { return _borrowedBooks ; }
+        set 
+        {
+            _borrowedBooks.Clear();
+            if (value != null)
+            {
+                _borrowedBooks.AddRange(value);
+            }
+        }
     }
 
     public List<Book> HistoryBorrowedBooks 
     {
         get { return _historyBorrowedBooks ; }
+        set 
+        {
+            _historyBorrowedBooks.Clear();
+            if (value != null)
+            {
+                _historyBorrowedBooks.AddRange(value);
+            }
+        }
     }
 }

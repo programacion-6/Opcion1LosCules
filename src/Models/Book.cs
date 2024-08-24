@@ -7,9 +7,9 @@ public class Book
     private string _ISBN;
     private string _genre;
     private int _publicationYear;
+    public DateTime? DueDate { get; set; }
+    public DateTime? ReturnDate { get; set; }
     private bool _isBorrowed = false;
-    public DateTime? DueDate { get; private set; }
-    public DateTime? ReturnDate { get; private set; }
 
 
     public Book(string title, string author, string ISBN, string genre, int publicationYear) 
@@ -67,7 +67,7 @@ public class Book
     
     public void MarkAsBorrowed(DateTime borrowDate)
     {
-        
+        _isBorrowed = true;
         DueDate = borrowDate.AddDays(14);
         ReturnDate = null; 
     }
@@ -75,8 +75,9 @@ public class Book
    
     public void MarkAsReturned(DateTime returnDate)
     {
-        
+
+        _isBorrowed = false;
         ReturnDate = returnDate;
-        DueDate = null; 
+         
     }
 }

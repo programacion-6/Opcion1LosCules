@@ -12,6 +12,12 @@ public class ReturnBook : BorrowingOperation
         
         Book.MarkAsReturned(Date);
         Patron.BorrowedBooks.Remove(Book);
+
+        BooksManager booksManager = new BooksManager();
+        booksManager.UpdateBook(Book);
+        
+        PatronsManager patronsManager = new PatronsManager();
+        patronsManager.UpdatePatron(Patron);
     }
 
     protected override void NotifyPatron()

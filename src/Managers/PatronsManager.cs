@@ -10,6 +10,8 @@ public class PatronsManager
     private readonly List<Patron> _patrons;
     private readonly PatronValidator _patronValidator;
 
+    private readonly string _filePath = "src/DataBase/Patrons.json";
+
 
     public PatronsManager()
     {
@@ -25,12 +27,13 @@ public class PatronsManager
         if (!_patrons.Contains(patron))
         {
             _patrons.Add(patron);
+            SavePatronsToDB(_filePath);
         }
     }
 
     public void UpdatePatron(Patron patron)
     {
-        _patronValidator.Validate(patron);
+        
         var existingPatron = _patrons.FirstOrDefault(p => p.MembershipNumber == patron.MembershipNumber);
 
         if (existingPatron != null)
@@ -38,6 +41,10 @@ public class PatronsManager
             existingPatron.Name = patron.Name;
             existingPatron.MembershipNumber = patron.MembershipNumber;
             existingPatron.ContactDetails = patron.ContactDetails;
+            existingPatron.BorrowedBooks = patron.BorrowedBooks;
+            existingPatron.BorrowedBooks = patron.BorrowedBooks;
+            existingPatron.HistoryBorrowedBooks = patron.HistoryBorrowedBooks;
+            SavePatronsToDB(_filePath);
         }
     }
 
@@ -46,6 +53,7 @@ public class PatronsManager
         if (_patrons.Contains(patron))
         {
             _patrons.Remove(patron);
+            SavePatronsToDB(_filePath);
         }
     }
     public List<Patron> GetAllPatrons()
@@ -69,5 +77,12 @@ public class PatronsManager
         {
             throw new FileNotFoundException($"El archivo {filePath} no fue encontrado.");
         }
+    }
+
+
+    private void SavePatronsToDB(string filePath)
+    {
+        var jsonData = JsonConvert.SerializeObject(_patrons, Formatting.Indented);
+        File.WriteAllText(filePath, jsonData);
     }
 }

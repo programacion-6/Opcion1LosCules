@@ -1,92 +1,102 @@
 [
-    {
-        "Title": "To Kill a Mockingbird",
-        "Author": "Harper Lee",
-        "ISBN": "9780061120084",
-        "Genre": "Fiction",
-        "PublicationYear": 1960,
-        "DueDate": null,
-        "ReturnDate": null
-    },
-    {
-        "Title": "1984",
-        "Author": "George Orwell",
-        "ISBN": "9780451524935",
-        "Genre": "Dystopian",
-        "PublicationYear": 1949,
-        "DueDate": null,
-        "ReturnDate": null
-    },
-    {
-        "Title": "Moby Dick",
-        "Author": "Herman Melville",
-        "ISBN": "9781503280786",
-        "Genre": "Adventure",
-        "PublicationYear": 1851,
-        "DueDate": null,
-        "ReturnDate": null
-    },
-    {
-        "Title": "Pride and Prejudice",
-        "Author": "Jane Austen",
-        "ISBN": "9781503290563",
-        "Genre": "Romance",
-        "PublicationYear": 1813,
-        "DueDate": null,
-        "ReturnDate": null
-    },
-    {
-        "Title": "The Great Gatsby",
-        "Author": "F. Scott Fitzgerald",
-        "ISBN": "9780743273565",
-        "Genre": "Fiction",
-        "PublicationYear": 1925,
-        "DueDate": null,
-        "ReturnDate": null
-    },
-    {
-        "Title": "War and Peace",
-        "Author": "Leo Tolstoy",
-        "ISBN": "9781420955560",
-        "Genre": "Historical Fiction",
-        "PublicationYear": 1869,
-        "DueDate": null,
-        "ReturnDate": null
-    },
-    {
-        "Title": "The Catcher in the Rye",
-        "Author": "J.D. Salinger",
-        "ISBN": "9780316769488",
-        "Genre": "Fiction",
-        "PublicationYear": 1951,
-        "DueDate": null,
-        "ReturnDate": null
-    },
-    {
-        "Title": "The Hobbit",
-        "Author": "J.R.R. Tolkien",
-        "ISBN": "9780345339683",
-        "Genre": "Fantasy",
-        "PublicationYear": 1937,
-        "DueDate": "2024-08-10T00:00:00",
-        "ReturnDate": "2024-08-20T00:00:00"
-    },
-    {
-        "Title": "Crime and Punishment",
-        "Author": "Fyodor Dostoevsky",
-        "ISBN": "9780486415871",
-        "Genre": "Psychological Fiction",
-        "PublicationYear": 1866,
-        "DueDate": "2024-08-12T00:00:00",
-        "ReturnDate": "2024-08-22T00:00:00"
-    },
-    {
-        "Title": "The Odyssey",
-        "Author": "Homer",
-        "ISBN": "9780140268867",
-        "Genre": "Epic",
-        "PublicationYear": 800,
-        "DueDate": "2024-08-15T00:00:00",
-        "ReturnDate": "2024-08-25T00:00:00"
-    }
+  {
+    "DueDate": null,
+    "ReturnDate": null,
+    "Title": "To Kill a Mockingbird",
+    "Author": "Harper Lee",
+    "ISBN": "9780061120084",
+    "Genre": "Fiction",
+    "PublicationYear": 1960,
+    "IsBorrowed": false
+  },
+  {
+    "DueDate": null,
+    "ReturnDate": null,
+    "Title": "1984",
+    "Author": "George Orwell",
+    "ISBN": "9780451524935",
+    "Genre": "Dystopian",
+    "PublicationYear": 1949,
+    "IsBorrowed": false
+  },
+  {
+    "DueDate": null,
+    "ReturnDate": null,
+    "Title": "Moby Dick",
+    "Author": "Herman Melville",
+    "ISBN": "9781503280786",
+    "Genre": "Adventure",
+    "PublicationYear": 1851,
+    "IsBorrowed": false
+  },
+  {
+    "DueDate": null,
+    "ReturnDate": null,
+    "Title": "Pride and Prejudice",
+    "Author": "Jane Austen",
+    "ISBN": "9781503290563",
+    "Genre": "Romance",
+    "PublicationYear": 1813,
+    "IsBorrowed": false
+  },
+  {
+    "DueDate": null,
+    "ReturnDate": null,
+    "Title": "The Great Gatsby",
+    "Author": "F. Scott Fitzgerald",
+    "ISBN": "9780743273565",
+    "Genre": "Fiction",
+    "PublicationYear": 1925,
+    "IsBorrowed": false
+  },
+  {
+    "DueDate": null,
+    "ReturnDate": null,
+    "Title": "War and Peace",
+    "Author": "Leo Tolstoy",
+    "ISBN": "9781420955560",
+    "Genre": "Historical Fiction",
+    "PublicationYear": 1869,
+    "IsBorrowed": false
+  },
+  {
+    "DueDate": null,
+    "ReturnDate": null,
+    "Title": "The Catcher in the Rye",
+    "Author": "J.D. Salinger",
+    "ISBN": "9780316769488",
+    "Genre": "Fiction",
+    "PublicationYear": 1951,
+    "IsBorrowed": false
+  },
+  {
+    "DueDate": "2024-08-10T00:00:00",
+    "ReturnDate": "2024-08-20T00:00:00",
+    "Title": "The Hobbit",
+    "Author": "J.R.R. Tolkien",
+    "ISBN": "9780345339683",
+    "Genre": "Fantasy",
+    "PublicationYear": 1937,
+    "IsBorrowed": false
+  },
+  {
+    "DueDate": "2024-08-12T00:00:00",
+    "ReturnDate": "2024-08-22T00:00:00",
+    "Title": "Crime and Punishment",
+    "Author": "Fyodor Dostoevsky",
+    "ISBN": "9780486415871",
+    "Genre": "Psychological Fiction",
+    "PublicationYear": 1866,
+    "IsBorrowed": false
+  },
+  {
+    "DueDate": "2024-08-15T00:00:00",
+    "ReturnDate": "2024-08-25T00:00:00",
+    "Title": "The Odyssey",
+    "Author": "Homer",
+    "ISBN": "9780140268867",
+    "Genre": "Epic",
+    "PublicationYear": 800,
+    "IsBorrowed": false
+  }
 ]
