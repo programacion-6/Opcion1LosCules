@@ -1,3 +1,4 @@
+using Spectre.Console;
 namespace Opcion1LosCules;
 public class PatronMenu 
 {
@@ -14,29 +15,26 @@ public class PatronMenu
     {
          while (true)
             {
-                Console.WriteLine("Patron Menu");
-                Console.WriteLine("1. Add Patron");
-                Console.WriteLine("2. Update Patron");
-                Console.WriteLine("3. Remove Patron");
-                Console.WriteLine("0. Exit");
-                Console.Write("Select an option: ");
-                var option = Console.ReadLine();
+                 var option = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                        .Title("[yellow]Patron Menu[/]")
+                        .AddChoices("Add Patron", "Update Patron", "Remove Patron", "Exit"));
 
                 switch (option)
                 {
-                    case "1":
+                    case "Add Patron":
                         _patronsManagement.AddPatron();
                         break;
-                    case "2":
+                    case "Update Patron":
                         _patronsManagement.UpdatePatron();
                         break;
-                    case "3":
+                    case "Remove Patron":
                         _patronsManagement.RemovePatron();
                         break;
-                    case "0":
+                    case "Exit":
                         return;
                     default:
-                        Console.WriteLine("Invalid option. Please try again.");
+                        AnsiConsole.MarkupLine("[red]Invalid option. Please try again.[/]");
                         break;
                 }
             }
