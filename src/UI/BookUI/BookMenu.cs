@@ -1,3 +1,4 @@
+using Spectre.Console;
 namespace Opcion1LosCules
 {
     public class BookMenu 
@@ -15,29 +16,26 @@ namespace Opcion1LosCules
         {
             while (true)
             {
-                Console.WriteLine("Book Menu");
-                Console.WriteLine("1. Add Book");
-                Console.WriteLine("2. Update Book");
-                Console.WriteLine("3. Remove Book");
-                Console.WriteLine("0. Exit");
-                Console.Write("Select an option: ");
-                var option = Console.ReadLine();
+                 var option = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                        .Title("[yellow]Book Menu[/]")
+                        .AddChoices("Add Book", "Update Book", "Remove Book", "Exit"));
 
                 switch (option)
                 {
-                    case "1":
+                    case "Add Book":
                         _bookManagement.AddBook();
                         break;
-                    case "2":
+                    case "Update Book":
                         _bookManagement.UpdateBook();
                         break;
-                    case "3":
+                    case "Remove Book":
                         _bookManagement.RemoveBook();
                         break;
-                    case "0":
+                    case "Exit":
                         return;
                     default:
-                        Console.WriteLine("Invalid option. Please try again.");
+                        AnsiConsole.MarkupLine("[red]Invalid option. Please try again.[/]");
                         break;
                 }
             }
