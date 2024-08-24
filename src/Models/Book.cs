@@ -9,6 +9,7 @@ public class Book
     private int _publicationYear;
     public DateTime? DueDate { get; set; }
     public DateTime? ReturnDate { get; set; }
+    private bool _isBorrowed = false;
 
 
     public Book(string title, string author, string ISBN, string genre, int publicationYear) 
@@ -51,7 +52,11 @@ public class Book
         set { _publicationYear = value; }
     }  
 
-
+    public bool IsBorrowed 
+    {
+        get { return _isBorrowed; }
+        set { _isBorrowed = value; }
+    }  
 
     public bool IsAvailable()
     {
