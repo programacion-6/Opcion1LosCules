@@ -22,11 +22,14 @@ public class PatronBorrowMenu
             {
                 var isbn = AnsiConsole.Ask<string>("[green]Enter book ISBN to borrow:[/]");
                 var book = _searchByISBN.Search(isbn, _library.booksManager().GetAllBooks());
-                if (book != null)
+                if (book != null && !book[0].IsBorrowed)
                 {
                     _library.BorrowBook().SetPatron(patron[0]);
                     _library.BorrowBook().SetBook(book[0]);
+                    _library.BorrowBook().SetDate(DateTime.Now);
+                    _library.BorrowBook().GetBook().IsBorrowed = true;
                     _library.BorrowBook().UpdateRecords();
+                    _library.BorrowBook().HistoryBorrowingUpdateRecords();
                     AnsiConsole.MarkupLine("[bold green]Book borrowed successfully.[/]");
                 }
                 else
@@ -53,6 +56,7 @@ public class PatronBorrowMenu
             {
                 _library.ReturnBook().SetBook(book[0]);
                 _library.ReturnBook().SetPatron(patron[0]);
+                _library.ReturnBook().SetDate(DateTime.Now);
                 _library.ReturnBook().UpdateRecords();
                 AnsiConsole.MarkupLine("[bold green]Book returned successfully.[/]");
             }
