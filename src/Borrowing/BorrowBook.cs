@@ -30,6 +30,14 @@ public class BorrowBook : BorrowingOperation
         Patron.BorrowedBooks.Add(Book);
     }
 
+    public void HistoryBorrowingUpdateRecords()
+    {
+        
+        Console.WriteLine($"Updating records for borrowing book {Book.Title}.");
+       
+        Patron.HistoryBorrowedBooks.Add(Book);
+    }
+
     protected override void NotifyPatron()
     {
         Console.WriteLine($"Patron {Patron.Name} has borrowed the book {Book.Title}.");
