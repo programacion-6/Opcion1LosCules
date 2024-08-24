@@ -23,7 +23,6 @@ public class BorrowBook : BorrowingOperation
 
     public override void UpdateRecords()
     {
-        
         Console.WriteLine($"Updating records for borrowing book {Book.Title}.");
        
         Book.MarkAsBorrowed(Date);
@@ -31,10 +30,7 @@ public class BorrowBook : BorrowingOperation
     }
 
     public void HistoryBorrowingUpdateRecords()
-    {
-        
-        Console.WriteLine($"Updating records for borrowing book {Book.Title}.");
-       
+    {  
         Patron.HistoryBorrowedBooks.Add(Book);
     }
 
