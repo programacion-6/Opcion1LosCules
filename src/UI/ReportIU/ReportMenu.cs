@@ -1,3 +1,4 @@
+using Spectre.Console;
 namespace Opcion1LosCules
 {
     public class ReportMenu
@@ -13,65 +14,83 @@ namespace Opcion1LosCules
 
         public void DisplayReportMenu()
         {
-            Console.WriteLine("Report Menu:");
-            Console.WriteLine("1. Show Borrowing History Report for a Patron");
-            Console.WriteLine("2. Show Currently Borrowed Books Report");
-            Console.WriteLine("3. Show Overdue Books Report");
-            Console.WriteLine("0. Exit");
-            Console.Write("Select an option: ");
-            var option = Console.ReadLine();
+           var option = AnsiConsole.Prompt(
+                    new SelectionPrompt<string>()
+                        .Title("[yellow]Report Menu:[/]")
+                        .AddChoices(
+                            "Show Borrowing History Report for a Patron",
+                            "Show Currently Borrowed Books Report",
+                            "Show Overdue Books Report",
+                            "Exit"));
 
-            switch (option)
-            {
-                case "1":
-                    ShowBorrowPatronHistory();
-                    break;
-                case "2":
-                    ShowCurrentBorrowedBooksReport();
-                    break;
-                case "3":
-                    ShowOverdueBooksReport();
-                    break;
-                case "0":
-                    return;
-                default:
-                    Console.WriteLine("Invalid option. Please try again.");
-                    break;
+                switch (option)
+                {
+                    case "Show Borrowing History Report for a Patron":
+                        ShowBorrowPatronHistory();
+                        break;
+                    case "Show Currently Borrowed Books Report":
+                        ShowCurrentBorrowedBooksReport();
+                        break;
+                    case "Show Overdue Books Report":
+                        ShowOverdueBooksReport();
+                        break;
+                    case "Exit":
+                        return;
+                    default:
+                        AnsiConsole.MarkupLine("[red]Invalid option. Please try again.[/]");
+                        break;
             }
         }
 
         private void DisplayReport(string title, List<object> reportItems)
         {
-            Console.WriteLine($"\n{title}");
-            Console.WriteLine(new string('-', title.Length));
-            
+            AnsiConsole.WriteLine($"{title}");
+
             if (reportItems.Any())
             {
+                var table = new Table();
+                table.AddColumn(new TableColumn("[yellow]Title[/]").Centered());
+                table.AddColumn(new TableColumn("[yellow]Author[/]").Centered());
+                table.AddColumn(new TableColumn("[yellow]ISBN[/]").Centered());
+                table.AddColumn(new TableColumn("[yellow]Genre[/]").Centered());
+                table.AddColumn(new TableColumn("[yellow]Borrowed On[/]").Centered());
+                table.AddColumn(new TableColumn("[yellow]Due Date[/]").Centered());
+
                 foreach (var item in reportItems)
                 {
-                    dynamic reportItem = item;
-
-                    if (HasProperty(reportItem, "Title")) 
-                        Console.WriteLine($"Title     : {reportItem.Title}");
-                    if (HasProperty(reportItem, "Author")) 
-                        Console.WriteLine($"Author    : {reportItem.Author}");
-                    if (HasProperty(reportItem, "ISBN")) 
-                        Console.WriteLine($"ISBN      : {reportItem.ISBN}");
-                    if (HasProperty(reportItem, "Genre")) 
-                        Console.WriteLine($"Genre     : {reportItem.Genre}");
-                    if (HasProperty(reportItem, "BorrowedOn")) 
-                        Console.WriteLine($"BorrowedOn: {reportItem.BorrowedOn}");
-                    if (HasProperty(reportItem, "DueDate")) 
-                        Console.WriteLine($"DueDate   : {reportItem.DueDate}");
-                    
-                    Console.WriteLine(); 
+                    var itemTitle = GetPropertyValue(item, "Title");
+                    var author = GetPropertyValue(item, "Author");
+                    var isbn = GetPropertyValue(item, "ISBN");
+                    var genre = GetPropertyValue(item, "Genre");
+                    var borrowedOn = GetPropertyValue(item, "BorrowedOn");
+                    var dueDate = GetPropertyValue(item, "DueDate");
+                    table.AddRow(
+                        itemTitle,
+                        author,
+                        isbn,
+                        genre,
+                        borrowedOn,
+                        dueDate);
                 }
+
+                AnsiConsole.Write(table);
             }
             else
             {
-                Console.WriteLine("No data available.");
+                AnsiConsole.MarkupLine("[red]No data available.[/]");
             }
-            Console.WriteLine();
+            AnsiConsole.WriteLine();
+        }
+
+         private string GetPropertyValue(object obj, string propertyName)
+        {
+            var property = obj.GetType().GetProperty(propertyName);
+            if (property != null)
+            {
+                var value = property.GetValue(obj);
+                return value != null ? value.ToString() : "";
+            }
+            return "";
         }
 
         private bool HasProperty(dynamic obj, string propertyName)
@@ -81,7 +100,7 @@ namespace Opcion1LosCules
 
         public void ShowBorrowPatronHistory()
         {
-            Console.Write("Enter Patron Membership Number: ");
+            AnsiConsole.Write("Enter Patron Membership Number: ");
             if (int.TryParse(Console.ReadLine(), out int membershipNumber))
             {
                 var patron = _patronsManager.GetAllPatrons()
@@ -94,12 +113,12 @@ namespace Opcion1LosCules
                 }
                 else
                 {
-                    Console.WriteLine("Patron not found.");
+                    AnsiConsole.WriteLine("Patron not found.");
                 }
             }
             else
             {
-                Console.WriteLine("Invalid Membership Number.");
+                AnsiConsole.WriteLine("Invalid Membership Number.");
             }
         }
 

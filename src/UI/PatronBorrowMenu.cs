@@ -1,27 +1,26 @@
+using Spectre.Console;
 namespace Opcion1LosCules;
 
 public class PatronBorrowMenu
 {
     private Library _library;
     private SearchByISBN _searchByISBN;
-    private SearchByMembershipNumber _searchByMemebership;
+    private SearchByMembershipNumber _searchByMembership;
     public PatronBorrowMenu(Library library)
     {
         _library = library;
         _searchByISBN = new();
-        _searchByMemebership = new();
+        _searchByMembership = new();
     }
 
     public void BorrowBook()
     {
-        Console.Write("Enter patron membership number: ");
-        var membershipNumber = Console.ReadLine();
-        {
-            var patron = _searchByMemebership.Search(membershipNumber, _library.patronsManager().GetAllPatrons());
+         var membershipNumber = AnsiConsole.Ask<string>("[green]Enter patron membership number:[/]");
+
+            var patron = _searchByMembership.Search(membershipNumber, _library.patronsManager().GetAllPatrons());
             if (patron != null)
             {
-                Console.Write("Enter book ISBN to borrow: ");
-                var isbn = Console.ReadLine();
+                var isbn = AnsiConsole.Ask<string>("[green]Enter book ISBN to borrow:[/]");
                 var book = _searchByISBN.Search(isbn, _library.booksManager().GetAllBooks());
                 if (book != null && !book[0].IsBorrowed)
                 {
@@ -31,41 +30,40 @@ public class PatronBorrowMenu
                     _library.BorrowBook().GetBook().IsBorrowed = true;
                     _library.BorrowBook().UpdateRecords();
                     _library.BorrowBook().HistoryBorrowingUpdateRecords();
-                    Console.WriteLine("Book borrowed successfully.");
+                    AnsiConsole.MarkupLine("[bold green]Book borrowed successfully.[/]");
                 }
                 else
                 {
-                    Console.WriteLine("Book not found or borrowed. Please try again.");
+                    AnsiConsole.MarkupLine("[red]Book not found. Please try again.[/]");
                 }
             }
             else
             {
-                Console.WriteLine("Invalid membership number. Please try again.");
+                AnsiConsole.MarkupLine("[red]Invalid membership number. Please try again.[/]");
             }
-        }
     }
 
 
     public void ReturnBook()
     {
-        Console.Write("Enter book ISBN to return: ");
-        var isbn = Console.ReadLine();
-        var book = _searchByISBN.Search(isbn, _library.booksManager().GetAllBooks());
-        Console.Write("Enter patron membership number: ");
-        var membershipNumber = Console.ReadLine();
-        var patron = _searchByMemebership.Search(membershipNumber, _library.patronsManager().GetAllPatrons());
-        if (book != null)
-        {
-            _library.ReturnBook().SetBook(book[0]);
-            _library.ReturnBook().SetPatron(patron[0]);
-            _library.ReturnBook().SetDate(DateTime.Now);
-            _library.ReturnBook().GetBook().IsBorrowed = false;
-            _library.ReturnBook().UpdateRecords();
-            Console.WriteLine("Book returned successfully.");
-        }
-        else
-        {
-            Console.WriteLine("Invalid ISBN. Please try again.");
-        }
+        var isbn = AnsiConsole.Ask<string>("[green]Enter book ISBN to return:[/]");
+            var book = _searchByISBN.Search(isbn, _library.booksManager().GetAllBooks());
+            
+            var membershipNumber = AnsiConsole.Ask<string>("[green]Enter patron membership number:[/]");
+            var patron = _searchByMembership.Search(membershipNumber, _library.patronsManager().GetAllPatrons());
+
+            if (book != null)
+            {
+                _library.ReturnBook().SetBook(book[0]);
+                _library.ReturnBook().SetPatron(patron[0]);
+                _library.ReturnBook().SetDate(DateTime.Now);
+                _library.ReturnBook().GetBook().IsBorrowed = false;
+                _library.ReturnBook().UpdateRecords();
+                AnsiConsole.MarkupLine("[bold green]Book returned successfully.[/]");
+            }
+            else
+            {
+                AnsiConsole.MarkupLine("[red]Invalid ISBN. Please try again.[/]");
+            }
     }
 }

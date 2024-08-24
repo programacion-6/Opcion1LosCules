@@ -1,3 +1,4 @@
+using Spectre.Console;
 namespace Opcion1LosCules
 {
     public class BooksManagementMenu
@@ -11,83 +12,53 @@ namespace Opcion1LosCules
 
         public void AddBook()
         {
-            Console.Write("Enter book title: ");
-            string title = Console.ReadLine();
-
-            Console.Write("Enter book author: ");
-            string author = Console.ReadLine();
-
-            Console.Write("Enter book ISBN: ");
-            string ISBN = Console.ReadLine();
-
-            Console.Write("Enter book genre: ");
-            string genre = Console.ReadLine();
-
-            Console.Write("Enter book publication year: ");
-            int publicationYear;
-            while (!int.TryParse(Console.ReadLine(), out publicationYear))
-            {
-                Console.WriteLine("Invalid input. Please enter a valid year.");
-            }
-
-            Book book = new Book(title, author, ISBN, genre, publicationYear);
-
+            var title = AnsiConsole.Ask<string>("[green]Enter book title:[/]");
+            var author = AnsiConsole.Ask<string>("[green]Enter book author:[/]");
+            var isbn = AnsiConsole.Ask<string>("[green]Enter book ISBN:[/]");
+            var genre = AnsiConsole.Ask<string>("[green]Enter book genre:[/]");
+            int publicationYear = AnsiConsole.Ask<int>("[green]Enter book publication year:[/]");
+           
+            var book = new Book(title, author, isbn, genre, publicationYear);
             _library.booksManager().AddBook(book);
-            Console.WriteLine("Book added successfully.");
+            AnsiConsole.MarkupLine("[green]Book added successfully.[/]");
         }
 
         public void UpdateBook()
         {
-            Console.Write("Enter the title of the book to update: ");
-            string title = Console.ReadLine();
-
+            var title = AnsiConsole.Ask<string>("[green]Enter the title of the book to update:[/]");
             var existingBook = _library.booksManager().GetAllBooks()
                 .FirstOrDefault(b => b.Title == title);
 
             if (existingBook == null)
             {
-                Console.WriteLine("No book found with that title. Please try again.");
+                AnsiConsole.MarkupLine("[red]No book found with that title. Please try again.[/]");
                 return;
             }
 
-            Console.Write("Enter new book author: ");
-            string author = Console.ReadLine();
+            var author = AnsiConsole.Ask<string>("[green]Enter new book author:[/]");
+            var isbn = AnsiConsole.Ask<string>("[green]Enter new book ISBN:[/]");
+            var genre = AnsiConsole.Ask<string>("[green]Enter new book genre:[/]");
+            int publicationYear = AnsiConsole.Ask<int>("[green]Enter book publication year:[/]");
 
-            Console.Write("Enter new book ISBN: ");
-            string ISBN = Console.ReadLine();
-
-            Console.Write("Enter new book genre: ");
-            string genre = Console.ReadLine();
-
-            Console.Write("Enter new book publication year: ");
-            int publicationYear;
-            while (!int.TryParse(Console.ReadLine(), out publicationYear))
-            {
-                Console.WriteLine("Invalid input. Please enter a valid year.");
-            }
-
-            Book updatedBook = new Book(title, author, ISBN, genre, publicationYear);
-
+            var updatedBook = new Book(title, author, isbn, genre, publicationYear);
             _library.booksManager().UpdateBook(updatedBook);
-            Console.WriteLine("Book updated successfully.");
+            AnsiConsole.MarkupLine("[green]Book updated successfully.[/]");
         }
 
         public void RemoveBook()
         {
-            Console.Write("Enter the title of the book to remove: ");
-            string title = Console.ReadLine();
-
+            var title = AnsiConsole.Ask<string>("[green]Enter the title of the book to remove:[/]");
             var existingBook = _library.booksManager().GetAllBooks()
                 .FirstOrDefault(b => b.Title == title);
 
             if (existingBook != null)
             {
                 _library.booksManager().RemoveBook(existingBook);
-                Console.WriteLine("Book removed successfully.");
+                AnsiConsole.MarkupLine("[green]Book removed successfully.[/]");
             }
             else
             {
-                Console.WriteLine("No book found with that title.");
+                AnsiConsole.MarkupLine("[red]No book found with that title.[/]");
             }
         }
     }

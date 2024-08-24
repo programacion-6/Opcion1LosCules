@@ -1,4 +1,5 @@
 namespace Opcion1LosCules;
+using Spectre.Console;
 public class PatronSearchMenu
 {
     private readonly PatronsManager _patronManager;
@@ -10,17 +11,17 @@ public class PatronSearchMenu
 
     public void DisplaySearchMenu()
     {
-        Console.WriteLine("Select search criteria:");
-        Console.WriteLine("1. Search by Name");
-        Console.WriteLine("2. Search by Membership Number");
-            
-        var option = Console.ReadLine();
-        Console.WriteLine("Enter search term:");
-        var query = Console.ReadLine();
+        var option = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("[yellow]Select search criteria:[/]")
+                    .AddChoices("Search by Name", "Search by Membership Number"));
+
+        var query = AnsiConsole.Ask<string>("[green]Enter search term:[/]");
+
 
         if (string.IsNullOrWhiteSpace(query))
         {
-            Console.WriteLine("Search term cannot be empty.");
+            AnsiConsole.MarkupLine("[red]Search term cannot be empty.[/]");
             return;
         }
             
@@ -28,14 +29,14 @@ public class PatronSearchMenu
             
         switch (option)
             {
-            case "1":
+            case "Search by Name":
                 searchResults = SearchByName(query);
                 break;
-            case "2":
+            case "Search by Membership Number":
                 searchResults = SearchByMembershipNumber(query);
                 break;
             default:
-                Console.WriteLine("Invalid option.");
+                AnsiConsole.MarkupLine("[red]Invalid option.[/]");
                 break;
         }
 
@@ -58,15 +59,22 @@ public class PatronSearchMenu
     {
         if (patrons.Any())
         {
-            Console.WriteLine("Search results:");
-            foreach (var patron in patrons)
-            {
-                Console.WriteLine($"Name: {patron.Name}, Membership Number: {patron.MembershipNumber}");
-            }
+            var table = new Table();
+
+                table.AddColumn("Name");
+                table.AddColumn("Membership Number");
+                table.AddColumn("Email");
+
+                foreach (var patron in patrons)
+                {
+                    
+                    table.AddRow(patron.Name, patron.MembershipNumber.ToString(),patron.ContactDetails);
+                }
+                AnsiConsole.Write(table);
         }
         else
         {
-            Console.WriteLine("No results found.");
+           AnsiConsole.MarkupLine("[red]No results found.[/]");
         }
     }
 }
