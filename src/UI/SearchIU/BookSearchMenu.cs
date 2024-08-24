@@ -1,4 +1,7 @@
 namespace Opcion1LosCules;
+using Spectre.Console;
+using System.Collections.Generic;
+using System.Linq;
 public class BookSearchMenu
 {
     private readonly BooksManager _bookManager;
@@ -10,18 +13,17 @@ public class BookSearchMenu
 
     public void DisplaySearchMenu()
     {
-        Console.WriteLine("Select search criteria:");
-        Console.WriteLine("1. Search by Title");
-        Console.WriteLine("2. Search by Author");
-        Console.WriteLine("3. Search by ISBN");
-            
-        var option = Console.ReadLine();
-        Console.WriteLine("Enter search term:");
-        var query = Console.ReadLine();
+        var option = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("[yellow]Select search criteria:[/]")
+                    .AddChoices("Search by Title", "Search by Author", "Search by ISBN"));
+
+            // Solicitar el término de búsqueda
+        var query = AnsiConsole.Ask<string>("[green]Enter search term:[/]");
 
         if (string.IsNullOrWhiteSpace(query))
         {
-            Console.WriteLine("Search term cannot be empty.");
+            AnsiConsole.MarkupLine("[red]Search term cannot be empty.[/]");
             return;
         }
             
@@ -29,17 +31,17 @@ public class BookSearchMenu
             
         switch (option)
         {
-            case "1":
+            case "Search by Title":
                 searchResults = SearchByTitle(query);
                 break;
-            case "2":
+            case "Search by Author":
                 searchResults = SearchByAuthor(query);
                 break;
-            case "3":
+            case "Search by ISBN":
                 searchResults = SearchByISBN(query);
                 break;
             default:
-                Console.WriteLine("Invalid option.");
+                AnsiConsole.MarkupLine("[red]Invalid option.[/]");
                 break;
         }
 
@@ -67,15 +69,21 @@ public class BookSearchMenu
     {
         if (books.Any())
         {
-            Console.WriteLine("Search results:");
+            var table = new Table();
+
+                table.AddColumn(new TableColumn("Title"));
+                table.AddColumn(new TableColumn("Author"));
+                table.AddColumn(new TableColumn("ISBN"));
+
             foreach (var book in books)
             {
-                Console.WriteLine($"Title: {book.Title}, Author: {book.Author}, ISBN: {book.ISBN}");
+                table.AddRow(new Markup(book.Title), new Markup(book.Author), new Markup(book.ISBN));
             }
+            AnsiConsole.Write(table);
         }
         else
         {
-            Console.WriteLine("No results found.");
+            AnsiConsole.MarkupLine("[red]No results found.[/]");
         }
     }
 }
