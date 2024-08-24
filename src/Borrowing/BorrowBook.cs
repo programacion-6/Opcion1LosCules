@@ -23,11 +23,15 @@ public class BorrowBook : BorrowingOperation
 
     public override void UpdateRecords()
     {
-        
         Console.WriteLine($"Updating records for borrowing book {Book.Title}.");
        
         Book.MarkAsBorrowed(Date);
         Patron.BorrowedBooks.Add(Book);
+    }
+
+    public void HistoryBorrowingUpdateRecords()
+    {  
+        Patron.HistoryBorrowedBooks.Add(Book);
     }
 
     protected override void NotifyPatron()

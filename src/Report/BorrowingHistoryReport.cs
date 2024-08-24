@@ -4,6 +4,7 @@ public class BorrowingHistoryReport : IReportStrategy
 {
     private readonly Patron _patron;
     private const int DaysBeforeDueDate = -14;
+    private List<object> report = new List<object>();
 
     public BorrowingHistoryReport(Patron patron)
     {
@@ -12,9 +13,7 @@ public class BorrowingHistoryReport : IReportStrategy
 
     public List<object> GenerateReport(BooksManager booksManager, PatronsManager patronsManager)
     {
-        var report = new List<object>();
-
-        foreach (var book in _patron.BorrowedBooks)
+        foreach (var book in _patron.HistoryBorrowedBooks)
         {
             report.Add(new
             {
