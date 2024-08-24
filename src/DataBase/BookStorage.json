@@ -6,7 +6,8 @@
     "Author": "Harper Lee",
     "ISBN": "9780061120084",
     "Genre": "Fiction",
-    "PublicationYear": 1960
+    "PublicationYear": 1960,
+    "IsBorrowed": false
   },
   {
     "DueDate": null,
@@ -15,7 +16,8 @@
     "Author": "George Orwell",
     "ISBN": "9780451524935",
     "Genre": "Dystopian",
-    "PublicationYear": 1949
+    "PublicationYear": 1949,
+    "IsBorrowed": false
   },
   {
     "DueDate": null,
@@ -24,7 +26,8 @@
     "Author": "Herman Melville",
     "ISBN": "9781503280786",
     "Genre": "Adventure",
-    "PublicationYear": 1851
+    "PublicationYear": 1851,
+    "IsBorrowed": false
   },
   {
     "DueDate": null,
@@ -33,7 +36,8 @@
     "Author": "Jane Austen",
     "ISBN": "9781503290563",
     "Genre": "Romance",
-    "PublicationYear": 1813
+    "PublicationYear": 1813,
+    "IsBorrowed": false
   },
   {
     "DueDate": null,
@@ -42,7 +46,8 @@
     "Author": "F. Scott Fitzgerald",
     "ISBN": "9780743273565",
     "Genre": "Fiction",
-    "PublicationYear": 1925
+    "PublicationYear": 1925,
+    "IsBorrowed": false
   },
   {
     "DueDate": null,
@@ -51,7 +56,8 @@
     "Author": "Leo Tolstoy",
     "ISBN": "9781420955560",
     "Genre": "Historical Fiction",
-    "PublicationYear": 1869
+    "PublicationYear": 1869,
+    "IsBorrowed": false
   },
   {
     "DueDate": null,
@@ -60,7 +66,8 @@
     "Author": "J.D. Salinger",
     "ISBN": "9780316769488",
     "Genre": "Fiction",
-    "PublicationYear": 1951
+    "PublicationYear": 1951,
+    "IsBorrowed": false
   },
   {
     "DueDate": "2024-08-10T00:00:00",
@@ -69,7 +76,8 @@
     "Author": "J.R.R. Tolkien",
     "ISBN": "9780345339683",
     "Genre": "Fantasy",
-    "PublicationYear": 1937
+    "PublicationYear": 1937,
+    "IsBorrowed": false
   },
   {
     "DueDate": "2024-08-12T00:00:00",
@@ -78,7 +86,8 @@
     "Author": "Fyodor Dostoevsky",
     "ISBN": "9780486415871",
     "Genre": "Psychological Fiction",
-    "PublicationYear": 1866
+    "PublicationYear": 1866,
+    "IsBorrowed": false
   },
   {
     "DueDate": "2024-08-15T00:00:00",
@@ -87,6 +96,7 @@
     "Author": "Homer",
     "ISBN": "9780140268867",
     "Genre": "Epic",
-    "PublicationYear": 800
+    "PublicationYear": 800,
+    "IsBorrowed": false
   }
 ]

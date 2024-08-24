@@ -1,110 +1,125 @@
 [
-    {
-        "Name": "John Doe",
-        "MembershipNumber": 1001,
-        "ContactDetails": "john.doe@example.com",
-        "BorrowedBooks": []
-    },
-    {
-        "Name": "Jane Smith",
-        "MembershipNumber": 1002,
-        "ContactDetails": "jane.smith@example.com",
-        "BorrowedBooks": []
-    },
-    {
-        "Name": "Alice Johnson",
-        "MembershipNumber": 1003,
-        "ContactDetails": "alice.johnson@example.com",
-        "BorrowedBooks": []
-    },
-    {
-        "Name": "Bob Brown",
-        "MembershipNumber": 1004,
-        "ContactDetails": "bob.brown@example.com",
-        "BorrowedBooks": []
-    },
-    {
-        "Name": "Charlie Davis",
-        "MembershipNumber": 1005,
-        "ContactDetails": "charlie.davis@example.com",
-        "BorrowedBooks": []
-    },
-    {
-        "Name": "Emily White",
-        "MembershipNumber": 1006,
-        "ContactDetails": "emily.white@example.com",
-        "BorrowedBooks": []
-    },
-    {
-        "Name": "David Green",
-        "MembershipNumber": 1007,
-        "ContactDetails": "david.green@example.com",
-        "BorrowedBooks": []
-    },
-    {
-        "Name": "Sarah Wilson",
-        "MembershipNumber": 1008,
-        "ContactDetails": "sarah.wilson@example.com",
-        "BorrowedBooks": [
-            {
-                "Title": "The Hobbit",
-                "Author": "J.R.R. Tolkien",
-                "ISBN": "9780345339683",
-                "Genre": "Fantasy",
-                "PublicationYear": 1937,
-                "DueDate": "2024-08-10T00:00:00",
-                "ReturnDate": "2024-08-20T00:00:00"
-            }
-        ]
-    },
-    {
-        "Name": "Michael Scott",
-        "MembershipNumber": 1009,
-        "ContactDetails": "michael.scott@example.com",
-        "BorrowedBooks": [
-            {
-                "Title": "Crime and Punishment",
-                "Author": "Fyodor Dostoevsky",
-                "ISBN": "9780486415871",
-                "Genre": "Psychological Fiction",
-                "PublicationYear": 1866,
-                "DueDate": "2024-08-12T00:00:00",
-                "ReturnDate": "2024-08-22T00:00:00"
-            },
-            {
-                "Title": "The Odyssey",
-                "Author": "Homer",
-                "ISBN": "9780140268867",
-                "Genre": "Epic",
-                "PublicationYear": -800,
-                "DueDate": "2024-08-15T00:00:00",
-                "ReturnDate": "2024-08-25T00:00:00"
-            }
-        ]
-    },
-    {
-        "Name": "Laura Parker",
-        "MembershipNumber": 1010,
-        "ContactDetails": "laura.parker@example.com",
-        "BorrowedBooks": [
-            {
-                "Title": "To Kill a Mockingbird",
-                "Author": "Harper Lee",
-                "ISBN": "9780061120084",
-                "Genre": "Fiction",
-                "PublicationYear": 1960,
-                "DueDate": "2024-08-10T00:00:00",
-                "ReturnDate": null
-            },
-            {
-                "Title": "1984",
-                "Author": "George Orwell",
-                "ISBN": "9780451524935",
-                "Genre": "Dystopian",
-                "PublicationYear": 1949,
-                "DueDate": "2024-08-10T00:00:00",
-                "ReturnDate": null
-            }
-        ]
-    }
+  {
+    "Name": "John Doe",
+    "MembershipNumber": 1001,
+    "ContactDetails": "john.doe@example.com",
+    "BorrowedBooks": [],
+    "HistoryBorrowedBooks": []
+  },
+  {
+    "Name": "Jane Smith",
+    "MembershipNumber": 1002,
+    "ContactDetails": "jane.smith@example.com",
+    "BorrowedBooks": [],
+    "HistoryBorrowedBooks": []
+  },
+  {
+    "Name": "Alice Johnson",
+    "MembershipNumber": 1003,
+    "ContactDetails": "alice.johnson@example.com",
+    "BorrowedBooks": [],
+    "HistoryBorrowedBooks": []
+  },
+  {
+    "Name": "Bob Brown",
+    "MembershipNumber": 1004,
+    "ContactDetails": "bob.brown@example.com",
+    "BorrowedBooks": [],
+    "HistoryBorrowedBooks": []
+  },
+  {
+    "Name": "Charlie Davis",
+    "MembershipNumber": 1005,
+    "ContactDetails": "charlie.davis@example.com",
+    "BorrowedBooks": [],
+    "HistoryBorrowedBooks": []
+  },
+  {
+    "Name": "Emily White",
+    "MembershipNumber": 1006,
+    "ContactDetails": "emily.white@example.com",
+    "BorrowedBooks": [],
+    "HistoryBorrowedBooks": []
+  },
+  {
+    "Name": "David Green",
+    "MembershipNumber": 1007,
+    "ContactDetails": "david.green@example.com",
+    "BorrowedBooks": [],
+    "HistoryBorrowedBooks": []
+  },
+  {
+    "Name": "Sarah Wilson",
+    "MembershipNumber": 1008,
+    "ContactDetails": "sarah.wilson@example.com",
+    "BorrowedBooks": [
+      {
+        "DueDate": "2024-08-10T00:00:00",
+        "ReturnDate": "2024-08-20T00:00:00",
+        "Title": "The Hobbit",
+        "Author": "J.R.R. Tolkien",
+        "ISBN": "9780345339683",
+        "Genre": "Fantasy",
+        "PublicationYear": 1937,
+        "IsBorrowed": false
+      }
+    ],
+    "HistoryBorrowedBooks": []
+  },
+  {
+    "Name": "Michael Scott",
+    "MembershipNumber": 1009,
+    "ContactDetails": "michael.scott@example.com",
+    "BorrowedBooks": [
+      {
+        "DueDate": "2024-08-12T00:00:00",
+        "ReturnDate": "2024-08-22T00:00:00",
+        "Title": "Crime and Punishment",
+        "Author": "Fyodor Dostoevsky",
+        "ISBN": "9780486415871",
+        "Genre": "Psychological Fiction",
+        "PublicationYear": 1866,
+        "IsBorrowed": false
+      },
+      {
+        "DueDate": "2024-08-15T00:00:00",
+        "ReturnDate": "2024-08-25T00:00:00",
+        "Title": "The Odyssey",
+        "Author": "Homer",
+        "ISBN": "9780140268867",
+        "Genre": "Epic",
+        "PublicationYear": -800,
+        "IsBorrowed": false
+      }
+    ],
+    "HistoryBorrowedBooks": []
+  },
+  {
+    "Name": "Laura Parker",
+    "MembershipNumber": 1010,
+    "ContactDetails": "laura.parker@example.com",
+    "BorrowedBooks": [
+      {
+        "DueDate": "2024-08-10T00:00:00",
+        "ReturnDate": null,
+        "Title": "To Kill a Mockingbird",
+        "Author": "Harper Lee",
+        "ISBN": "9780061120084",
+        "Genre": "Fiction",
+        "PublicationYear": 1960,
+        "IsBorrowed": false
+      },
+      {
+        "DueDate": "2024-08-10T00:00:00",
+        "ReturnDate": null,
+        "Title": "1984",
+        "Author": "George Orwell",
+        "ISBN": "9780451524935",
+        "Genre": "Dystopian",
+        "PublicationYear": 1949,
+        "IsBorrowed": false
+      }
+    ],
+    "HistoryBorrowedBooks": []
+  }
 ]
