@@ -4,7 +4,7 @@
     "ReturnDate": null,
     "Title": "To Kill a Mockingbird",
     "Author": "Harper Lee",
-    "ISBN": "9780061120084",
+    "ISBN": "2001",
     "Genre": "Fiction",
     "PublicationYear": 1960,
     "IsBorrowed": false
@@ -14,7 +14,7 @@
     "ReturnDate": null,
     "Title": "1984",
     "Author": "George Orwell",
-    "ISBN": "9780451524935",
+    "ISBN": "2002",
     "Genre": "Dystopian",
     "PublicationYear": 1949,
     "IsBorrowed": false
@@ -24,7 +24,7 @@
     "ReturnDate": null,
     "Title": "Moby Dick",
     "Author": "Herman Melville",
-    "ISBN": "9781503280786",
+    "ISBN": "2003",
     "Genre": "Adventure",
     "PublicationYear": 1851,
     "IsBorrowed": false
@@ -34,7 +34,7 @@
     "ReturnDate": null,
     "Title": "Pride and Prejudice",
     "Author": "Jane Austen",
-    "ISBN": "9781503290563",
+    "ISBN": "2004",
     "Genre": "Romance",
     "PublicationYear": 1813,
     "IsBorrowed": false
@@ -44,7 +44,7 @@
     "ReturnDate": null,
     "Title": "The Great Gatsby",
     "Author": "F. Scott Fitzgerald",
-    "ISBN": "9780743273565",
+    "ISBN": "2005",
     "Genre": "Fiction",
     "PublicationYear": 1925,
     "IsBorrowed": false
@@ -54,7 +54,7 @@
     "ReturnDate": null,
     "Title": "War and Peace",
     "Author": "Leo Tolstoy",
-    "ISBN": "9781420955560",
+    "ISBN": "2006",
     "Genre": "Historical Fiction",
     "PublicationYear": 1869,
     "IsBorrowed": false
@@ -64,7 +64,7 @@
     "ReturnDate": null,
     "Title": "The Catcher in the Rye",
     "Author": "J.D. Salinger",
-    "ISBN": "9780316769488",
+    "ISBN": "2007",
     "Genre": "Fiction",
     "PublicationYear": 1951,
     "IsBorrowed": false
@@ -74,7 +74,7 @@
     "ReturnDate": "2024-08-20T00:00:00",
     "Title": "The Hobbit",
     "Author": "J.R.R. Tolkien",
-    "ISBN": "9780345339683",
+    "ISBN": "2008",
     "Genre": "Fantasy",
     "PublicationYear": 1937,
     "IsBorrowed": false
@@ -84,7 +84,7 @@
     "ReturnDate": "2024-08-22T00:00:00",
     "Title": "Crime and Punishment",
     "Author": "Fyodor Dostoevsky",
-    "ISBN": "9780486415871",
+    "ISBN": "2009",
     "Genre": "Psychological Fiction",
     "PublicationYear": 1866,
     "IsBorrowed": false
@@ -94,7 +94,7 @@
     "ReturnDate": "2024-08-25T00:00:00",
     "Title": "The Odyssey",
     "Author": "Homer",
-    "ISBN": "9780140268867",
+    "ISBN": "2010",
     "Genre": "Epic",
     "PublicationYear": 800,
     "IsBorrowed": false

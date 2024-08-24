@@ -18,7 +18,7 @@ public class PatronMenu
                  var option = AnsiConsole.Prompt(
                     new SelectionPrompt<string>()
                         .Title("[yellow]Patron Menu[/]")
-                        .AddChoices("Add Patron", "Update Patron", "Remove Patron", "Exit"));
+                        .AddChoices("Add Patron", "Update Patron", "Remove Patron", "List Patrons", "Exit"));
 
                 switch (option)
                 {
@@ -30,6 +30,9 @@ public class PatronMenu
                         break;
                     case "Remove Patron":
                         _patronsManagement.RemovePatron();
+                        break;
+                    case "List Patrons":
+                        _patronsManagement.ListPatrons();
                         break;
                     case "Exit":
                         return;

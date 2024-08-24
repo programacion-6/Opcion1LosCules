@@ -61,5 +61,24 @@ namespace Opcion1LosCules
                 AnsiConsole.MarkupLine("[red]No book found with that title.[/]");
             }
         }
+
+        public void ListBooksByGenre()
+        {
+            AnsiConsole.MarkupLine("[yellow]Listing Books by Genre:[/]");
+            var existingBook = _library.booksManager().GetAllBooks()
+            .GroupBy(book => book.Genre)
+            .OrderBy(group => group.Key);
+
+            foreach (var group in existingBook)
+            {
+                AnsiConsole.MarkupLine($"[yellow]Genre: {group.Key}[/]");
+                foreach (var book in group)
+                {
+                    AnsiConsole.MarkupLine($"  - [blue]{book.Title}[/] ([green]{book.Author}[/], {book.PublicationYear})");
+                }
+            }
+            
+        }
+
     }
 }
