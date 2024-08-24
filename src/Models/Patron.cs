@@ -34,10 +34,26 @@ public class Patron
     public List<Book> BorrowedBooks 
     {
         get { return _borrowedBooks ; }
+        set 
+        {
+            _borrowedBooks.Clear();
+            if (value != null)
+            {
+                _borrowedBooks.AddRange(value);
+            }
+        }
     }
 
     public List<Book> HistoryBorrowedBooks 
     {
         get { return _historyBorrowedBooks ; }
+        set 
+        {
+            _historyBorrowedBooks.Clear();
+            if (value != null)
+            {
+                _historyBorrowedBooks.AddRange(value);
+            }
+        }
     }
 }

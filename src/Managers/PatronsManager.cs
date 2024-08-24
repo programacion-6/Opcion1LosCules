@@ -33,7 +33,7 @@ public class PatronsManager
 
     public void UpdatePatron(Patron patron)
     {
-        _patronValidator.Validate(patron);
+        
         var existingPatron = _patrons.FirstOrDefault(p => p.MembershipNumber == patron.MembershipNumber);
 
         if (existingPatron != null)
@@ -41,6 +41,9 @@ public class PatronsManager
             existingPatron.Name = patron.Name;
             existingPatron.MembershipNumber = patron.MembershipNumber;
             existingPatron.ContactDetails = patron.ContactDetails;
+            existingPatron.BorrowedBooks = patron.BorrowedBooks;
+            existingPatron.BorrowedBooks = patron.BorrowedBooks;
+            existingPatron.HistoryBorrowedBooks = patron.HistoryBorrowedBooks;
             SavePatronsToDB(_filePath);
         }
     }

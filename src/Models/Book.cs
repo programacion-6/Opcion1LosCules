@@ -67,7 +67,7 @@ public class Book
     
     public void MarkAsBorrowed(DateTime borrowDate)
     {
-        
+        _isBorrowed = true;
         DueDate = borrowDate.AddDays(14);
         ReturnDate = null; 
     }
@@ -75,8 +75,9 @@ public class Book
    
     public void MarkAsReturned(DateTime returnDate)
     {
-        
+
+        _isBorrowed = false;
         ReturnDate = returnDate;
-        DueDate = null; 
+         
     }
 }

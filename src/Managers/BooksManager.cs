@@ -30,7 +30,7 @@ public class BooksManager
 
     public void UpdateBook(Book book)
     {
-        _bookValidator.Validate(book);
+        
         var existingBook = _books.FirstOrDefault(b => b.Title == book.Title);
         
         if (existingBook != null)
@@ -41,6 +41,7 @@ public class BooksManager
             existingBook.PublicationYear = book.PublicationYear;
             existingBook.DueDate = book.DueDate;
             existingBook.ReturnDate = book.ReturnDate;
+            existingBook.IsBorrowed = book.IsBorrowed;
             SaveBooksToDB(_filePath);
         }
     }

@@ -27,6 +27,13 @@ public class BorrowBook : BorrowingOperation
        
         Book.MarkAsBorrowed(Date);
         Patron.BorrowedBooks.Add(Book);
+        Patron.HistoryBorrowedBooks.Add(Book);
+
+        BooksManager booksManager = new BooksManager();
+        booksManager.UpdateBook(Book);
+
+        PatronsManager patronsManager = new PatronsManager();
+        patronsManager.UpdatePatron(Patron);
     }
 
     public void HistoryBorrowingUpdateRecords()

@@ -29,7 +29,7 @@ public class PatronBorrowMenu
                     _library.BorrowBook().SetDate(DateTime.Now);
                     _library.BorrowBook().GetBook().IsBorrowed = true;
                     _library.BorrowBook().UpdateRecords();
-                    _library.BorrowBook().HistoryBorrowingUpdateRecords();
+                    
                     AnsiConsole.MarkupLine("[bold green]Book borrowed successfully.[/]");
                 }
                 else
