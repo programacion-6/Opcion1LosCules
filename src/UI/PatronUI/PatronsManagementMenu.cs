@@ -63,5 +63,41 @@ namespace Opcion1LosCules
                 AnsiConsole.MarkupLine("[red]Patron not found.[/]");
             }
         }
+
+         public void ListPatrons()
+         {
+            var existingPatron = _library.patronsManager().GetAllPatrons();
+
+            if (existingPatron.Count == 0)
+            {
+                AnsiConsole.MarkupLine("[red]No patrons found.[/]");
+                return;
+            }
+
+            var table = new Table();
+
+            table.AddColumn("[yellow]Membership Number[/]");
+            table.AddColumn("[yellow]Name[/]");
+            table.AddColumn("[yellow]Contact Details[/]");
+            table.AddColumn("[yellow]Current Books Borrowed[/]");
+            table.AddColumn("[yellow]Borrowing History[/]");
+
+            foreach (var patron in existingPatron)
+            {
+                var borrowedBooks = patron.BorrowedBooks.Count > 0 ? string.Join(", ", patron.BorrowedBooks.Select(b => b.Title)) : "None";
+                var historyBooks = patron.HistoryBorrowedBooks.Count > 0 ? string.Join(", ", patron.HistoryBorrowedBooks.Select(b => b.Title)) : "None";
+                
+                table.AddRow(
+                    patron.MembershipNumber.ToString(),
+                    patron.Name,
+                    patron.ContactDetails,
+                    borrowedBooks,
+                    historyBooks
+                );
+
+            }
+            
+            AnsiConsole.Write(table);
+         }
     }
 }

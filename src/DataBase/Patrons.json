@@ -52,74 +52,21 @@
     "Name": "Sarah Wilson",
     "MembershipNumber": 1008,
     "ContactDetails": "sarah.wilson@example.com",
-    "BorrowedBooks": [
-      {
-        "DueDate": "2024-08-10T00:00:00",
-        "ReturnDate": "2024-08-20T00:00:00",
-        "Title": "The Hobbit",
-        "Author": "J.R.R. Tolkien",
-        "ISBN": "9780345339683",
-        "Genre": "Fantasy",
-        "PublicationYear": 1937,
-        "IsBorrowed": false
-      }
-    ],
+    "BorrowedBooks": [],
     "HistoryBorrowedBooks": []
   },
   {
     "Name": "Michael Scott",
     "MembershipNumber": 1009,
     "ContactDetails": "michael.scott@example.com",
-    "BorrowedBooks": [
-      {
-        "DueDate": "2024-08-12T00:00:00",
-        "ReturnDate": "2024-08-22T00:00:00",
-        "Title": "Crime and Punishment",
-        "Author": "Fyodor Dostoevsky",
-        "ISBN": "9780486415871",
-        "Genre": "Psychological Fiction",
-        "PublicationYear": 1866,
-        "IsBorrowed": false
-      },
-      {
-        "DueDate": "2024-08-15T00:00:00",
-        "ReturnDate": "2024-08-25T00:00:00",
-        "Title": "The Odyssey",
-        "Author": "Homer",
-        "ISBN": "9780140268867",
-        "Genre": "Epic",
-        "PublicationYear": -800,
-        "IsBorrowed": false
-      }
-    ],
+    "BorrowedBooks": [],
     "HistoryBorrowedBooks": []
   },
   {
     "Name": "Laura Parker",
     "MembershipNumber": 1010,
-    "ContactDetails": "laura.parker@example.com",
-    "BorrowedBooks": [
-      {
-        "DueDate": "2024-08-10T00:00:00",
-        "ReturnDate": null,
-        "Title": "To Kill a Mockingbird",
-        "Author": "Harper Lee",
-        "ISBN": "9780061120084",
-        "Genre": "Fiction",
-        "PublicationYear": 1960,
-        "IsBorrowed": false
-      },
-      {
-        "DueDate": "2024-08-10T00:00:00",
-        "ReturnDate": null,
-        "Title": "1984",
-        "Author": "George Orwell",
-        "ISBN": "9780451524935",
-        "Genre": "Dystopian",
-        "PublicationYear": 1949,
-        "IsBorrowed": false
-      }
-    ],
+    "ContactDetails": "laura.parker100@example.com",
+    "BorrowedBooks": [],
     "HistoryBorrowedBooks": []
   }
 ]

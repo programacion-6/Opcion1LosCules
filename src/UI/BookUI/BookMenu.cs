@@ -19,7 +19,7 @@ namespace Opcion1LosCules
                  var option = AnsiConsole.Prompt(
                     new SelectionPrompt<string>()
                         .Title("[yellow]Book Menu[/]")
-                        .AddChoices("Add Book", "Update Book", "Remove Book", "Exit"));
+                        .AddChoices("Add Book", "Update Book", "Remove Book", "List Books by genre", "Exit"));
 
                 switch (option)
                 {
@@ -31,6 +31,9 @@ namespace Opcion1LosCules
                         break;
                     case "Remove Book":
                         _bookManagement.RemoveBook();
+                        break;
+                    case "List Books by genre":
+                        _bookManagement.ListBooksByGenre();
                         break;
                     case "Exit":
                         return;
