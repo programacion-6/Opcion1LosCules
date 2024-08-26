@@ -64,40 +64,41 @@ namespace Opcion1LosCules
             }
         }
 
-         public void ListPatrons()
-         {
+        public void ListPatrons()
+        {
             var existingPatron = _library.patronsManager().GetAllPatrons();
 
             if (existingPatron.Count == 0)
-            {
-                AnsiConsole.MarkupLine("[red]No patrons found.[/]");
-                return;
-            }
+                {
+                    AnsiConsole.MarkupLine("[red]No patrons found.[/]");
+                    return;
+                }
 
             var table = new Table();
-
             table.AddColumn("[yellow]Membership Number[/]");
             table.AddColumn("[yellow]Name[/]");
             table.AddColumn("[yellow]Contact Details[/]");
             table.AddColumn("[yellow]Current Books Borrowed[/]");
             table.AddColumn("[yellow]Borrowing History[/]");
 
-            foreach (var patron in existingPatron)
-            {
-                var borrowedBooks = patron.BorrowedBooks.Count > 0 ? string.Join(", ", patron.BorrowedBooks.Select(b => b.Title)) : "None";
-                var historyBooks = patron.HistoryBorrowedBooks.Count > 0 ? string.Join(", ", patron.HistoryBorrowedBooks.Select(b => b.Title)) : "None";
-                
-                table.AddRow(
-                    patron.MembershipNumber.ToString(),
-                    patron.Name,
-                    patron.ContactDetails,
-                    borrowedBooks,
-                    historyBooks
-                );
+            var rows = new List<string[]>();
 
-            }
-            
-            AnsiConsole.Write(table);
-         }
+            foreach (var patron in existingPatron)
+                {
+                    var borrowedBooks = patron.BorrowedBooks.Count > 0 ? string.Join(", ", patron.BorrowedBooks.Select(b => b.Title)) : "None";
+                    var historyBooks = patron.HistoryBorrowedBooks.Count > 0 ? string.Join(", ", patron.HistoryBorrowedBooks.Select(b => b.Title)) : "None";
+        
+                    rows.Add(new string[]
+                        {
+                            patron.MembershipNumber.ToString(),
+                            patron.Name,
+                            patron.ContactDetails,
+                            borrowedBooks,
+                            historyBooks
+                        });
+                }
+
+            UIUtils.PaginateTable(table, rows);
+        }
     }
 }

@@ -56,30 +56,24 @@ namespace Opcion1LosCules
                 table.AddColumn(new TableColumn("[yellow]Borrowed On[/]").Centered());
                 table.AddColumn(new TableColumn("[yellow]Due Date[/]").Centered());
 
-                foreach (var item in reportItems)
+                var rows = reportItems.Select(item => new string[]
                 {
-                    var itemTitle = GetPropertyValue(item, "Title");
-                    var author = GetPropertyValue(item, "Author");
-                    var isbn = GetPropertyValue(item, "ISBN");
-                    var genre = GetPropertyValue(item, "Genre");
-                    var borrowedOn = GetPropertyValue(item, "BorrowedOn");
-                    var dueDate = GetPropertyValue(item, "DueDate");
-                    table.AddRow(
-                        itemTitle,
-                        author,
-                        isbn,
-                        genre,
-                        borrowedOn,
-                        dueDate);
-                }
+                    GetPropertyValue(item, "Title"),
+                    GetPropertyValue(item, "Author"),
+                    GetPropertyValue(item, "ISBN"),
+                    GetPropertyValue(item, "Genre"),
+                    GetPropertyValue(item, "BorrowedOn"),
+                    GetPropertyValue(item, "DueDate")
+                }).ToList();
 
-                AnsiConsole.Write(table);
+                UIUtils.PaginateTable(table, rows);
             }
             else
             {
                 AnsiConsole.MarkupLine("[red]No data available.[/]");
             }
             AnsiConsole.WriteLine();
+
         }
 
          private string GetPropertyValue(object obj, string propertyName)

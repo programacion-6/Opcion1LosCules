@@ -62,22 +62,39 @@ namespace Opcion1LosCules
             }
         }
 
-        public void ListBooksByGenre()
-        {
+        public void ListBooks()
+        { 
             AnsiConsole.MarkupLine("[yellow]Listing Books by Genre:[/]");
             var existingBook = _library.booksManager().GetAllBooks()
-            .GroupBy(book => book.Genre)
-            .OrderBy(group => group.Key);
+                .OrderBy(book => book.Genre)
+                .ToList();
 
-            foreach (var group in existingBook)
+            if (existingBook.Count == 0)
             {
-                AnsiConsole.MarkupLine($"[yellow]Genre: {group.Key}[/]");
-                foreach (var book in group)
-                {
-                    AnsiConsole.MarkupLine($"  - [blue]{book.Title}[/] ([green]{book.Author}[/], {book.PublicationYear})");
-                }
+                AnsiConsole.MarkupLine("[red]No books found.[/]");
+                return;
             }
-            
+
+            var table = new Table();
+            table.AddColumn("[yellow]Title[/]");
+            table.AddColumn("[yellow]Author[/]");
+            table.AddColumn("[yellow]Genre[/]");
+            table.AddColumn("[yellow]Publication Year[/]");
+
+            var rows = new List<string[]>();
+
+            foreach (var book in existingBook)
+            {
+                rows.Add(new string[]
+                {
+                    book.Title,
+                    book.Author,
+                    book.Genre,
+                    book.PublicationYear.ToString()
+                });
+            }
+
+            UIUtils.PaginateTable(table, rows);
         }
 
     }
