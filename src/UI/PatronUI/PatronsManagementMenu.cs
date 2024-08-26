@@ -11,21 +11,70 @@ namespace Opcion1LosCules
             _library = library;
         }
 
+        private string ValidateName(string prompt)
+        {
+            string value;
+            do
+            {
+                value = AnsiConsole.Ask<string>(prompt);
+                if (!string.IsNullOrEmpty(value) && value.All(char.IsLetter))
+                {
+                break; 
+                }
+                else
+                {
+                    AnsiConsole.MarkupLine("[red]Name must contain only alphabetic characters.[/]");
+                }
+            } while (true);
+
+            return value;
+        }
+
+        private int ValidateMembershipNumber(string prompt)
+        {
+            int value;
+            do
+            {
+                value = AnsiConsole.Ask<int>(prompt);
+                if (value > 0)
+                {
+                    break; // Si es positivo, salimos del bucle
+                }
+                else
+                {
+                    AnsiConsole.MarkupLine("[red]Membership number must be a positive number.[/]");
+                }
+            } while (true);
+
+            return value;
+        }
+
         public void AddPatron()
         {
-           var name = AnsiConsole.Ask<string>("[green]Enter patron name:[/]");
-           int membershipNumber = AnsiConsole.Ask<int>("[green]Enter patron membership number:[/]");
+            var name =  ValidateName("[green]Enter patron name:[/]");
+            int membershipNumber = ValidateMembershipNumber("[green]Enter patron membership number:[/]");
 
-           var contactDetails = AnsiConsole.Ask<string>("[green]Enter patron contact details (email):[/]");
+            var contactDetails = AnsiConsole.Ask<string>("[green]Enter patron contact details (email):[/]");
+            var patron = new Patron(name, membershipNumber, contactDetails);
             
-           var patron = new Patron(name, membershipNumber, contactDetails);
-           _library.patronsManager().AddPatron(patron);
-           AnsiConsole.MarkupLine("[green]Patron added successfully.[/]");
+            try
+            {
+                _library.patronsManager().AddPatron(patron);
+                AnsiConsole.MarkupLine("[green]Patron added successfully.[/]");
+            }
+            catch (ValidationException ex)
+            {
+                AnsiConsole.MarkupLine($"[red]Failed to add patron: {ex.Message}[/]");
+            }
+            catch (Exception ex)
+            {
+                AnsiConsole.MarkupLine($"[red]An unexpected error occurred: {ex.Message}[/]");
+            }
         }
 
         public void UpdatePatron()
         {
-            int membershipNumber = AnsiConsole.Ask<int>("[green]Enter patron membership number:[/]");
+            int membershipNumber = ValidateMembershipNumber("[green]Enter patron membership number:[/]");
 
             var existingPatron = _library.patronsManager().GetAllPatrons()
                 .FirstOrDefault(p => p.MembershipNumber == membershipNumber);
@@ -36,12 +85,24 @@ namespace Opcion1LosCules
                 return;
             }
 
-            var name = AnsiConsole.Ask<string>("[green]Enter new patron name:[/]");
+            var name = ValidateName("[green]Enter patron name:[/]");
             var contactDetails = AnsiConsole.Ask<string>("[green]Enter new contact details (email):[/]");
 
             var updatedPatron = new Patron(name, membershipNumber, contactDetails);
-            _library.patronsManager().UpdatePatron(updatedPatron);
-            AnsiConsole.MarkupLine("[green]Patron updated successfully.[/]");
+
+            try
+            {
+                _library.patronsManager().UpdatePatron(updatedPatron);
+                AnsiConsole.MarkupLine("[green]Patron updated successfully.[/]");
+            }
+            catch (ValidationException ex)
+            {
+                AnsiConsole.MarkupLine($"[red]Failed to update patron: {ex.Message}[/]");
+            }
+            catch (Exception ex)
+            {
+                AnsiConsole.MarkupLine($"[red]An unexpected error occurred: {ex.Message}[/]");
+            }
         }
 
 

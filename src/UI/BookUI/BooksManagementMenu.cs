@@ -10,17 +10,83 @@ namespace Opcion1LosCules
             _library = library;
         }
 
+        private string ValidateInput(string prompt, Func<Book, string> selector, Action<Book, string> setter, string tempTitle, string tempISBN, int tempYear)
+        {
+            string value;
+            do
+            {
+                value = AnsiConsole.Ask<string>(prompt);
+                try
+                {
+                    var tempBook = new Book(tempTitle, "tempAuthor", tempISBN, "tempGenre", tempYear);
+                    setter(tempBook, value);
+                    new BookValidator().Validate(tempBook); 
+                    break; 
+                }
+                catch (ValidationException ex)
+                {
+                    AnsiConsole.MarkupLine($"[red]{ex.Message}[/]"); 
+                }
+            } while (true);
+
+            return value;
+        }
+
+        private int ValidateYear(string prompt)
+        {
+            int value;
+            do
+            {
+                value = AnsiConsole.Ask<int>(prompt);
+                if (value > 0)
+                {
+                    break; 
+                }
+                else
+                {
+                    AnsiConsole.MarkupLine("[red]Publication year must be a positive number.[/]");
+                }
+            } while (true);
+
+            return value;
+        }
+
         public void AddBook()
         {
-            var title = AnsiConsole.Ask<string>("[green]Enter book title:[/]");
-            var author = AnsiConsole.Ask<string>("[green]Enter book author:[/]");
-            var isbn = AnsiConsole.Ask<string>("[green]Enter book ISBN:[/]");
-            var genre = AnsiConsole.Ask<string>("[green]Enter book genre:[/]");
-            int publicationYear = AnsiConsole.Ask<int>("[green]Enter book publication year:[/]");
-           
+            string title = AnsiConsole.Ask<string>("[green]Enter book title:[/]");
+
+            int publicationYear = ValidateYear("[green]Enter book publication year:[/]");
+
+
+            string isbn = AnsiConsole.Ask<string>("[green]Enter book ISBN:[/]");
+
+            
+    
+            string author = ValidateInput("[green]Enter book author:[/]", 
+                                    book => book.Author, 
+                                    (book, value) => book.Author = value, 
+                                    title, isbn,publicationYear);
+
+            string genre = ValidateInput("[green]Enter book genre:[/]", 
+                                   book => book.Genre, 
+                                   (book, value) => book.Genre = value, 
+                                   title, isbn,publicationYear);
+
             var book = new Book(title, author, isbn, genre, publicationYear);
-            _library.booksManager().AddBook(book);
-            AnsiConsole.MarkupLine("[green]Book added successfully.[/]");
+    
+            try
+            {
+                _library.booksManager().AddBook(book);
+                AnsiConsole.MarkupLine("[green]Book added successfully.[/]");
+            }
+            catch (ValidationException ex)
+            {
+                AnsiConsole.MarkupLine($"[red]Failed to add book: {ex.Message}[/]");
+            }
+            catch (Exception ex)
+            {
+                AnsiConsole.MarkupLine($"[red]An unexpected error occurred: {ex.Message}[/]");
+            }
         }
 
         public void UpdateBook()
@@ -35,10 +101,18 @@ namespace Opcion1LosCules
                 return;
             }
 
-            var author = AnsiConsole.Ask<string>("[green]Enter new book author:[/]");
             var isbn = AnsiConsole.Ask<string>("[green]Enter new book ISBN:[/]");
-            var genre = AnsiConsole.Ask<string>("[green]Enter new book genre:[/]");
-            int publicationYear = AnsiConsole.Ask<int>("[green]Enter book publication year:[/]");
+            int publicationYear = ValidateYear("[green]Enter book publication year:[/]");
+
+            var author = ValidateInput("[green]Enter book author:[/]", 
+                                    book => book.Author, 
+                                    (book, value) => book.Author = value, 
+                                    title, isbn,publicationYear);
+
+            var genre = ValidateInput("[green]Enter book genre:[/]", 
+                                   book => book.Genre, 
+                                   (book, value) => book.Genre = value, 
+                                   title, isbn,publicationYear);
 
             var updatedBook = new Book(title, author, isbn, genre, publicationYear);
             _library.booksManager().UpdateBook(updatedBook);
