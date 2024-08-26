@@ -75,9 +75,12 @@ public class Book
    
     public void MarkAsReturned(DateTime returnDate)
     {
-
         _isBorrowed = false;
         ReturnDate = returnDate;
-         
+    }
+
+    public void SetDueDate(DateTime? dueDate)
+    {
+        DueDate = dueDate;
     }
 }

@@ -7,13 +7,14 @@ public class Library
     private BorrowBook _borrowBook;
     private ReturnBook _returnBook;
     private BorrowingOperation _borrowingOperation;
-
     public Library()
     {
-        _booksManager = new BooksManager();
-        _patronsManager = new PatronsManager();
-        _borrowBook = new BorrowBook();
-        _returnBook = new ReturnBook();
+        var bookStorage = new FileStorage<Book>("DataBase/BookStorage.json");
+        var patronStorage = new FileStorage<Patron>("DataBase/Patrons.json");
+        _booksManager = new BooksManager(bookStorage);
+        _patronsManager = new PatronsManager(patronStorage);
+        _borrowBook = new BorrowBook(bookStorage,patronStorage);
+        _returnBook = new ReturnBook(bookStorage,patronStorage);
 
     }
 

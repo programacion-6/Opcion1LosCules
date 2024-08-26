@@ -10,16 +10,15 @@ public class PatronsManager
     private readonly List<Patron> _patrons;
     private readonly PatronValidator _patronValidator;
 
-    private readonly string _filePath = "src/DataBase/Patrons.json";
+    private readonly IStorage<Patron> _patronStorage;
 
-
-    public PatronsManager()
+    public PatronsManager(IStorage<Patron> patronStorage)
     {
         _patrons = new List<Patron>();
         _patronValidator = new PatronValidator();
-        LoadPatronsFromDB("src/DataBase/Patrons.json");
+        _patronStorage = patronStorage;
+        LoadPatronsFromDB();
     }
-
 
     public void AddPatron(Patron patron)
     {
@@ -27,7 +26,7 @@ public class PatronsManager
         if (!_patrons.Contains(patron))
         {
             _patrons.Add(patron);
-            SavePatronsToDB(_filePath);
+            SavePatronsToDB();
         }
     }
 
@@ -44,7 +43,7 @@ public class PatronsManager
             existingPatron.BorrowedBooks = patron.BorrowedBooks;
             existingPatron.BorrowedBooks = patron.BorrowedBooks;
             existingPatron.HistoryBorrowedBooks = patron.HistoryBorrowedBooks;
-            SavePatronsToDB(_filePath);
+            SavePatronsToDB();
         }
     }
 
@@ -53,7 +52,7 @@ public class PatronsManager
         if (_patrons.Contains(patron))
         {
             _patrons.Remove(patron);
-            SavePatronsToDB(_filePath);
+            SavePatronsToDB();
         }
     }
     public List<Patron> GetAllPatrons()
@@ -61,28 +60,17 @@ public class PatronsManager
         return _patrons;
     }
 
-    private void LoadPatronsFromDB(string filePath)
+   private void LoadPatronsFromDB()
     {
-        if (File.Exists(filePath))
+        var patronsFromJson = _patronStorage.Load();
+        if (patronsFromJson != null)
         {
-            var jsonData = File.ReadAllText(filePath);
-            var patronsFromJson = JsonConvert.DeserializeObject<List<Patron>>(jsonData);
-
-            if (patronsFromJson != null)
-            {
-                _patrons.AddRange(patronsFromJson);
-            }
-        }
-        else
-        {
-            throw new FileNotFoundException($"El archivo {filePath} no fue encontrado.");
+            _patrons.AddRange(patronsFromJson);
         }
     }
 
-
-    private void SavePatronsToDB(string filePath)
+    private void SavePatronsToDB()
     {
-        var jsonData = JsonConvert.SerializeObject(_patrons, Formatting.Indented);
-        File.WriteAllText(filePath, jsonData);
+        _patronStorage.Save(_patrons);
     }
 }
