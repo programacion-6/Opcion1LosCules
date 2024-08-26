@@ -32,7 +32,7 @@ namespace Opcion1LosCules
                     case "Remove Book":
                         _bookManagement.RemoveBook();
                         break;
-                    case "List Books by genre":
+                    case "List Books":
                         _bookManagement.ListBooks();
                         break;
                     case "Exit":
