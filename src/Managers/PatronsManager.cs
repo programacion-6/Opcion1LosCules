@@ -10,14 +10,14 @@ public class PatronsManager
     private readonly List<Patron> _patrons;
     private readonly PatronValidator _patronValidator;
 
-    private readonly string _filePath = "src/DataBase/Patrons.json";
+    private readonly string _filePath = "../src/DataBase/Patrons.json";
 
 
     public PatronsManager()
     {
         _patrons = new List<Patron>();
         _patronValidator = new PatronValidator();
-        LoadPatronsFromDB("src/DataBase/Patrons.json");
+        LoadPatronsFromDB("../src/DataBase/Patrons.json");
     }
 
 

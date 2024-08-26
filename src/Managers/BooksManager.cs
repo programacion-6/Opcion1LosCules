@@ -10,7 +10,7 @@ public class BooksManager
     private readonly List<Book> _books;
     private readonly BookValidator _bookValidator;
 
-    private readonly string _filePath = "src/DataBase/BookStorage.json";
+    private readonly string _filePath = "../src/DataBase/BookStorage.json";
 
     public BooksManager()
     {
