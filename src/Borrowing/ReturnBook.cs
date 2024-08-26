@@ -1,6 +1,15 @@
 namespace Opcion1LosCules;
 public class ReturnBook : BorrowingOperation
 {
+    private IStorage<Book> _bookStorage;
+    private IStorage<Patron> _patronStorage;
+
+    public ReturnBook(IStorage<Book> bookStorage, IStorage<Patron> patronStorage)
+    {
+        _bookStorage = bookStorage;
+        _patronStorage = patronStorage;
+    }
+
     public override bool Validate()
     {
         return Patron.BorrowedBooks.Contains(Book) && !Book.IsAvailable();
@@ -13,10 +22,10 @@ public class ReturnBook : BorrowingOperation
         Book.MarkAsReturned(Date);
         Patron.BorrowedBooks.Remove(Book);
 
-        BooksManager booksManager = new BooksManager();
+        BooksManager booksManager = new BooksManager(_bookStorage);
         booksManager.UpdateBook(Book);
         
-        PatronsManager patronsManager = new PatronsManager();
+        PatronsManager patronsManager = new PatronsManager(_patronStorage);
         patronsManager.UpdatePatron(Patron);
     }
 

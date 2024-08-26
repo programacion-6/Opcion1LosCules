@@ -1,6 +1,15 @@
 namespace Opcion1LosCules;
 public class BorrowBook : BorrowingOperation
 {
+    private IStorage<Book> _bookStorage;
+    private IStorage<Patron> _patronStorage;
+
+    public BorrowBook(IStorage<Book> bookStorage, IStorage<Patron> patronStorage)
+    {
+        _bookStorage = bookStorage;
+        _patronStorage = patronStorage;
+    }
+
     private bool CheckAvailability()
     {
         return Book.IsAvailable();
@@ -24,15 +33,15 @@ public class BorrowBook : BorrowingOperation
     public override void UpdateRecords()
     {
         Console.WriteLine($"Updating records for borrowing book {Book.Title}.");
-       
+        
         Book.MarkAsBorrowed(Date);
         Patron.BorrowedBooks.Add(Book);
         Patron.HistoryBorrowedBooks.Add(Book);
 
-        BooksManager booksManager = new BooksManager();
+        BooksManager booksManager = new BooksManager(_bookStorage);
         booksManager.UpdateBook(Book);
 
-        PatronsManager patronsManager = new PatronsManager();
+        PatronsManager patronsManager = new PatronsManager(_patronStorage);
         patronsManager.UpdatePatron(Patron);
     }
 
