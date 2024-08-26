@@ -38,7 +38,7 @@ namespace Opcion1LosCules
                 value = AnsiConsole.Ask<int>(prompt);
                 if (value > 0)
                 {
-                    break; // Si es positivo, salimos del bucle
+                    break;
                 }
                 else
                 {

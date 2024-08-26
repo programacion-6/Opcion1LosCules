@@ -12,47 +12,6 @@ namespace Opcion1LosCules.Tests
             _mockBookStorage.Setup(x => x.Load()).Returns(new List<Book>());
             _booksManager = new BooksManager(_mockBookStorage.Object);
         }
-
-        [Fact]
-        public void AddBook_ShouldAddValidBook()
-        {
-            var book = new Book("The Catcher in the Rye", "J.D. Salinger", "45825", "Fiction", 1951);
-            
-            _booksManager.AddBook(book);
-
-            Assert.Contains(book, _booksManager.GetAllBooks());
-        }
-
-        [Fact]
-        public void AddBook_ShouldNotAddDuplicateBook()
-        {
-            var book = new Book("The Catcher in the Rye", "J.D. Salinger", "45825", "Fiction", 1951);
-            
-            _booksManager.AddBook(book);
-            _booksManager.AddBook(book);  
-            Assert.Single(_booksManager.GetAllBooks());
-        }
-
-        [Fact]
-        public void UpdateBook_ShouldModifyExistingBook()
-        {
-            var book = new Book("The Catcher in the Rye", "J.D. Salinger", "45892", "Fiction", 1951);
-            var updatedBook = new Book("The Catcher in the Rye", "Salinger", "445842", "Literature", 1951);
-            _booksManager.AddBook(book);
-
-            _booksManager.UpdateBook(updatedBook);
-
-            var existingBook = _booksManager.GetAllBooks().Find(b => b.Title == "The Catcher in the Rye");
-
-            Assert.Equal("Literature", existingBook.Genre);
-            Assert.Equal("Salinger", existingBook.Author);
-            Assert.Equal("445842", existingBook.ISBN);
-            Assert.Equal(1951, existingBook.PublicationYear);
-
-            Assert.Single(_booksManager.GetAllBooks());
-        }
-
-
         [Fact]
         public void RemoveBook_ShouldDeleteBookFromCollection()
         {

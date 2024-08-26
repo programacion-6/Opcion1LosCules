@@ -23,14 +23,12 @@ public class PatronBorrowMenu
         {
             var membershipNumber = AnsiConsole.Ask<string>("[green]Enter patron membership number:[/]");
 
-            // Validar si el número de membresía es válido
             if (!int.TryParse(membershipNumber, out int membershipNumberInt) || membershipNumberInt <= 0)
             {
                 AnsiConsole.MarkupLine("[red]Invalid membership number. Please enter a positive integer.[/]");
                 continue;
             }
 
-            // Buscar al patron en la lista
             patron = _searchByMembership.Search(membershipNumber, patrons)?.FirstOrDefault();
             if (patron == null)
             {
@@ -40,12 +38,10 @@ public class PatronBorrowMenu
 
         Book book = null;
 
-        // Repetir hasta que se ingrese un ISBN válido y el libro esté disponible
         while (book == null || book.IsBorrowed)
         {
             var isbn = AnsiConsole.Ask<string>("[green]Enter book ISBN to borrow:[/]");
 
-            // Buscar el libro en la lista utilizando SearchByISBN
             var books = _searchByISBN.Search(isbn, _library.booksManager().GetAllBooks());
             book = books?.FirstOrDefault();
 
@@ -59,7 +55,6 @@ public class PatronBorrowMenu
             }
         }
 
-        // Proceder con el préstamo del libro
         _library.BorrowBook().SetPatron(patron);
         _library.BorrowBook().SetBook(book);
         _library.BorrowBook().SetDate(DateTime.Now);
@@ -74,12 +69,10 @@ public class PatronBorrowMenu
     {
         Book book = null;
 
-        // Repetir hasta que se ingrese un ISBN válido
         while (book == null)
         {
             var isbn = AnsiConsole.Ask<string>("[green]Enter book ISBN to return:[/]");
         
-            // Buscar el libro en la lista utilizando SearchByISBN
             var books = _searchByISBN.Search(isbn, _library.booksManager().GetAllBooks());
             book = books?.FirstOrDefault();
 
@@ -91,19 +84,16 @@ public class PatronBorrowMenu
 
         Patron patron = null;
 
-        // Repetir hasta que se ingrese un número de membresía válido y existente
         while (patron == null)
         {
             var membershipNumber = AnsiConsole.Ask<string>("[green]Enter patron membership number:[/]");
 
-            // Validar si el número de membresía es válido
             if (!int.TryParse(membershipNumber, out int membershipNumberInt) || membershipNumberInt <= 0)
             {
                 AnsiConsole.MarkupLine("[red]Invalid membership number. Please enter a positive integer.[/]");
                 continue;
             }
 
-            // Buscar al patron en la lista utilizando SearchByMembershipNumber
             patron = _searchByMembership.Search(membershipNumber, _library.patronsManager().GetAllPatrons())?.FirstOrDefault();
 
             if (patron == null)
@@ -112,7 +102,6 @@ public class PatronBorrowMenu
             }
         }
 
-        // Proceder con la devolución del libro
         _library.ReturnBook().SetBook(book);
         _library.ReturnBook().SetPatron(patron);
         _library.ReturnBook().SetDate(DateTime.Now);
