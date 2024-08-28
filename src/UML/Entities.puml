@@ -1,0 +1,22 @@
+@startuml Entities
+
+package "Entities" {
+    class Patron {
+        -Guid id
+        -String name
+        -String membershipNumber
+        -String contactDetails
+        +List<Book> borrowedBooks
+    }
+
+    class Book {
+        -Guid id
+        -String title
+        -String author
+        -String ISBN
+        -String genre
+        -int publicationYear
+    }
+}
+
+@enduml

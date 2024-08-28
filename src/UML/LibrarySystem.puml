@@ -4,8 +4,8 @@
     !include Reporting.puml
     !include Search.puml
     !include BorrowingSystem.puml
-    !include BookManagement.puml
-    !include PatronManagement.puml
+    !include Managers.puml
+    !include Entities.puml
     !include LibraryConsole.puml
     !include Exceptions.puml
     !include Validators.puml
@@ -32,8 +32,7 @@ Library --> ReturnBook
 Library --> BorrowingOperation 
 Library --> HomePage
 Library --> ReportContext
-Library --> BookSearchStrategy
-Library --> PatronSearchStrategy
+Library --> ISearchStrategy
 Library --> BooksManager
 Library --> PatronsManager
 Patron --> Book 
