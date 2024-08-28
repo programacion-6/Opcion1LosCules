@@ -1,0 +1,24 @@
+@startuml Managers
+
+package "Managers" {
+    abstract class Manager<T> {
+        +ErrorHandler errorHandler
+        +List<T> items
+        +Manager(List<T> items)
+        +void addItem(T item)
+        +abstract void updateItem(T item)
+        +void removeItem(T item)
+    }
+
+    class BooksManager extends Manager {
+        +BooksManager(List<Book> books)
+        +void updateBook(Book book)
+    }
+
+    class PatronsManager extends Manager {
+        +PatronsManager(List<Patron> patrons)
+        +void updatePatron(Patron patron)
+    }
+}
+
+@enduml
