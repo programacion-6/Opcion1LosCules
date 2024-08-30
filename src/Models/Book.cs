@@ -8,8 +8,6 @@ public class Book
     private string _genre;
     private int _publicationYear;
     public BorrowingInfo BorrowingInfo { get; set; }
-    public DateTime? DueDate { get; private set; }
-    public DateTime? ReturnDate { get; private set; }
 
     public Book(string title, string author, string ISBN, string genre, int publicationYear) 
     {
