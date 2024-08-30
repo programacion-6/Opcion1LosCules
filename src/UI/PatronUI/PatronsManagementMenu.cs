@@ -159,7 +159,7 @@ namespace Opcion1LosCules
                         });
                 }
 
-            UIUtils.PaginateTable(table, rows);
+            UIUtils.PaginateTable(new StandardPagination() ,table, rows);
         }
     }
 }

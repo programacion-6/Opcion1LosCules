@@ -1,4 +1,10 @@
+using Spectre.Console;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Opcion1LosCules;
+
 public class StandardPagination : IPaginationStrategy
 {
     public void Paginate(Table table, List<string[]> rows, int pageSize)
