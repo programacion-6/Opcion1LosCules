@@ -1,0 +1,33 @@
+@startuml Models
+
+package "Models" {
+    class Patron {
+        -Guid id
+        -String name
+        -String membershipNumber
+        -String contactDetails
+        +List<Book> borrowedBooks
+        +List<Book> historyBorrowedBooks
+    }
+
+    class Book {
+        -Guid id
+        -String title
+        -String author
+        -String ISBN
+        -String genre
+        -int publicationYear
+    }
+
+    class BorrowingInfo {
+        -DateTime DueDate
+        -DateTime ReturnDate
+        -bool IsBorrowed
+        +bool IsAvailable()
+        +void MarkAsBorrowed(DateTime borrowDate)
+        +void MarkAsReturned(DateTime returnDate)
+        +void SetDueDate(DateTime? dueDate)
+    }
+}
+
+@enduml

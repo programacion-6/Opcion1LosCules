@@ -12,14 +12,14 @@ public class ReturnBook : BorrowingOperation
 
     public override bool Validate()
     {
-        return Patron.BorrowedBooks.Contains(Book) && !Book.IsAvailable();
+        return Patron.BorrowedBooks.Contains(Book) && !Book.BorrowingInfo.IsAvailable();
     }
 
     public override void UpdateRecords()
     {
         Console.WriteLine($"Updating records for returning book {Book.Title}.");
         
-        Book.MarkAsReturned(Date);
+        Book.BorrowingInfo.MarkAsReturned(Date);
         Patron.BorrowedBooks.Remove(Book);
 
         BooksManager booksManager = new BooksManager(_bookStorage);

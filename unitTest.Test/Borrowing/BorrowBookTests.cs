@@ -47,7 +47,7 @@ namespace Opcion1LosCules.Tests
             _borrowBook.UpdateRecords();
 
             Assert.Contains(book, patron.BorrowedBooks);
-            Assert.False(book.IsAvailable()); 
+            Assert.False(book.BorrowingInfo.IsAvailable()); 
         }
         
     }

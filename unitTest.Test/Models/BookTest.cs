@@ -18,7 +18,7 @@ namespace Opcion1LosCules.Tests
             Assert.Equal(expectedISBN, book.ISBN);
             Assert.Equal(expectedGenre, book.Genre);
             Assert.Equal(expectedPublicationYear, book.PublicationYear);
-            Assert.False(book.IsBorrowed);
+            Assert.False(book.BorrowingInfo.IsBorrowed);
         }
 
         [Fact]
@@ -38,7 +38,7 @@ namespace Opcion1LosCules.Tests
             string actualISBN = book.ISBN;
             string actualGenre = book.Genre;
             int actualPublicationYear = book.PublicationYear;
-            bool actualIsBorrowed = book.IsBorrowed;
+            bool actualIsBorrowed = book.BorrowingInfo.IsBorrowed;
 
             Assert.Equal(title, actualTitle);
             Assert.Equal(author, actualAuthor);
@@ -53,9 +53,9 @@ namespace Opcion1LosCules.Tests
         {
             Book book = new Book("Moby Dick", "Herman Melville", "978-0142437247", "Adventure", 1851);
 
-            book.IsBorrowed = true;
+            book.BorrowingInfo.IsBorrowed = true;
 
-            Assert.True(book.IsBorrowed);
+            Assert.True(book.BorrowingInfo.IsBorrowed);
         }
 
         [Fact]
@@ -64,10 +64,10 @@ namespace Opcion1LosCules.Tests
             Book book = new Book("The Hobbit", "J.R.R. Tolkien", "978-0345339683", "Fantasy", 1937);
             DateTime borrowDate = new DateTime(2024, 8, 24);
 
-            book.MarkAsBorrowed(borrowDate);
+            book.BorrowingInfo.MarkAsBorrowed(borrowDate);
 
-            Assert.Equal(borrowDate.AddDays(14), book.DueDate);
-            Assert.Null(book.ReturnDate);
+            Assert.Equal(borrowDate.AddDays(14), book.BorrowingInfo.DueDate);
+            Assert.Null(book.BorrowingInfo.ReturnDate);
         }
 
         [Fact]
@@ -76,10 +76,10 @@ namespace Opcion1LosCules.Tests
             Book book = new Book("To Kill a Mockingbird", "Harper Lee", "978-0061120084", "Fiction", 1960);
             DateTime returnDate = new DateTime(2024, 9, 7);
 
-            book.MarkAsReturned(returnDate);
+            book.BorrowingInfo.MarkAsReturned(returnDate);
 
-            Assert.Null(book.DueDate);
-            Assert.Equal(returnDate, book.ReturnDate);
+            Assert.Null(book.BorrowingInfo.DueDate);
+            Assert.Equal(returnDate, book.BorrowingInfo.ReturnDate);
         }
 
         [Fact]
@@ -87,11 +87,11 @@ namespace Opcion1LosCules.Tests
         {
             Book book = new Book("Pride and Prejudice", "Jane Austen", "978-0141439518", "Romance", 1813);
 
-            Assert.True(book.IsAvailable());
+            Assert.True(book.BorrowingInfo.IsAvailable());
 
-            book.MarkAsBorrowed(DateTime.Now.AddDays(-16)); 
+            book.BorrowingInfo.MarkAsBorrowed(DateTime.Now.AddDays(-16)); 
             
-            Assert.True(book.IsAvailable()); 
+            Assert.True(book.BorrowingInfo.IsAvailable()); 
         }
     }
 

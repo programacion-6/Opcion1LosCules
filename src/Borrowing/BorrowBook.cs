@@ -12,7 +12,7 @@ public class BorrowBook : BorrowingOperation
 
     private bool CheckAvailability()
     {
-        return Book.IsAvailable();
+        return Book.BorrowingInfo.IsAvailable();
     }
 
     public override bool Validate()
@@ -34,7 +34,7 @@ public class BorrowBook : BorrowingOperation
     {
         Console.WriteLine($"Updating records for borrowing book {Book.Title}.");
         
-        Book.MarkAsBorrowed(Date);
+        Book.BorrowingInfo.MarkAsBorrowed(Date);
         Patron.BorrowedBooks.Add(Book);
         Patron.HistoryBorrowedBooks.Add(Book);
 

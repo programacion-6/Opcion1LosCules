@@ -33,9 +33,9 @@ public class BooksManager
             existingBook.ISBN = book.ISBN;
             existingBook.Genre = book.Genre;
             existingBook.PublicationYear = book.PublicationYear;
-            existingBook.DueDate = book.DueDate;
-            existingBook.ReturnDate = book.ReturnDate;
-            existingBook.IsBorrowed = book.IsBorrowed;
+            existingBook.BorrowingInfo.DueDate = book.BorrowingInfo.DueDate;
+            existingBook.BorrowingInfo.ReturnDate = book.BorrowingInfo.ReturnDate;
+            existingBook.BorrowingInfo.IsBorrowed = book.BorrowingInfo.IsBorrowed;
             SaveBooksToDB();
         }
     }
