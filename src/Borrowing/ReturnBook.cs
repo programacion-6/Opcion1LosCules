@@ -19,7 +19,7 @@ public class ReturnBook : BorrowingOperation
     {
         Console.WriteLine($"Updating records for returning book {Book.Title}.");
         
-        Book.MarkAsReturned(Date);
+        Book.BorrowingInfo.MarkAsReturned(Date);
         Patron.BorrowedBooks.Remove(Book);
 
         BooksManager booksManager = new BooksManager(_bookStorage);

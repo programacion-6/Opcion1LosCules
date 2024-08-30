@@ -23,7 +23,7 @@ namespace Opcion1LosCules.Tests
         {
             var patron = new Patron("Sandra", 55845, "sandra@example.com");
             var book = new Book("The Catcher in the Rye", "J.D. Salinger", "45825", "Fiction", 1951);
-            book.SetDueDate(DateTime.Now.AddDays(7));
+            book.BorrowingInfo.SetDueDate(DateTime.Now.AddDays(7));
 
             patron.BorrowedBooks.Add(book);
 
