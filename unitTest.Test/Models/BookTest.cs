@@ -64,10 +64,10 @@ namespace Opcion1LosCules.Tests
             Book book = new Book("The Hobbit", "J.R.R. Tolkien", "978-0345339683", "Fantasy", 1937);
             DateTime borrowDate = new DateTime(2024, 8, 24);
 
-            book.MarkAsBorrowed(borrowDate);
+            book.BorrowingInfo.MarkAsBorrowed(borrowDate);
 
-            Assert.Equal(borrowDate.AddDays(14), book.DueDate);
-            Assert.Null(book.ReturnDate);
+            Assert.Equal(borrowDate.AddDays(14), book.BorrowingInfo.DueDate);
+            Assert.Null(book.BorrowingInfo.ReturnDate);
         }
 
         [Fact]
@@ -76,10 +76,10 @@ namespace Opcion1LosCules.Tests
             Book book = new Book("To Kill a Mockingbird", "Harper Lee", "978-0061120084", "Fiction", 1960);
             DateTime returnDate = new DateTime(2024, 9, 7);
 
-            book.MarkAsReturned(returnDate);
+            book.BorrowingInfo.MarkAsReturned(returnDate);
 
-            Assert.Null(book.DueDate);
-            Assert.Equal(returnDate, book.ReturnDate);
+            Assert.Null(book.BorrowingInfo.DueDate);
+            Assert.Equal(returnDate, book.BorrowingInfo.ReturnDate);
         }
 
         [Fact]
@@ -89,7 +89,7 @@ namespace Opcion1LosCules.Tests
 
             Assert.True(book.IsAvailable());
 
-            book.MarkAsBorrowed(DateTime.Now.AddDays(-16)); 
+            book.BorrowingInfo.MarkAsBorrowed(DateTime.Now.AddDays(-16)); 
             
             Assert.True(book.IsAvailable()); 
         }

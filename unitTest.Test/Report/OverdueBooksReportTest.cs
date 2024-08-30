@@ -35,7 +35,7 @@ namespace Opcion1LosCules.Tests
             _borrowBook.SetPatron(patron);
             _borrowBook.SetDate(DateTime.Now.AddDays(-16)); 
             _borrowBook.Execute();
-            overdueBook.MarkAsBorrowed(DateTime.Now.AddDays(-16)); 
+            overdueBook.BorrowingInfo.MarkAsBorrowed(DateTime.Now.AddDays(-16)); 
             patron.BorrowedBooks.Add(overdueBook);
             IReportStrategy overdueBooksReportStrategy = new OverdueBooksReport();
             var reportContext = new ReportContext(overdueBooksReportStrategy);
@@ -52,8 +52,8 @@ namespace Opcion1LosCules.Tests
             var patron = new Patron("Sandra", 45845, "sandra@example.com");
             var book1 = new Book("The Catcher in the Rye", "J.D. Salinger", "45825", "Fiction", 1951);
             var book2 = new Book("To Kill a Mockingbird", "Harper Lee", "67890", "Fiction", 1960);
-            book1.MarkAsBorrowed(DateTime.Now.AddDays(-5)); 
-            book2.MarkAsBorrowed(DateTime.Now.AddDays(-10)); 
+            book1.BorrowingInfo.MarkAsBorrowed(DateTime.Now.AddDays(-5)); 
+            book2.BorrowingInfo.MarkAsBorrowed(DateTime.Now.AddDays(-10)); 
             patron.BorrowedBooks.Add(book1);
             patron.BorrowedBooks.Add(book2);
             _patronsManager.AddPatron(patron);

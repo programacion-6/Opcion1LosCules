@@ -60,19 +60,4 @@ public class Book
         
         return !DueDate.HasValue || DateTime.Now > DueDate.Value;
     }
-
-    
-    public void MarkAsBorrowed(DateTime borrowDate)
-    {
-        _isBorrowed = true;
-        DueDate = borrowDate.AddDays(14);
-        ReturnDate = null; 
-    }
-
-   
-    public void MarkAsReturned(DateTime returnDate)
-    {
-        _isBorrowed = false;
-        ReturnDate = returnDate;
-    }
 }

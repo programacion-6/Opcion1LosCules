@@ -36,7 +36,7 @@ namespace Opcion1LosCules.Tests
             var reportEntry = report[0].ToString();
             Assert.Contains("The Catcher in the Rye", reportEntry);
             Assert.Contains("Sandra", reportEntry);
-            Assert.Contains(book.DueDate.Value.ToShortDateString(), reportEntry);
+            Assert.Contains(book.BorrowingInfo.DueDate.Value.ToShortDateString(), reportEntry);
         }
 
         [Fact]
@@ -58,9 +58,9 @@ namespace Opcion1LosCules.Tests
         {
             var patron = new Patron("Sandra katherine", 45847, "sandra@example.com");
             var book = new Book("The Catcher in the Rye", "J.D. Salinger", "45827", "Fiction", 1951);
-            book.MarkAsBorrowed(DateTime.Now.AddDays(-10)); 
+            book.BorrowingInfo.MarkAsBorrowed(DateTime.Now.AddDays(-10)); 
             patron.BorrowedBooks.Add(book);
-            book.MarkAsReturned(DateTime.Now);
+            book.BorrowingInfo.MarkAsReturned(DateTime.Now);
             _patronsManager.AddPatron(patron);
             var reportContext = new ReportContext(new CurrentlyBorrowedBooksReport());
 
