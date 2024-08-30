@@ -1,21 +1,25 @@
 @startuml Managers
 
 package "Managers" {
-    abstract class Manager<T> {
+    abstract class AManager<T> {
         +ErrorHandler errorHandler
+        +Validator<T> validator
         +List<T> items
         +Manager(List<T> items)
         +void addItem(T item)
         +abstract void updateItem(T item)
         +void removeItem(T item)
+        +List<T> getAllItems()
+        -void LoadItemsFromDB()
+        -void SaveItemsToDB()
     }
 
-    class BooksManager extends Manager {
+    class BooksManager extends AManager {
         +BooksManager(List<Book> books)
         +void updateBook(Book book)
     }
 
-    class PatronsManager extends Manager {
+    class PatronsManager extends AManager {
         +PatronsManager(List<Patron> patrons)
         +void updatePatron(Patron patron)
     }
