@@ -2,9 +2,9 @@ namespace Opcion1LosCules;
 
 public class BorrowingInfo
 {
-    public DateTime? DueDate { get; private set; }
-    public DateTime? ReturnDate { get; private set; }
-    public bool IsBorrowed { get; private set; } = false;
+    public DateTime? DueDate { get; set; }
+    public DateTime? ReturnDate { get; set; }
+    public bool IsBorrowed { get; set; } = false;
     public bool IsAvailable()
     {
         return !DueDate.HasValue || DateTime.Now > DueDate.Value;

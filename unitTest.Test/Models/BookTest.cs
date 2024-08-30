@@ -18,7 +18,7 @@ namespace Opcion1LosCules.Tests
             Assert.Equal(expectedISBN, book.ISBN);
             Assert.Equal(expectedGenre, book.Genre);
             Assert.Equal(expectedPublicationYear, book.PublicationYear);
-            Assert.False(book.IsBorrowed);
+            Assert.False(book.BorrowingInfo.IsBorrowed);
         }
 
         [Fact]
@@ -38,7 +38,7 @@ namespace Opcion1LosCules.Tests
             string actualISBN = book.ISBN;
             string actualGenre = book.Genre;
             int actualPublicationYear = book.PublicationYear;
-            bool actualIsBorrowed = book.IsBorrowed;
+            bool actualIsBorrowed = book.BorrowingInfo.IsBorrowed;
 
             Assert.Equal(title, actualTitle);
             Assert.Equal(author, actualAuthor);
@@ -53,9 +53,9 @@ namespace Opcion1LosCules.Tests
         {
             Book book = new Book("Moby Dick", "Herman Melville", "978-0142437247", "Adventure", 1851);
 
-            book.IsBorrowed = true;
+            book.BorrowingInfo.IsBorrowed = true;
 
-            Assert.True(book.IsBorrowed);
+            Assert.True(book.BorrowingInfo.IsBorrowed);
         }
 
         [Fact]

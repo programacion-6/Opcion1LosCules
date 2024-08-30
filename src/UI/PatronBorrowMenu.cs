@@ -38,7 +38,7 @@ public class PatronBorrowMenu
 
         Book book = null;
 
-        while (book == null || book.IsBorrowed)
+        while (book == null || book.BorrowingInfo.IsBorrowed)
         {
             var isbn = AnsiConsole.Ask<string>("[green]Enter book ISBN to borrow:[/]");
 
@@ -49,7 +49,7 @@ public class PatronBorrowMenu
             {
                 AnsiConsole.MarkupLine("[red]Book not found. Please try again.[/]");
             }
-            else if (book.IsBorrowed)
+            else if (book.BorrowingInfo.IsBorrowed)
             {
                 AnsiConsole.MarkupLine("[red]The book is already borrowed. Please try another one.[/]");
             }
@@ -58,7 +58,7 @@ public class PatronBorrowMenu
         _library.BorrowBook().SetPatron(patron);
         _library.BorrowBook().SetBook(book);
         _library.BorrowBook().SetDate(DateTime.Now);
-        _library.BorrowBook().GetBook().IsBorrowed = true;
+        _library.BorrowBook().GetBook().BorrowingInfo.IsBorrowed = true;
         _library.BorrowBook().UpdateRecords();
 
         AnsiConsole.MarkupLine("[bold green]Book borrowed successfully.[/]");
@@ -105,7 +105,7 @@ public class PatronBorrowMenu
         _library.ReturnBook().SetBook(book);
         _library.ReturnBook().SetPatron(patron);
         _library.ReturnBook().SetDate(DateTime.Now);
-        _library.ReturnBook().GetBook().IsBorrowed = false;
+        _library.ReturnBook().GetBook().BorrowingInfo.IsBorrowed = false;
         _library.ReturnBook().UpdateRecords();
 
         AnsiConsole.MarkupLine("[bold green]Book returned successfully.[/]");
