@@ -9,12 +9,11 @@ public class Library
     private BorrowingOperation _borrowingOperation;
     public Library()
     {
-        var bookStorage = new FileStorage<Book>("DataBase/BookStorage.json");
-        var patronStorage = new FileStorage<Patron>("DataBase/Patrons.json");
-        _booksManager = new BooksManager(bookStorage);
-        _patronsManager = new PatronsManager(patronStorage);
-        _borrowBook = new BorrowBook(bookStorage,patronStorage);
-        _returnBook = new ReturnBook(bookStorage,patronStorage);
+        var databaseContext = new Database();
+        _booksManager = new BooksManager(databaseContext);
+        _patronsManager = new PatronsManager(databaseContext);
+        _borrowBook = new BorrowBook(databaseContext);
+        _returnBook = new ReturnBook(databaseContext);
 
     }
 

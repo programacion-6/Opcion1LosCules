@@ -1,13 +1,11 @@
 namespace Opcion1LosCules;
 public class ReturnBook : BorrowingOperation
 {
-    private IStorage<Book> _bookStorage;
-    private IStorage<Patron> _patronStorage;
+    private readonly IDatabaseContext _databaseContext;
 
-    public ReturnBook(IStorage<Book> bookStorage, IStorage<Patron> patronStorage)
+    public ReturnBook(IDatabaseContext databaseContext)
     {
-        _bookStorage = bookStorage;
-        _patronStorage = patronStorage;
+        _databaseContext = databaseContext;
     }
 
     public override bool Validate()
@@ -15,18 +13,18 @@ public class ReturnBook : BorrowingOperation
         return Patron.BorrowedBooks.Contains(Book) && !Book.IsAvailable();
     }
 
-    public override void UpdateRecords()
+    public override async void UpdateRecords()
     {
         Console.WriteLine($"Updating records for returning book {Book.Title}.");
         
         Book.MarkAsReturned(Date);
         Patron.BorrowedBooks.Remove(Book);
 
-        BooksManager booksManager = new BooksManager(_bookStorage);
-        booksManager.UpdateBook(Book);
+        BooksManager booksManager = new BooksManager(_databaseContext);
+        await booksManager.UpdateBook(Book.Id.ToString(), Book);
         
-        PatronsManager patronsManager = new PatronsManager(_patronStorage);
-        patronsManager.UpdatePatron(Patron);
+        PatronsManager patronsManager = new PatronsManager(_databaseContext);
+        await patronsManager.UpdatePatron(Patron.Id.ToString(), Patron);
     }
 
     protected override void NotifyPatron()

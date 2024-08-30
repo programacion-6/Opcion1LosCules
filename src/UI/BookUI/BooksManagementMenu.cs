@@ -51,7 +51,7 @@ namespace Opcion1LosCules
             return value;
         }
 
-        public void AddBook()
+        public async void AddBook()
         {
             string title = AnsiConsole.Ask<string>("[green]Enter book title:[/]");
 
@@ -76,7 +76,7 @@ namespace Opcion1LosCules
     
             try
             {
-                _library.booksManager().AddBook(book);
+                await _library.booksManager().AddBook(book);
                 AnsiConsole.MarkupLine("[green]Book added successfully.[/]");
             }
             catch (ValidationException ex)
@@ -89,18 +89,18 @@ namespace Opcion1LosCules
             }
         }
 
-        public void UpdateBook()
+        public async void UpdateBook()
         {
-            var title = AnsiConsole.Ask<string>("[green]Enter the title of the book to update:[/]");
-            var existingBook = _library.booksManager().GetAllBooks()
-                .FirstOrDefault(b => b.Title == title);
+            var bookId = AnsiConsole.Ask<string>("[green]Enter the Id of the book to update:[/]");
+            var existingBook = _library.booksManager().GetBookById(bookId);
 
             if (existingBook == null)
             {
-                AnsiConsole.MarkupLine("[red]No book found with that title. Please try again.[/]");
+                AnsiConsole.MarkupLine("[red]No book found with that Id. Please try again.[/]");
                 return;
             }
 
+            var title = AnsiConsole.Ask<string>("[green]Enter new book title:[/]");
             var isbn = AnsiConsole.Ask<string>("[green]Enter new book ISBN:[/]");
             int publicationYear = ValidateYear("[green]Enter book publication year:[/]");
 
@@ -115,19 +115,18 @@ namespace Opcion1LosCules
                                    title, isbn,publicationYear);
 
             var updatedBook = new Book(title, author, isbn, genre, publicationYear);
-            _library.booksManager().UpdateBook(updatedBook);
+            await _library.booksManager().UpdateBook(bookId, updatedBook);
             AnsiConsole.MarkupLine("[green]Book updated successfully.[/]");
         }
 
-        public void RemoveBook()
+        public async void RemoveBook()
         {
-            var title = AnsiConsole.Ask<string>("[green]Enter the title of the book to remove:[/]");
-            var existingBook = _library.booksManager().GetAllBooks()
-                .FirstOrDefault(b => b.Title == title);
+            var bookId = AnsiConsole.Ask<string>("[green]Enter the Id of the book to remove:[/]");
+            var existingBook = _library.booksManager().GetBookById(bookId);
 
             if (existingBook != null)
             {
-                _library.booksManager().RemoveBook(existingBook);
+                await _library.booksManager().RemoveBook(existingBook.Id.ToString());
                 AnsiConsole.MarkupLine("[green]Book removed successfully.[/]");
             }
             else
@@ -136,10 +135,10 @@ namespace Opcion1LosCules
             }
         }
 
-        public void ListBooks()
+        public async void ListBooks()
         { 
             AnsiConsole.MarkupLine("[yellow]Listing Books by Genre:[/]");
-            var existingBook = _library.booksManager().GetAllBooks()
+            var existingBook = (await _library.booksManager().GetAllBooks())
                 .OrderBy(book => book.Genre)
                 .ToList();
 

@@ -1,76 +1,51 @@
 namespace Opcion1LosCules;
 
-using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+using System.Threading.Tasks;
 
-public class PatronsManager
+public class PatronsManager : IPatronRepository
 {
-    private readonly List<Patron> _patrons;
     private readonly PatronValidator _patronValidator;
+    private readonly IDatabaseContext _database;
 
-    private readonly IStorage<Patron> _patronStorage;
 
-    public PatronsManager(IStorage<Patron> patronStorage)
+    public PatronsManager(IDatabaseContext databaseContext)
     {
-        _patrons = new List<Patron>();
         _patronValidator = new PatronValidator();
-        _patronStorage = patronStorage;
-        LoadPatronsFromDB();
+        _database = databaseContext;
     }
 
-    public void AddPatron(Patron patron)
+    public async Task AddPatron(Patron patron)
     {
         _patronValidator.Validate(patron);
-        if (!_patrons.Contains(patron))
+        if(await _database.Add(patron) != 200)
         {
-            _patrons.Add(patron);
-            SavePatronsToDB();
+            throw new ArgumentException("Error to add the patron.");
         }
     }
 
-    public void UpdatePatron(Patron patron)
+    public Task<IEnumerable<Patron>> GetAllPatrons()
     {
-        
-        var existingPatron = _patrons.FirstOrDefault(p => p.MembershipNumber == patron.MembershipNumber);
+        return _database.GetAll<Patron>();
+    }
 
-        if (existingPatron != null)
+    public Task<Patron> GetPatronById(string id)
+    {
+        return _database.GetById<Patron>(id);
+    }
+
+    public async Task RemovePatron(string id)
+    {
+        if(await _database.Delete(id) != 200)
         {
-            existingPatron.Name = patron.Name;
-            existingPatron.MembershipNumber = patron.MembershipNumber;
-            existingPatron.ContactDetails = patron.ContactDetails;
-            existingPatron.BorrowedBooks = patron.BorrowedBooks;
-            existingPatron.BorrowedBooks = patron.BorrowedBooks;
-            existingPatron.HistoryBorrowedBooks = patron.HistoryBorrowedBooks;
-            SavePatronsToDB();
+            throw new ArgumentException("Error to Remove the patron.");
         }
     }
 
-    public void RemovePatron(Patron patron)
+    public async Task UpdatePatron(string id, Patron patron)
     {
-        if (_patrons.Contains(patron))
+        if(await _database.Update(id, patron) != 200)
         {
-            _patrons.Remove(patron);
-            SavePatronsToDB();
+            throw new ArgumentException("Error to Update the patron.");
         }
-    }
-    public List<Patron> GetAllPatrons()
-    {
-        return _patrons;
-    }
-
-   private void LoadPatronsFromDB()
-    {
-        var patronsFromJson = _patronStorage.Load();
-        if (patronsFromJson != null)
-        {
-            _patrons.AddRange(patronsFromJson);
-        }
-    }
-
-    private void SavePatronsToDB()
-    {
-        _patronStorage.Save(_patrons);
     }
 }

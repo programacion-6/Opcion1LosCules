@@ -1,13 +1,11 @@
 namespace Opcion1LosCules;
 public class BorrowBook : BorrowingOperation
 {
-    private IStorage<Book> _bookStorage;
-    private IStorage<Patron> _patronStorage;
+    private readonly IDatabaseContext _databaseContext;
 
-    public BorrowBook(IStorage<Book> bookStorage, IStorage<Patron> patronStorage)
+    public BorrowBook(IDatabaseContext databaseContext)
     {
-        _bookStorage = bookStorage;
-        _patronStorage = patronStorage;
+        _databaseContext = databaseContext;
     }
 
     private bool CheckAvailability()
@@ -30,7 +28,7 @@ public class BorrowBook : BorrowingOperation
         return false;
     }
 
-    public override void UpdateRecords()
+    public override async void UpdateRecords()
     {
         Console.WriteLine($"Updating records for borrowing book {Book.Title}.");
         
@@ -38,11 +36,11 @@ public class BorrowBook : BorrowingOperation
         Patron.BorrowedBooks.Add(Book);
         Patron.HistoryBorrowedBooks.Add(Book);
 
-        BooksManager booksManager = new BooksManager(_bookStorage);
-        booksManager.UpdateBook(Book);
+        BooksManager booksManager = new BooksManager(_databaseContext);
+        await booksManager.UpdateBook(Book.Id.ToString(), Book);
 
-        PatronsManager patronsManager = new PatronsManager(_patronStorage);
-        patronsManager.UpdatePatron(Patron);
+        PatronsManager patronsManager = new PatronsManager(_databaseContext);
+        await patronsManager.UpdatePatron(Patron.Id.ToString(), Patron);
     }
 
     public void HistoryBorrowingUpdateRecords()
