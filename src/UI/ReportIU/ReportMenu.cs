@@ -66,7 +66,7 @@ namespace Opcion1LosCules
                     GetPropertyValue(item, "DueDate")
                 }).ToList();
 
-                UIUtils.PaginateTable(new StandardPagination() ,ytable, rows);
+                UIUtils.PaginateTable(new StandardPagination() ,table, rows);
             }
             else
             {
