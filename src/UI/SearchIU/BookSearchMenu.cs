@@ -50,19 +50,19 @@ public class BookSearchMenu
     public List<Book> SearchByTitle(string title)
     {
         var strategy = new SearchByTitle();
-        return strategy.Search(title, _bookManager.GetAllBooks());
+        return strategy.Search(title, _bookManager.Items);
     }
 
     public List<Book> SearchByAuthor(string author)
     {
         var strategy = new SearchByAuthor();
-        return strategy.Search(author, _bookManager.GetAllBooks());
+        return strategy.Search(author, _bookManager.Items);
     }
 
     public List<Book> SearchByISBN(string isbn)
     {
         var strategy = new SearchByISBN();
-        return strategy.Search(isbn, _bookManager.GetAllBooks());
+        return strategy.Search(isbn, _bookManager.Items);
     }
 
     private void DisplaySearchResults(List<Book> books)

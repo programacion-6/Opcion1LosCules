@@ -10,8 +10,8 @@ package "Managers" {
         +abstract void updateItem(T item)
         +void removeItem(T item)
         +List<T> getAllItems()
-        -void LoadItemsFromDB()
-        -void SaveItemsToDB()
+        #void LoadItemsFromDB()
+        #void SaveItemsToDB()
     }
 
     class BooksManager extends AManager {

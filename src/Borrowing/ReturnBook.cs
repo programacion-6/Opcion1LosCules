@@ -23,10 +23,10 @@ public class ReturnBook : BorrowingOperation
         Patron.BorrowedBooks.Remove(Book);
 
         BooksManager booksManager = new BooksManager(_bookStorage);
-        booksManager.UpdateBook(Book);
+        booksManager.UpdateItem(Book);
         
         PatronsManager patronsManager = new PatronsManager(_patronStorage);
-        patronsManager.UpdatePatron(Patron);
+        patronsManager.UpdateItem(Patron);
     }
 
     protected override void NotifyPatron()

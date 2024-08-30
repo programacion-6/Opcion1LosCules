@@ -1,11 +1,9 @@
 namespace Opcion1LosCules;
 
-using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
-public class PatronsManager
+public class PatronsManager : AManager<Patron>
 {
     private readonly List<Patron> _patrons;
     private readonly PatronValidator _patronValidator;

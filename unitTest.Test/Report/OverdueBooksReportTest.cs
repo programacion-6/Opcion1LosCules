@@ -27,9 +27,9 @@ namespace Opcion1LosCules.Tests
             var overdueBook = new Book("El Quijote", "Miguel de Cervantes", "1234567890", "Novela", 1605);
             var nonOverdueBook = new Book("Cien Años de Soledad", "Gabriel García Márquez", "0987654321", "Realismo Mágico", 1967);
             var patron = new Patron("Juan Pérez", 1, "juan.perez@example.com");
-            _booksManager.AddBook(overdueBook);
-            _booksManager.AddBook(nonOverdueBook);
-            _patronsManager.AddPatron(patron);
+            _booksManager.AddItem(overdueBook);
+            _booksManager.AddItem(nonOverdueBook);
+            _patronsManager.AddItem(patron);
 
             _borrowBook.SetBook(overdueBook);
             _borrowBook.SetPatron(patron);

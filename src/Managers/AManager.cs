@@ -2,13 +2,13 @@ namespace Opcion1LosCules;
 
 public abstract class AManager<T>
 {
-    private readonly List<T> _items;
+    public List<T> Items;
     private readonly Validator<T> _validator;
     private readonly IStorage<T> _storage;
 
     public AManager(IStorage<T> storage, Validator<T> validator)
     {
-        _items = new List<T>();
+        Items = new List<T>();
         _validator = validator;
         _storage = storage;
         LoadItemsFromDB();
@@ -16,9 +16,9 @@ public abstract class AManager<T>
 
     public void AddItem(T item){
         _validator.Validate(item);
-        if (!_items.Contains(item))
+        if (!Items.Contains(item))
         {
-            _items.Add(item);
+            Items.Add(item);
             SaveItemsToDB();
         }
     }
@@ -27,21 +27,21 @@ public abstract class AManager<T>
 
     public void RemoveItem(T item)
     {
-        if (_items.Contains(item))
+        if (Items.Contains(item))
         {
-            _items.Remove(item);
+            Items.Remove(item);
             SaveItemsToDB();
         }
     }
 
-    private void LoadItemsFromDB()
+    protected void LoadItemsFromDB()
     {
         var itemsFromJson = _storage.Load();
-        _items.AddRange(itemsFromJson);
+        Items.AddRange(itemsFromJson);
     }
 
-    private void SaveItemsToDB()
+    protected void SaveItemsToDB()
     {
-        _storage.Save(_items);
+        _storage.Save(Items);
     }
 }

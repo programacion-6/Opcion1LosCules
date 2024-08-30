@@ -1,32 +1,17 @@
 namespace Opcion1LosCules;
-public class BooksManager
+
+public class BooksManager : AManager<Book>
 {
     private readonly List<Book> _books;
-    private readonly BookValidator _bookValidator;
     private readonly IStorage<Book> _bookStorage;
 
     public BooksManager(IStorage<Book> bookStorage)
-    {
-        _books = new List<Book>();
-        _bookValidator = new BookValidator();
-        _bookStorage = bookStorage;
-        LoadBooksFromDB();
-    }
+        : base(bookStorage, new BookValidator()) { }
 
-    public void AddBook(Book book)
-    {
-        _bookValidator.Validate(book);
-        if (!_books.Contains(book))
-        {
-            _books.Add(book);
-            SaveBooksToDB();
-        }
-    }
-
-    public void UpdateBook(Book book)
+    public override void UpdateItem(Book book)
     {
         var existingBook = _books.FirstOrDefault(b => b.Title == book.Title);
-        
+
         if (existingBook != null)
         {
             existingBook.Author = book.Author;
@@ -36,32 +21,7 @@ public class BooksManager
             existingBook.BorrowingInfo.DueDate = book.BorrowingInfo.DueDate;
             existingBook.BorrowingInfo.ReturnDate = book.BorrowingInfo.ReturnDate;
             existingBook.BorrowingInfo.IsBorrowed = book.BorrowingInfo.IsBorrowed;
-            SaveBooksToDB();
+            SaveItemsToDB();
         }
-    }
-
-    public void RemoveBook(Book book)
-    {
-        if (_books.Contains(book))
-        {
-            _books.Remove(book);
-            SaveBooksToDB();
-        }
-    }
-
-    public List<Book> GetAllBooks()
-    {
-        return _books;
-    }
-
-    private void LoadBooksFromDB()
-    {
-        var booksFromJson = _bookStorage.Load();
-        _books.AddRange(booksFromJson);
-    }
-
-    private void SaveBooksToDB()
-    {
-        _bookStorage.Save(_books);
     }
 }
