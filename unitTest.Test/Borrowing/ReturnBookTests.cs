@@ -88,7 +88,7 @@ namespace Opcion1LosCules.Tests
             _returnBook.UpdateRecords();
 
             Assert.DoesNotContain(book, patron.BorrowedBooks);
-            Assert.False(book.IsAvailable()); 
+            Assert.False(book.BorrowingInfo.IsAvailable()); 
         }
     }
 

@@ -12,7 +12,7 @@ public class BorrowBook : BorrowingOperation
 
     private bool CheckAvailability()
     {
-        return Book.IsAvailable();
+        return Book.BorrowingInfo.IsAvailable();
     }
 
     public override bool Validate()

@@ -12,7 +12,7 @@ public class ReturnBook : BorrowingOperation
 
     public override bool Validate()
     {
-        return Patron.BorrowedBooks.Contains(Book) && !Book.IsAvailable();
+        return Patron.BorrowedBooks.Contains(Book) && !Book.BorrowingInfo.IsAvailable();
     }
 
     public override void UpdateRecords()

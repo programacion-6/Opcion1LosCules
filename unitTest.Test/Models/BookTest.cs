@@ -87,11 +87,11 @@ namespace Opcion1LosCules.Tests
         {
             Book book = new Book("Pride and Prejudice", "Jane Austen", "978-0141439518", "Romance", 1813);
 
-            Assert.True(book.IsAvailable());
+            Assert.True(book.BorrowingInfo.IsAvailable());
 
             book.BorrowingInfo.MarkAsBorrowed(DateTime.Now.AddDays(-16)); 
             
-            Assert.True(book.IsAvailable()); 
+            Assert.True(book.BorrowingInfo.IsAvailable()); 
         }
     }
 

@@ -54,10 +54,4 @@ public class Book
         get { return _isBorrowed; }
         set { _isBorrowed = value; }
     }  
-
-    public bool IsAvailable()
-    {
-        
-        return !DueDate.HasValue || DateTime.Now > DueDate.Value;
-    }
 }
