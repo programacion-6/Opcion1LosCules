@@ -5,7 +5,7 @@
     !include Search.puml
     !include BorrowingSystem.puml
     !include Managers.puml
-    !include Entities.puml
+    !include Models.puml
     !include LibraryConsole.puml
     !include Exceptions.puml
     !include Validators.puml
@@ -35,7 +35,8 @@ Library --> ReportContext
 Library --> ISearchStrategy
 Library --> BooksManager
 Library --> PatronsManager
-Patron --> Book 
+Patron o-- Book 
+Book *-- BorrowingInfo
 BooksManager --> Book
 PatronsManager --> Patron
 Validator --> BooksManager 
