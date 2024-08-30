@@ -12,10 +12,10 @@ namespace Opcion1LosCules.Tests
                 new Book("Title2", "Author3", "0003", "Genre3", 2003)
             };
 
-            var searchStrategy = new SearchByTitle();
             string query = "Title";
+            var searchStrategy = new SearchByTitle(query);
 
-            var result = searchStrategy.Search(query, books);
+            var result = searchStrategy.Search(books);
 
             Assert.Equal(3, result.Count);
             Assert.Contains(result, book => book.Title == "Title1");
@@ -30,10 +30,10 @@ namespace Opcion1LosCules.Tests
                 new Book("Title1", "Author1", "00001", "Genre1", 2001)
             };
 
-            var searchStrategy = new SearchByTitle();
             string query = "NonExistingTitle";
+            var searchStrategy = new SearchByTitle(query);
 
-            var result = searchStrategy.Search(query, books);
+            var result = searchStrategy.Search(books);
 
             Assert.Empty(result);
         }
@@ -46,10 +46,10 @@ namespace Opcion1LosCules.Tests
                 new Book("Title1", "Author1", "00001", "Genre1", 2001)
             };
 
-            var searchStrategy = new SearchByTitle();
             string query = string.Empty;
+            var searchStrategy = new SearchByTitle(query);
 
-            var result = searchStrategy.Search(query, books);
+            var result = searchStrategy.Search(books);
 
             Assert.Single(result);
             Assert.Equal("Title1", result[0].Title);
@@ -59,10 +59,10 @@ namespace Opcion1LosCules.Tests
         public void Search_EmptyBookList_ReturnsEmptyList()
         {
             var books = new List<Book>();
-            var searchStrategy = new SearchByTitle();
             string query = "Title";
+            var searchStrategy = new SearchByTitle(query);
 
-            var result = searchStrategy.Search(query, books);
+            var result = searchStrategy.Search(books);
 
             Assert.Empty(result);
         }   

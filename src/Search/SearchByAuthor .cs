@@ -1,8 +1,18 @@
 namespace Opcion1LosCules;
-public class SearchByAuthor : IBookSearchStrategy
+
+public class SearchByAuthor : ISearchStrategy<Book>
 {
-    public List<Book> Search(string author, List<Book> books)
+    public string Author;
+
+    public SearchByAuthor(string author)
     {
-        return books.Where(book => book.Author.Contains(author, StringComparison.OrdinalIgnoreCase)).ToList();
+        Author = author;
+    }
+
+    public List<Book> Search(List<Book> dataList)
+    {
+        return dataList
+            .Where(book => book.Author.Contains(Author, StringComparison.OrdinalIgnoreCase))
+            .ToList();
     }
 }

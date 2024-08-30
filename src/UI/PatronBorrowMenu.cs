@@ -9,7 +9,6 @@ public class PatronBorrowMenu
     public PatronBorrowMenu(Library library)
     {
         _library = library;
-        _searchByISBN = new();
         _searchByMembership = new();
     }
 
@@ -42,7 +41,8 @@ public class PatronBorrowMenu
         {
             var isbn = AnsiConsole.Ask<string>("[green]Enter book ISBN to borrow:[/]");
 
-            var books = _searchByISBN.Search(isbn, _library.booksManager().GetAllBooks());
+            _searchByISBN = new(isbn);
+            var books = _searchByISBN.Search(_library.booksManager().GetAllBooks());
             book = books?.FirstOrDefault();
 
             if (book == null)
@@ -72,8 +72,9 @@ public class PatronBorrowMenu
         while (book == null)
         {
             var isbn = AnsiConsole.Ask<string>("[green]Enter book ISBN to return:[/]");
-        
-            var books = _searchByISBN.Search(isbn, _library.booksManager().GetAllBooks());
+            
+            _searchByISBN = new(isbn);
+            var books = _searchByISBN.Search(_library.booksManager().GetAllBooks());
             book = books?.FirstOrDefault();
 
             if (book == null)

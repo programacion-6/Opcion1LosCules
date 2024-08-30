@@ -49,20 +49,20 @@ public class BookSearchMenu
     }
     public List<Book> SearchByTitle(string title)
     {
-        var strategy = new SearchByTitle();
-        return strategy.Search(title, _bookManager.GetAllBooks());
+        var strategy = new SearchByTitle(title);
+        return strategy.Search(_bookManager.GetAllBooks());
     }
 
     public List<Book> SearchByAuthor(string author)
     {
-        var strategy = new SearchByAuthor();
-        return strategy.Search(author, _bookManager.GetAllBooks());
+        var strategy = new SearchByAuthor(author);
+        return strategy.Search(_bookManager.GetAllBooks());
     }
 
     public List<Book> SearchByISBN(string isbn)
     {
-        var strategy = new SearchByISBN();
-        return strategy.Search(isbn, _bookManager.GetAllBooks());
+        var strategy = new SearchByISBN(isbn);
+        return strategy.Search(_bookManager.GetAllBooks());
     }
 
     private void DisplaySearchResults(List<Book> books)
