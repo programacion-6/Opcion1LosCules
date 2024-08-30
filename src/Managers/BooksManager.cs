@@ -1,67 +1,48 @@
-namespace Opcion1LosCules;
-public class BooksManager
-{
-    private readonly List<Book> _books;
-    private readonly BookValidator _bookValidator;
-    private readonly IStorage<Book> _bookStorage;
 
-    public BooksManager(IStorage<Book> bookStorage)
+namespace Opcion1LosCules;
+public class BooksManager : IBookRepository
+{
+    private readonly BookValidator _bookValidator;
+    private readonly IDatabaseContext _database;
+
+    public BooksManager(IDatabaseContext databaseContext)
     {
-        _books = new List<Book>();
         _bookValidator = new BookValidator();
-        _bookStorage = bookStorage;
-        LoadBooksFromDB();
+        _database = databaseContext;
     }
 
-    public void AddBook(Book book)
+    public async Task AddBook(Book book)
     {
         _bookValidator.Validate(book);
-        if (!_books.Contains(book))
+        if(await _database.Add(book) != 200)
         {
-            _books.Add(book);
-            SaveBooksToDB();
+            throw new ArgumentException("Error to add the book.");
         }
     }
 
-    public void UpdateBook(Book book)
+    public Task<IEnumerable<Book>> GetAllBooks()
     {
-        var existingBook = _books.FirstOrDefault(b => b.Title == book.Title);
-        
-        if (existingBook != null)
+        return _database.GetAll<Book>();
+    }
+
+    public Task<Book> GetBookById(string id)
+    {
+        return _database.GetById<Book>(id);
+    }
+
+    public async Task RemoveBook(string id)
+    {
+        if(await _database.Delete(id) != 200)
         {
-            existingBook.Author = book.Author;
-            existingBook.ISBN = book.ISBN;
-            existingBook.Genre = book.Genre;
-            existingBook.PublicationYear = book.PublicationYear;
-            existingBook.DueDate = book.DueDate;
-            existingBook.ReturnDate = book.ReturnDate;
-            existingBook.IsBorrowed = book.IsBorrowed;
-            SaveBooksToDB();
+            throw new ArgumentException("Error to Remove the book.");
         }
     }
 
-    public void RemoveBook(Book book)
+    public async Task UpdateBook(string id, Book book)
     {
-        if (_books.Contains(book))
+        if(await _database.Update<Book>(id, book) != 200)
         {
-            _books.Remove(book);
-            SaveBooksToDB();
+            throw new ArgumentException("Error to Update the Book.");
         }
-    }
-
-    public List<Book> GetAllBooks()
-    {
-        return _books;
-    }
-
-    private void LoadBooksFromDB()
-    {
-        var booksFromJson = _bookStorage.Load();
-        _books.AddRange(booksFromJson);
-    }
-
-    private void SaveBooksToDB()
-    {
-        _bookStorage.Save(_books);
     }
 }

@@ -1,101 +1,109 @@
 using Opcion1LosCules;
 
-public class Database : IDatabaseContext<IEntity>
+public class Database : IDatabaseContext
 {
-    private readonly Dictionary<string, Book> _bookStorage = [];
-    private readonly Dictionary<string, Patron> _patronStorage = [];
+    private static Database _instance;
+
+    public static Database GetInstance()
+    {
+        if(_instance == null)
+        {
+            _instance = new Database();
+        }
+        return _instance;
+    }
+    
+    public readonly Dictionary<string, Book> _bookStorage = [];
+    public readonly Dictionary<string, Patron> _patronStorage = [];
     private readonly int _okCode = 200;
     private readonly int _badRequestCode = 400;
-    public int Add(IEntity entity)
+
+    public Task<int> Add<T>(T entity) where T : class
     {
-        switch(entity)
+        if (entity is Book book)
         {
-            case Book book:
-            _bookStorage.Add(book.Id.ToString() ,book);
-            return _okCode;
-            case Patron patron:
-            _patronStorage.Add(patron.Id.ToString(), patron);
-            return _okCode;
-            default:
-            return _badRequestCode;
+            _bookStorage[book.Id.ToString()] = book;
+            return Task.FromResult(_okCode);
+        }
+        else if (entity is Patron patron)
+        {
+            _patronStorage[patron.Id.ToString()] = patron;
+            return Task.FromResult(_okCode);
+        }
+        else
+        {
+            throw new ArgumentException("Unsupported entity type");
         }
     }
 
-    public int Delete(IEntity entity)
+    public Task<int> Update<T>(string id, T entity) where T : class
     {
-        switch(entity)
+        if (entity is Book book && _bookStorage.ContainsKey(id))
         {
-            case Book book:
-            _bookStorage.Remove(book.Id.ToString());
-            return _okCode;
-            case Patron patron:
-            _patronStorage.Remove(patron.Id.ToString());
-            return _okCode;
-            default:
-            return _badRequestCode;
+            book.Id = _bookStorage[id].Id;
+            _bookStorage[id] = book;
+            return Task.FromResult(_okCode);
+        }
+        else if (entity is Patron patron && _patronStorage.ContainsKey(id))
+        {
+            patron.Id = _patronStorage[id].Id;
+            _patronStorage[id] = patron;
+            return Task.FromResult(_okCode);
+        }
+        else
+        {
+            throw new ArgumentException("Entity not found or unsupported entity type");
         }
     }
 
-    public IEntity GetById(string id)
+    public Task<int> Delete(string id)
     {
-        if(_bookStorage.ContainsKey(id))
+        if (_bookStorage.ContainsKey(id))
         {
-            return _bookStorage[id];
+            _bookStorage.Remove(id);
+            return Task.FromResult(_okCode);
         }
-        if (_patronStorage.ContainsKey(id))
+        else if (_patronStorage.ContainsKey(id))
         {
-            return _patronStorage[id];
+            _patronStorage.Remove(id);
+            return Task.FromResult(_okCode);
         }
-        throw new Exception("Element not found.");
-    }
-
-    public int Update(string id, IEntity entity)
-    {
-        switch(entity)
+        else
         {
-            case Book book:
-            if(_bookStorage.ContainsKey(id))
-            {
-                UpdateBook(_bookStorage[id], book);
-                return _okCode;
-            }
-            else
-            {
-                return _badRequestCode;
-            }
-            case Patron patron:
-            if(_patronStorage.ContainsKey(id))
-            {
-                UpdatePatron(_patronStorage[id], patron);
-                return _okCode;
-            }
-            else
-            {
-                return _badRequestCode;
-            }
-            default:
-            return _badRequestCode;
+            throw new ArgumentException("Entity not found or unsupported entity type");
         }
     }
 
-    private void UpdateBook(Book actual, Book newer)
+    public Task<T> GetById<T>(string id) where T : class
     {
-        actual.Author = newer.Author;
-        actual.ISBN = newer.ISBN;
-        actual.Genre = newer.Genre;
-        actual.PublicationYear = newer.PublicationYear;
-        actual.DueDate = newer.DueDate;
-        actual.ReturnDate = newer.ReturnDate;
-        actual.IsBorrowed = newer.IsBorrowed;
+        if (typeof(T) == typeof(Book) && _bookStorage.ContainsKey(id))
+        {
+            return Task.FromResult(_bookStorage[id] as T);
+        }
+        else if (typeof(T) == typeof(Patron) && _patronStorage.ContainsKey(id))
+        {
+            return Task.FromResult(_patronStorage[id] as T);
+        }
+        else
+        {
+            return Task.FromResult<T>(null);
+        }
     }
 
-    private void UpdatePatron(Patron actual, Patron newer)
+    public Task<IEnumerable<T>> GetAll<T>() where T : class
     {
-        actual.Name = newer.Name;
-        actual.MembershipNumber = newer.MembershipNumber;
-        actual.ContactDetails = newer.ContactDetails;
-        actual.BorrowedBooks = newer.BorrowedBooks;
-        actual.BorrowedBooks = newer.BorrowedBooks;
-        actual.HistoryBorrowedBooks = newer.HistoryBorrowedBooks;
+        if (typeof(T) == typeof(Book))
+        {
+            return Task.FromResult(_bookStorage.Values.Cast<T>());
+        }
+        else if (typeof(T) == typeof(Patron))
+        {
+            return Task.FromResult(_patronStorage.Values.Cast<T>());
+        }
+        else
+        {
+            return Task.FromResult(Enumerable.Empty<T>());
+        }
     }
+
 }

@@ -2,7 +2,7 @@ namespace Opcion1LosCules;
 
 public class Book : IEntity
 {
-    public Guid Id { get; }
+    public Guid Id { get; set; }
     private string _title;
     private string _author;
     private string _ISBN;

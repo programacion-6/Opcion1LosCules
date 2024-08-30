@@ -2,7 +2,7 @@ namespace Opcion1LosCules;
 
 public class Patron : IEntity
 {
-    public Guid Id { get; } 
+    public Guid Id { get; set; } 
     private string _name;
     private int _membershipNumber;
     private string _contactDetails;
