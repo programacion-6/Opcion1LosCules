@@ -1,7 +1,8 @@
 namespace Opcion1LosCules;
 
-public class Book 
+public class Book : IEntity
 {
+    public Guid Id { get; }
     private string _title;
     private string _author;
     private string _ISBN;
@@ -14,12 +15,12 @@ public class Book
 
     public Book(string title, string author, string ISBN, string genre, int publicationYear) 
     {
+        Id = Guid.NewGuid();
         _title = title;
         _author = author;
         _ISBN = ISBN;
         _genre = genre;
         _publicationYear = publicationYear;
-
     }
 
     public string Title 
