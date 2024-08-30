@@ -56,7 +56,7 @@ namespace Opcion1LosCules.Tests
             book2.BorrowingInfo.MarkAsBorrowed(DateTime.Now.AddDays(-10)); 
             patron.BorrowedBooks.Add(book1);
             patron.BorrowedBooks.Add(book2);
-            _patronsManager.AddPatron(patron);
+            _patronsManager.AddItem(patron);
             var reportContext = new ReportContext(new OverdueBooksReport());
 
             var report = reportContext.GenerateReport(_booksManager, _patronsManager);

@@ -27,7 +27,7 @@ namespace Opcion1LosCules.Tests
 
             patron.BorrowedBooks.Add(book);
 
-            _patronsManager.AddPatron(patron); 
+            _patronsManager.AddItem(patron); 
             var reportContext = new ReportContext(new CurrentlyBorrowedBooksReport());
 
             var report = reportContext.GenerateReport(_booksManager, _patronsManager);
@@ -44,7 +44,7 @@ namespace Opcion1LosCules.Tests
         {
             var patron = new Patron("Sandra", 45848, "sandra@example.com");
 
-            _patronsManager.AddPatron(patron); 
+            _patronsManager.AddItem(patron); 
 
             var reportContext = new ReportContext(new CurrentlyBorrowedBooksReport());
 
@@ -61,7 +61,7 @@ namespace Opcion1LosCules.Tests
             book.BorrowingInfo.MarkAsBorrowed(DateTime.Now.AddDays(-10)); 
             patron.BorrowedBooks.Add(book);
             book.BorrowingInfo.MarkAsReturned(DateTime.Now);
-            _patronsManager.AddPatron(patron);
+            _patronsManager.AddItem(patron);
             var reportContext = new ReportContext(new CurrentlyBorrowedBooksReport());
 
             var report = reportContext.GenerateReport(_booksManager, _patronsManager);

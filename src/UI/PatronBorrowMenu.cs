@@ -15,7 +15,7 @@ public class PatronBorrowMenu
 
     public void BorrowBook()
     {
-        List<Patron> patrons = _library.patronsManager().GetAllPatrons();
+        List<Patron> patrons = _library.patronsManager().Items;
         Patron patron = null;
 
         
@@ -94,7 +94,7 @@ public class PatronBorrowMenu
                 continue;
             }
 
-            patron = _searchByMembership.Search(membershipNumber, _library.patronsManager().GetAllPatrons())?.FirstOrDefault();
+            patron = _searchByMembership.Search(membershipNumber, _library.patronsManager().Items)?.FirstOrDefault();
 
             if (patron == null)
             {

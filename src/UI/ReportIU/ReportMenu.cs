@@ -97,7 +97,7 @@ namespace Opcion1LosCules
             AnsiConsole.Write("Enter Patron Membership Number: ");
             if (int.TryParse(Console.ReadLine(), out int membershipNumber))
             {
-                var patron = _patronsManager.GetAllPatrons()
+                var patron = _patronsManager.Items
                                             .FirstOrDefault(p => p.MembershipNumber == membershipNumber);
                 if (patron != null)
                 {

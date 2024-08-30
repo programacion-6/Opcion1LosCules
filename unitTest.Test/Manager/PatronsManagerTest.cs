@@ -18,33 +18,33 @@ namespace Opcion1LosCules.Tests
         {
             var patron = new Patron("Sandra", 45845, "sandra@example.com");
 
-            _patronsManager.AddPatron(patron);
+            _patronsManager.AddItem(patron);
 
-            Assert.Contains(patron, _patronsManager.GetAllPatrons());
+            Assert.Contains(patron, _patronsManager.Items);
         }
 
         [Fact]
         public void AddPatron_ShouldNotAddDuplicatePatron()
         {
             var patron = new Patron("Jane Doe", 12345, "jane@example.com");
-            _patronsManager.AddPatron(patron);
+            _patronsManager.AddItem(patron);
        
-            _patronsManager.AddPatron(patron);
+            _patronsManager.AddItem(patron);
 
-            Assert.Single(_patronsManager.GetAllPatrons());
+            Assert.Single(_patronsManager.Items);
         }
 
         [Fact]
         public void UpdatePatron_ShouldUpdatePatronDetails_WhenPatronExists()
         {
             var patron = new Patron("Alice Johnson", 12345, "alice@example.com");
-            _patronsManager.AddPatron(patron);
+            _patronsManager.AddItem(patron);
 
             patron.Name = "Alice Doe";
             patron.ContactDetails = "alice.doe@example.com";
-            _patronsManager.UpdatePatron(patron);
+            _patronsManager.UpdateItem(patron);
 
-            var updatedPatron = _patronsManager.GetAllPatrons().FirstOrDefault(p => p.MembershipNumber == 12345);
+            var updatedPatron = _patronsManager.Items.FirstOrDefault(p => p.MembershipNumber == 12345);
             Assert.NotNull(updatedPatron);
             Assert.Equal("Alice Doe", updatedPatron.Name);
             Assert.Equal("alice.doe@example.com", updatedPatron.ContactDetails);
@@ -55,20 +55,20 @@ namespace Opcion1LosCules.Tests
         {
             var patron = new Patron("Bob Johnson", 54321, "bob@example.com");
 
-            _patronsManager.UpdatePatron(patron);
+            _patronsManager.UpdateItem(patron);
 
-            Assert.Empty(_patronsManager.GetAllPatrons());
+            Assert.Empty(_patronsManager.Items);
         }
 
         [Fact]
         public void RemovePatron_ShouldRemovePatronFromList()
         {
             var patron = new Patron("John Smith", 11111, "john.smith@example.com");
-            _patronsManager.AddPatron(patron);
+            _patronsManager.AddItem(patron);
 
-            _patronsManager.RemovePatron(patron);
+            _patronsManager.RemoveItem(patron);
 
-            Assert.DoesNotContain(patron, _patronsManager.GetAllPatrons());
+            Assert.DoesNotContain(patron, _patronsManager.Items);
         }
 
         [Fact]
@@ -76,9 +76,9 @@ namespace Opcion1LosCules.Tests
         {
             var patron = new Patron("Jane Smith", 11111, "jane.smith@example.com");
 
-            _patronsManager.RemovePatron(patron);
+            _patronsManager.RemoveItem(patron);
 
-            Assert.Empty(_patronsManager.GetAllPatrons());
+            Assert.Empty(_patronsManager.Items);
         }
 
     }

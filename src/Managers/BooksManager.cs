@@ -2,15 +2,12 @@ namespace Opcion1LosCules;
 
 public class BooksManager : AManager<Book>
 {
-    private readonly List<Book> _books;
-    private readonly IStorage<Book> _bookStorage;
-
     public BooksManager(IStorage<Book> bookStorage)
         : base(bookStorage, new BookValidator()) { }
 
     public override void UpdateItem(Book book)
     {
-        var existingBook = _books.FirstOrDefault(b => b.Title == book.Title);
+        var existingBook = Items.FirstOrDefault(b => b.Title == book.Title);
 
         if (existingBook != null)
         {
