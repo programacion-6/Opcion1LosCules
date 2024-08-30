@@ -4,12 +4,12 @@ namespace Opcion1LosCules;
 public class PatronBorrowMenu
 {
     private Library _library;
-    private SearchByISBN _searchByISBN;
-    private SearchByMembershipNumber _searchByMembership;
+    private SearchByISBN? _searchByISBN;
+    private SearchByMembershipNumber? _searchByMembership;
+    
     public PatronBorrowMenu(Library library)
     {
         _library = library;
-        _searchByMembership = new();
     }
 
     public void BorrowBook()
@@ -28,7 +28,8 @@ public class PatronBorrowMenu
                 continue;
             }
 
-            patron = _searchByMembership.Search(membershipNumber, patrons)?.FirstOrDefault();
+            _searchByMembership = new(int.Parse(membershipNumber));
+            patron = _searchByMembership.Search(patrons)?.FirstOrDefault();
             if (patron == null)
             {
                 AnsiConsole.MarkupLine("[red]Membership number not found. Please try again.[/]");
@@ -94,8 +95,9 @@ public class PatronBorrowMenu
                 AnsiConsole.MarkupLine("[red]Invalid membership number. Please enter a positive integer.[/]");
                 continue;
             }
-
-            patron = _searchByMembership.Search(membershipNumber, _library.patronsManager().GetAllPatrons())?.FirstOrDefault();
+            
+            _searchByMembership = new(int.Parse(membershipNumber));
+            patron = _searchByMembership.Search(_library.patronsManager().GetAllPatrons())?.FirstOrDefault();
 
             if (patron == null)
             {

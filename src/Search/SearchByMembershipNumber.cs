@@ -1,8 +1,18 @@
 namespace Opcion1LosCules;
-public class SearchByMembershipNumber : IPatronSearchStrategy
+
+public class SearchByMembershipNumber : ISearchStrategy<Patron>
 {
-    public List<Patron> Search(string membershipNumber, List<Patron> patrons)
+    public int MembershipNumber;
+
+    public SearchByMembershipNumber(int membershipNumber)
     {
-        return patrons.Where(patron => patron.MembershipNumber.ToString().Equals(membershipNumber)).ToList();
+        MembershipNumber = membershipNumber;
+    }
+
+    public List<Patron> Search(List<Patron> patrons)
+    {
+        return patrons
+            .Where(patron => patron.MembershipNumber.Equals(MembershipNumber))
+            .ToList();
     }
 }
