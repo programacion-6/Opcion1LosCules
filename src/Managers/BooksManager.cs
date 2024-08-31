@@ -1,4 +1,6 @@
 
+using Spectre.Console;
+
 namespace Opcion1LosCules;
 public class BooksManager : IBookRepository
 {
@@ -32,10 +34,7 @@ public class BooksManager : IBookRepository
 
     public async Task RemoveBook(string id)
     {
-        if(await _database.Delete(id) != 200)
-        {
-            throw new ArgumentException("Error to Remove the book.");
-        }
+        await _database.Delete(id);
     }
 
     public async Task UpdateBook(string id, Book book)

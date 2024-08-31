@@ -122,7 +122,7 @@ namespace Opcion1LosCules
         public async void RemoveBook()
         {
             var bookId = AnsiConsole.Ask<string>("[green]Enter the Id of the book to remove:[/]");
-            var existingBook = _library.booksManager().GetBookById(bookId);
+            var existingBook = await _library.booksManager().GetBookById(bookId);
 
             if (existingBook != null)
             {
@@ -131,7 +131,7 @@ namespace Opcion1LosCules
             }
             else
             {
-                AnsiConsole.MarkupLine("[red]No book found with that title.[/]");
+                AnsiConsole.MarkupLine("[red]No book found with that Id.[/]");
             }
         }
 
@@ -153,6 +153,7 @@ namespace Opcion1LosCules
             table.AddColumn("[yellow]Author[/]");
             table.AddColumn("[yellow]Genre[/]");
             table.AddColumn("[yellow]Publication Year[/]");
+            table.AddColumn("[yellow]Book Id[/]");
 
             var rows = new List<string[]>();
 
@@ -163,7 +164,8 @@ namespace Opcion1LosCules
                     book.Title,
                     book.Author,
                     book.Genre,
-                    book.PublicationYear.ToString()
+                    book.PublicationYear.ToString(),
+                    book.Id.ToString(),
                 });
             }
 

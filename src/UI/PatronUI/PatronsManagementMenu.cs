@@ -140,6 +140,7 @@ namespace Opcion1LosCules
             table.AddColumn("[yellow]Contact Details[/]");
             table.AddColumn("[yellow]Current Books Borrowed[/]");
             table.AddColumn("[yellow]Borrowing History[/]");
+            table.AddColumn("[yellow]Patron Id[/]");
 
             var rows = new List<string[]>();
 
@@ -154,7 +155,8 @@ namespace Opcion1LosCules
                             patron.Name,
                             patron.ContactDetails,
                             borrowedBooks,
-                            historyBooks
+                            historyBooks,
+                            patron.Id.ToString()
                         });
                 }
 

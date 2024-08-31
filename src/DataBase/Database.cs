@@ -1,18 +1,7 @@
 using Opcion1LosCules;
 
 public class Database : IDatabaseContext
-{
-    private static Database _instance;
-
-    public static Database GetInstance()
-    {
-        if(_instance == null)
-        {
-            _instance = new Database();
-        }
-        return _instance;
-    }
-    
+{ 
     public readonly Dictionary<string, Book> _bookStorage = [];
     public readonly Dictionary<string, Patron> _patronStorage = [];
     private readonly int _okCode = 200;
@@ -70,7 +59,7 @@ public class Database : IDatabaseContext
         }
         else
         {
-            throw new ArgumentException("Entity not found or unsupported entity type");
+            return Task.FromResult(_badRequestCode);
         }
     }
 
@@ -86,7 +75,7 @@ public class Database : IDatabaseContext
         }
         else
         {
-            return Task.FromResult<T>(null);
+            return null;
         }
     }
 
