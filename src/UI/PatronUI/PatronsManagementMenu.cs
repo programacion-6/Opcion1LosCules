@@ -59,7 +59,7 @@ namespace Opcion1LosCules
             
             try
             {
-                _library.patronsManager().AddPatron(patron);
+                _library.patronsManager().AddItem(patron);
                 AnsiConsole.MarkupLine("[green]Patron added successfully.[/]");
             }
             catch (ValidationException ex)
@@ -76,7 +76,7 @@ namespace Opcion1LosCules
         {
             int membershipNumber = ValidateMembershipNumber("[green]Enter patron membership number:[/]");
 
-            var existingPatron = _library.patronsManager().GetAllPatrons()
+            var existingPatron = _library.patronsManager().Items
                 .FirstOrDefault(p => p.MembershipNumber == membershipNumber);
 
             if (existingPatron == null)
@@ -92,7 +92,7 @@ namespace Opcion1LosCules
 
             try
             {
-                _library.patronsManager().UpdatePatron(updatedPatron);
+                _library.patronsManager().UpdateItem(updatedPatron);
                 AnsiConsole.MarkupLine("[green]Patron updated successfully.[/]");
             }
             catch (ValidationException ex)
@@ -111,12 +111,12 @@ namespace Opcion1LosCules
         {
              int membershipNumber = AnsiConsole.Ask<int>("[green]Enter patron membership number:[/]");
 
-             var patron = _library.patronsManager().GetAllPatrons()
+             var patron = _library.patronsManager().Items
                 .FirstOrDefault(p => p.MembershipNumber == membershipNumber);
 
             if (patron != null)
             {
-                _library.patronsManager().RemovePatron(patron);
+                _library.patronsManager().RemoveItem(patron);
                 AnsiConsole.MarkupLine("[green]Patron removed successfully.[/]");
             }
             else
@@ -127,7 +127,7 @@ namespace Opcion1LosCules
 
         public void ListPatrons()
         {
-            var existingPatron = _library.patronsManager().GetAllPatrons();
+            var existingPatron = _library.patronsManager().Items;
 
             if (existingPatron.Count == 0)
                 {
