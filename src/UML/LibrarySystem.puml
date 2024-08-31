@@ -27,20 +27,19 @@ package "Library System" {
     }
 }
 
-Library --> BorrowBook 
-Library --> ReturnBook 
-Library --> BorrowingOperation 
-Library --> HomePage
-Library --> ReportContext
-Library --> ISearchStrategy
-Library --> BooksManager
-Library --> PatronsManager
+Library *-- BorrowBook 
+Library *-- ReturnBook 
+Library *-- BorrowingOperation 
+Library *-- HomePage
+Library *-- ReportContext
+Library o-- ISearchStrategy
+Library o-- BooksManager
+Library o-- PatronsManager
 Patron o-- Book 
 Book *-- BorrowingInfo
-BooksManager --> Book
-PatronsManager --> Patron
-Validator --> BooksManager 
-Validator --> PatronsManager 
-ValidationException --> Validator
-Validator --> BorrowingOperation
+BooksManager *-- Book
+PatronsManager *-- Patron
+AManager o-- Validator 
+ValidationException o-- Validator
+BorrowingOperation o-- Validator
 @enduml
