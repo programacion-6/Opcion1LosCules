@@ -11,7 +11,7 @@ public class BorrowingHistoryReport : IReportStrategy
         _patron = patron;
     }
 
-    public List<object> GenerateReport(BooksManager booksManager, PatronsManager patronsManager)
+    public Task<List<object>> GenerateReport(PatronsManager patronsManager)
     {
         foreach (var book in _patron.HistoryBorrowedBooks)
         {
@@ -26,7 +26,7 @@ public class BorrowingHistoryReport : IReportStrategy
             });
         }
 
-        return report;
+        return Task.FromResult(report);
     }
 }
 

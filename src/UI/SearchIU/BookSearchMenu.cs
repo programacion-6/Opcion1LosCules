@@ -11,7 +11,7 @@ public class BookSearchMenu
         _bookManager = bookManager;
     }
 
-    public void DisplaySearchMenu()
+    public async void DisplaySearchMenu()
     {
         var option = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
@@ -32,13 +32,13 @@ public class BookSearchMenu
         switch (option)
         {
             case "Search by Title":
-                searchResults = SearchByTitle(query);
+                searchResults = await SearchByTitle(query);
                 break;
             case "Search by Author":
-                searchResults = SearchByAuthor(query);
+                searchResults = await SearchByAuthor(query);
                 break;
             case "Search by ISBN":
-                searchResults = SearchByISBN(query);
+                searchResults = await SearchByISBN(query);
                 break;
             default:
                 AnsiConsole.MarkupLine("[red]Invalid option.[/]");
@@ -47,22 +47,26 @@ public class BookSearchMenu
 
         DisplaySearchResults(searchResults);
     }
-    public List<Book> SearchByTitle(string title)
+
+    public async Task<List<Book>> SearchByTitle(string title)
     {
         var strategy = new SearchByTitle();
-        return strategy.Search(title, _bookManager.GetAllBooks());
+        var books = await _bookManager.GetAllBooks();
+        return strategy.Search(title, books.ToList());
     }
 
-    public List<Book> SearchByAuthor(string author)
+    public async Task<List<Book>> SearchByAuthor(string author)
     {
         var strategy = new SearchByAuthor();
-        return strategy.Search(author, _bookManager.GetAllBooks());
+        var books = await _bookManager.GetAllBooks();
+        return strategy.Search(author, books.ToList());
     }
 
-    public List<Book> SearchByISBN(string isbn)
+    public async Task<List<Book>> SearchByISBN(string isbn)
     {
         var strategy = new SearchByISBN();
-        return strategy.Search(isbn, _bookManager.GetAllBooks());
+        var books = await _bookManager.GetAllBooks();
+        return strategy.Search(isbn, books.ToList());
     }
 
     private void DisplaySearchResults(List<Book> books)

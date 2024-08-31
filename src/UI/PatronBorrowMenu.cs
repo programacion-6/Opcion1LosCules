@@ -13,9 +13,9 @@ public class PatronBorrowMenu
         _searchByMembership = new();
     }
 
-    public void BorrowBook()
+    public async void BorrowBook()
     {
-        List<Patron> patrons = _library.patronsManager().GetAllPatrons();
+        List<Patron> patrons = (await _library.patronsManager().GetAllPatrons()).ToList();
         Patron patron = null;
 
         
@@ -42,7 +42,7 @@ public class PatronBorrowMenu
         {
             var isbn = AnsiConsole.Ask<string>("[green]Enter book ISBN to borrow:[/]");
 
-            var books = _searchByISBN.Search(isbn, _library.booksManager().GetAllBooks());
+            var books = _searchByISBN.Search(isbn, (await _library.booksManager().GetAllBooks()).ToList());
             book = books?.FirstOrDefault();
 
             if (book == null)
@@ -65,7 +65,7 @@ public class PatronBorrowMenu
     }
 
 
-    public void ReturnBook()
+    public async void ReturnBook()
     {
         Book book = null;
 
@@ -73,7 +73,8 @@ public class PatronBorrowMenu
         {
             var isbn = AnsiConsole.Ask<string>("[green]Enter book ISBN to return:[/]");
         
-            var books = _searchByISBN.Search(isbn, _library.booksManager().GetAllBooks());
+            var books = _searchByISBN.Search(isbn, (await _library.booksManager().GetAllBooks()).ToList());
+
             book = books?.FirstOrDefault();
 
             if (book == null)
@@ -94,7 +95,7 @@ public class PatronBorrowMenu
                 continue;
             }
 
-            patron = _searchByMembership.Search(membershipNumber, _library.patronsManager().GetAllPatrons())?.FirstOrDefault();
+            patron = _searchByMembership.Search(membershipNumber, (await _library.patronsManager().GetAllPatrons()).ToList())?.FirstOrDefault();
 
             if (patron == null)
             {

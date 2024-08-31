@@ -72,27 +72,27 @@ namespace Opcion1LosCules
             }
         }
 
-        public void UpdatePatron()
+        public async void UpdatePatron()
         {
-            int membershipNumber = ValidateMembershipNumber("[green]Enter patron membership number:[/]");
+            string patronId = AnsiConsole.Ask<string>("[green]Enter patron membership Id:[/]");
 
-            var existingPatron = _library.patronsManager().GetAllPatrons()
-                .FirstOrDefault(p => p.MembershipNumber == membershipNumber);
+            var existingPatron = _library.patronsManager().GetPatronById(patronId);
 
             if (existingPatron == null)
             {
-                AnsiConsole.MarkupLine("[red]No patron found with that membership number. Please try again.[/]");
+                AnsiConsole.MarkupLine("[red]No patron found with that Id. Please try again.[/]");
                 return;
             }
 
             var name = ValidateName("[green]Enter patron name:[/]");
+            var membershipNumber = ValidateMembershipNumber("[green]Enter patron membership number:[/]");
             var contactDetails = AnsiConsole.Ask<string>("[green]Enter new contact details (email):[/]");
 
             var updatedPatron = new Patron(name, membershipNumber, contactDetails);
 
             try
             {
-                _library.patronsManager().UpdatePatron(updatedPatron);
+                await _library.patronsManager().UpdatePatron(patronId, updatedPatron);
                 AnsiConsole.MarkupLine("[green]Patron updated successfully.[/]");
             }
             catch (ValidationException ex)
@@ -107,16 +107,15 @@ namespace Opcion1LosCules
 
 
 
-        public void RemovePatron()
+        public async void RemovePatron()
         {
-             int membershipNumber = AnsiConsole.Ask<int>("[green]Enter patron membership number:[/]");
+             string patronId = AnsiConsole.Ask<string>("[green]Enter patron Id:[/]");
 
-             var patron = _library.patronsManager().GetAllPatrons()
-                .FirstOrDefault(p => p.MembershipNumber == membershipNumber);
+             var patron = _library.patronsManager().GetPatronById(patronId);
 
             if (patron != null)
             {
-                _library.patronsManager().RemovePatron(patron);
+                await _library.patronsManager().RemovePatron(patronId);
                 AnsiConsole.MarkupLine("[green]Patron removed successfully.[/]");
             }
             else
@@ -125,11 +124,11 @@ namespace Opcion1LosCules
             }
         }
 
-        public void ListPatrons()
+        public async void ListPatrons()
         {
-            var existingPatron = _library.patronsManager().GetAllPatrons();
+            var existingPatron =  await _library.patronsManager().GetAllPatrons();
 
-            if (existingPatron.Count == 0)
+            if (!existingPatron.Any())
                 {
                     AnsiConsole.MarkupLine("[red]No patrons found.[/]");
                     return;

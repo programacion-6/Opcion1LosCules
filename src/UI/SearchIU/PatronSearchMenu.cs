@@ -3,13 +3,14 @@ using Spectre.Console;
 public class PatronSearchMenu
 {
     private readonly PatronsManager _patronManager;
+    private List<Patron> _patrons;
         
     public PatronSearchMenu( PatronsManager patronManager)
     {
         _patronManager = patronManager;
     }
 
-    public void DisplaySearchMenu()
+    public async void DisplaySearchMenu()
     {
         var option = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
@@ -30,10 +31,10 @@ public class PatronSearchMenu
         switch (option)
             {
             case "Search by Name":
-                searchResults = SearchByName(query);
+                searchResults = await SearchByName(query);
                 break;
             case "Search by Membership Number":
-                searchResults = SearchByMembershipNumber(query);
+                searchResults = await SearchByMembershipNumber(query);
                 break;
             default:
                 AnsiConsole.MarkupLine("[red]Invalid option.[/]");
@@ -43,16 +44,18 @@ public class PatronSearchMenu
         DisplaySearchResults(searchResults);
     }
 
-    public List<Patron> SearchByName(string name)
+    public async Task<List<Patron>> SearchByName(string name)
     {
         var strategy = new SearchByName();
-        return strategy.Search(name, _patronManager.GetAllPatrons());
+        var patrons = await _patronManager.GetAllPatrons();
+        return strategy.Search(name, patrons.ToList());
     }
 
-    public List<Patron> SearchByMembershipNumber(string membershipNumber)
+    public async Task<List<Patron>> SearchByMembershipNumber(string membershipNumber)
     {
         var strategy = new SearchByMembershipNumber();
-        return strategy.Search(membershipNumber, _patronManager.GetAllPatrons());
+        var patrons = await _patronManager.GetAllPatrons();
+        return strategy.Search(membershipNumber, patrons.ToList());
     }
 
     private void DisplaySearchResults(List<Patron> patrons)

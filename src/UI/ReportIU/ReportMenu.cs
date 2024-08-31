@@ -92,17 +92,18 @@ namespace Opcion1LosCules
             return obj.GetType().GetProperty(propertyName) != null;
         }
 
-        public void ShowBorrowPatronHistory()
+        public async void ShowBorrowPatronHistory()
         {
             AnsiConsole.Write("Enter Patron Membership Number: ");
             if (int.TryParse(Console.ReadLine(), out int membershipNumber))
             {
-                var patron = _patronsManager.GetAllPatrons()
+                //TODO: Review
+                var patron = (await _patronsManager.GetAllPatrons())
                                             .FirstOrDefault(p => p.MembershipNumber == membershipNumber);
                 if (patron != null)
                 {
                     var reportContext = new ReportContext(new BorrowingHistoryReport(patron));
-                    var report = reportContext.GenerateReport(_booksManager, _patronsManager);
+                    var report = await reportContext.GenerateReport(_patronsManager);
                     DisplayReport($"Borrowing History Report for {patron.Name}", report);
                 }
                 else
@@ -116,17 +117,17 @@ namespace Opcion1LosCules
             }
         }
 
-        public void ShowCurrentBorrowedBooksReport()
+        public async void ShowCurrentBorrowedBooksReport()
         {
             var reportContext = new ReportContext(new CurrentlyBorrowedBooksReport());
-            var report = reportContext.GenerateReport(_booksManager, _patronsManager);
+            var report = await reportContext.GenerateReport(_patronsManager);
             DisplayReport("Currently Borrowed Books Report", report);
         }
 
-        public void ShowOverdueBooksReport()
+        public async void ShowOverdueBooksReport()
         {
             var reportContext = new ReportContext(new OverdueBooksReport());
-            var report = reportContext.GenerateReport(_booksManager, _patronsManager);
+            var report = await reportContext.GenerateReport(_patronsManager);
             DisplayReport("Overdue Books Report", report);
         }
     }
