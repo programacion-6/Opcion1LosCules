@@ -8,10 +8,7 @@ public class Book : IEntity
     private string _ISBN;
     private string _genre;
     private int _publicationYear;
-    public DateTime? DueDate { get; set; }
-    public DateTime? ReturnDate { get; set; }
-    private bool _isBorrowed = false;
-
+    public BorrowingInfo BorrowingInfo { get; set; }
 
     public Book(string title, string author, string ISBN, string genre, int publicationYear) 
     {
@@ -21,6 +18,7 @@ public class Book : IEntity
         _ISBN = ISBN;
         _genre = genre;
         _publicationYear = publicationYear;
+        BorrowingInfo = new BorrowingInfo();
     }
 
     public string Title 
@@ -51,37 +49,5 @@ public class Book : IEntity
     {
         get { return _publicationYear; }
         set { _publicationYear = value; }
-    }  
-
-    public bool IsBorrowed 
-    {
-        get { return _isBorrowed; }
-        set { _isBorrowed = value; }
-    }  
-
-    public bool IsAvailable()
-    {
-        
-        return !DueDate.HasValue || DateTime.Now > DueDate.Value;
-    }
-
-    
-    public void MarkAsBorrowed(DateTime borrowDate)
-    {
-        _isBorrowed = true;
-        DueDate = borrowDate.AddDays(14);
-        ReturnDate = null; 
-    }
-
-   
-    public void MarkAsReturned(DateTime returnDate)
-    {
-        _isBorrowed = false;
-        ReturnDate = returnDate;
-    }
-
-    public void SetDueDate(DateTime? dueDate)
-    {
-        DueDate = dueDate;
-    }
+    }   
 }

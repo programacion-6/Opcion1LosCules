@@ -15,19 +15,21 @@ public class BorrowingHistoryReport : IReportStrategy
     {
         foreach (var book in _patron.HistoryBorrowedBooks)
         {
-            report.Add(new
-            {
-                Title = book.Title,
-                Author = book.Author,
-                ISBN = book.ISBN,
-                Genre = book.Genre,
-                BorrowedOn = book.DueDate.HasValue ? book.DueDate.Value.AddDays(DaysBeforeDueDate) : (DateTime?)null,
-                DueDate = book.DueDate
-            });
+            report.Add(
+                new
+                {
+                    Title = book.Title,
+                    Author = book.Author,
+                    ISBN = book.ISBN,
+                    Genre = book.Genre,
+                    BorrowedOn = book.BorrowingInfo.DueDate.HasValue
+                        ? book.BorrowingInfo.DueDate.Value.AddDays(DaysBeforeDueDate)
+                        : (DateTime?)null,
+                    DueDate = book.BorrowingInfo.DueDate
+                }
+            );
         }
 
         return Task.FromResult(report);
     }
 }
-
-

@@ -25,7 +25,7 @@ namespace Opcion1LosCules.Tests
         {
             var patron = new Patron("Sandra", 45847152, "sandra@example.com");
             var book = new Book("The Catcher in the Rye", "J.D. Salinger", "45825", "Fiction", 1951);
-            book.MarkAsBorrowed(DateTime.Now.AddDays(-10)); 
+            book.BorrowingInfo.MarkAsBorrowed(DateTime.Now.AddDays(-10)); 
             patron.BorrowedBooks.Add(book);
 
             
@@ -59,8 +59,8 @@ namespace Opcion1LosCules.Tests
         {
             var patron = new Patron("Sandra", 45845714, "sandra@example.com");
             var book = new Book("The Catcher in the Rye", "J.D. Salinger", "45825", "Fiction", 19518);
-            book.MarkAsBorrowed(DateTime.Now.AddDays(-10));
-            book.MarkAsReturned(DateTime.Now);
+            book.BorrowingInfo.MarkAsBorrowed(DateTime.Now.AddDays(-10));
+            book.BorrowingInfo.MarkAsReturned(DateTime.Now);
 
             patron.BorrowedBooks.Add(book);
 
@@ -78,7 +78,7 @@ namespace Opcion1LosCules.Tests
         {
             var patron = new Patron("Sandra", 458554514, "sandra@example.com");
             var book = new Book("The Catcher in the Rye", "J.D. Salinger", "45825", "Fiction", 195514);
-            book.MarkAsBorrowed(DateTime.Now.AddDays(-10)); 
+            book.BorrowingInfo.MarkAsBorrowed(DateTime.Now.AddDays(-10)); 
             patron.BorrowedBooks.Add(book);
 
             _returnBook.SetPatron(patron);
@@ -88,7 +88,7 @@ namespace Opcion1LosCules.Tests
             _returnBook.UpdateRecords();
 
             Assert.DoesNotContain(book, patron.BorrowedBooks);
-            Assert.False(book.IsAvailable()); 
+            Assert.False(book.BorrowingInfo.IsAvailable()); 
         }
     }
 
