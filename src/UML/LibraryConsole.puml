@@ -81,12 +81,12 @@ package "Library Console" {
     }
 }
  
-HomePage --> BookMenu 
-HomePage --> PatronMenu 
-HomePage --> PatronBorrowMenu 
-HomePage --> BookSearchMenu 
-HomePage --> PatronSearchMenu 
-HomePage --> ReportMenu 
-BookMenu --> BooksManagementMenu 
-PatronMenu --> PatronsManagementMenu 
+HomePage *-- BookMenu 
+HomePage *-- PatronMenu 
+HomePage *-- PatronBorrowMenu 
+HomePage *-- BookSearchMenu 
+HomePage *-- PatronSearchMenu 
+HomePage *-- ReportMenu 
+BookMenu *-- BooksManagementMenu 
+PatronMenu *-- PatronsManagementMenu 
 @enduml

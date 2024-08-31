@@ -32,6 +32,7 @@ Library *-- ReturnBook
 Library *-- BorrowingOperation 
 Library *-- HomePage
 Library *-- ReportContext
+ReportContext o-- ISearchStrategy
 Library o-- ISearchStrategy
 Library o-- BooksManager
 Library o-- PatronsManager
