@@ -11,10 +11,6 @@ package "Pagination System" {
         -void UpdatePageIndex(String option, ref int pageIndex)
     }
 
-    class UIUtils {
-        +static void PaginateTable(IPaginationStrategy strategy, Table table, List<String[]> rows, int pageSize = 5)
-    }
-
     StandardPagination --> IPaginationStrategy : implements
 }
 
