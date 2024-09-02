@@ -1,13 +1,11 @@
 namespace Opcion1LosCules;
 public class BorrowBook : BorrowingOperation
 {
-    private IStorage<Book> _bookStorage;
-    private IStorage<Patron> _patronStorage;
+    private readonly IDatabaseContext _databaseContext;
 
-    public BorrowBook(IStorage<Book> bookStorage, IStorage<Patron> patronStorage)
+    public BorrowBook(IDatabaseContext databaseContext)
     {
-        _bookStorage = bookStorage;
-        _patronStorage = patronStorage;
+        _databaseContext = databaseContext;
     }
 
     private bool CheckAvailability()
@@ -33,8 +31,7 @@ public class BorrowBook : BorrowingOperation
     public override void UpdateRecords()
     {
         UpdateAndNotify(
-            _bookStorage,
-            _patronStorage,
+            _databaseContext,
             book =>
             {
                 book.BorrowingInfo.MarkAsBorrowed(Date);

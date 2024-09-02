@@ -67,17 +67,17 @@ public abstract class BorrowingOperation
     public abstract bool Validate();
     public abstract void UpdateRecords();
     protected abstract void NotifyPatron();
-    protected void UpdateAndNotify(IStorage<Book> bookStorage, IStorage<Patron> patronStorage, Action<Book> updateBookAction, Action<Patron> updatePatronAction)
+    protected async void UpdateAndNotify(IDatabaseContext databaseContext, Action<Book> updateBookAction, Action<Patron> updatePatronAction)
     {
         Console.WriteLine($"Updating records for book {Book.Title}.");
 
         updateBookAction(Book);
         updatePatronAction(Patron);
 
-        BooksManager booksManager = new BooksManager(bookStorage);
-        booksManager.UpdateItem(Book);
+        BooksManager booksManager = new BooksManager(databaseContext);
+        await booksManager.UpdateBook(Book.Id.ToString(), Book);
 
-        PatronsManager patronsManager = new PatronsManager(patronStorage);
-        patronsManager.UpdateItem(Patron);
+        PatronsManager patronsManager = new PatronsManager(databaseContext);
+        await patronsManager.UpdatePatron(Patron.Id.ToString(), Patron);
     }
 }

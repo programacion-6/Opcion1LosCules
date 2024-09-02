@@ -9,7 +9,7 @@ public class PatronSearchMenu
         _patronManager = patronManager;
     }
 
-    public void DisplaySearchMenu()
+    public async void DisplaySearchMenu()
     {
         var option = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
@@ -30,10 +30,10 @@ public class PatronSearchMenu
         switch (option)
             {
             case "Search by Name":
-                searchResults = SearchByName(query);
+                searchResults = await SearchByName(query);
                 break;
             case "Search by Membership Number":
-                searchResults = SearchByMembershipNumber(query);
+                searchResults = await SearchByMembershipNumber(query);
                 break;
             default:
                 AnsiConsole.MarkupLine("[red]Invalid option.[/]");
@@ -43,16 +43,16 @@ public class PatronSearchMenu
         DisplaySearchResults(searchResults);
     }
 
-    public List<Patron> SearchByName(string name)
+    public async Task<List<Patron>> SearchByName(string name)
     {
         var strategy = new SearchByName(name);
-        return strategy.Search(_patronManager.Items);
+        return strategy.Search((await _patronManager.GetAllPatrons()).ToList());
     }
 
-    public List<Patron> SearchByMembershipNumber(string membershipNumber)
+    public async Task<List<Patron>> SearchByMembershipNumber(string membershipNumber)
     {
         var strategy = new SearchByMembershipNumber(int.Parse(membershipNumber));
-        return strategy.Search(_patronManager.Items);
+        return strategy.Search((await _patronManager.GetAllPatrons()).ToList());
     }
 
     private void DisplaySearchResults(List<Patron> patrons)

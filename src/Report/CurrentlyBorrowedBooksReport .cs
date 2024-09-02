@@ -2,10 +2,10 @@ namespace Opcion1LosCules;
 
 public class CurrentlyBorrowedBooksReport : IReportStrategy
 {
-    public List<object> GenerateReport(BooksManager booksManager, PatronsManager patronsManager)
+    public async Task<List<object>> GenerateReport(PatronsManager patronsManager)
     {
-        return patronsManager
-            .Items
+        var patrons = (await patronsManager.GetAllPatrons()).ToList();
+        return patrons
             .SelectMany(p => p.BorrowedBooks, (p, b) => new { Patron = p, Book = b })
             .Where(pb =>
                 pb.Book.BorrowingInfo.DueDate.HasValue && !pb.Book.BorrowingInfo.ReturnDate.HasValue

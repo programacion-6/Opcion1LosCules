@@ -8,8 +8,8 @@ public class ReportContext
         _reportStrategy = reportStrategy;
     }
 
-    public List<object> GenerateReport(BooksManager booksManager, PatronsManager patronsManager)
+    public Task<List<object>> GenerateReport(PatronsManager patronsManager)
     {
-        return _reportStrategy.GenerateReport(booksManager, patronsManager);
+        return _reportStrategy.GenerateReport(patronsManager);
     }
 }

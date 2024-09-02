@@ -48,7 +48,7 @@ namespace Opcion1LosCules
             return value;
         }
 
-        public void AddPatron()
+        public async void AddPatron()
         {
             var name =  ValidateName("[green]Enter patron name:[/]");
             int membershipNumber = ValidateMembershipNumber("[green]Enter patron membership number:[/]");
@@ -58,7 +58,7 @@ namespace Opcion1LosCules
             
             try
             {
-                _library.patronsManager().AddItem(patron);
+                await _library.patronsManager().AddPatron(patron);
                 AnsiConsole.MarkupLine("[green]Patron added successfully.[/]");
             }
             catch (ValidationException ex)
@@ -71,26 +71,28 @@ namespace Opcion1LosCules
             }
         }
 
-        public void UpdatePatron()
+        public async void UpdatePatron()
         {
-            var existingPatron = UIUtils.DisplaySelectableListResult(
-                _library.patronsManager().Items
-            );
-            
+            string patronId = AnsiConsole.Ask<string>("[green]Enter patron membership Id:[/]");
+
+            var existingPatron = _library.patronsManager().GetPatronById(patronId);
+
+
             if (existingPatron == null)
             {
-                AnsiConsole.MarkupLine("[red]No patron found with that membership number. Please try again.[/]");
+                AnsiConsole.MarkupLine("[red]No patron found with that Id. Please try again.[/]");
                 return;
             }
 
             var name = ValidateName("[green]Enter patron name:[/]");
+            var membershipNumber = ValidateMembershipNumber("[green]Enter patron membership number:[/]");
             var contactDetails = AnsiConsole.Ask<string>("[green]Enter new contact details (email):[/]");
 
-            var updatedPatron = new Patron(name, existingPatron.MembershipNumber, contactDetails);
+            var updatedPatron = new Patron(name, membershipNumber, contactDetails);
 
             try
             {
-                _library.patronsManager().UpdateItem(updatedPatron);
+                await _library.patronsManager().UpdatePatron(patronId, updatedPatron);
                 AnsiConsole.MarkupLine("[green]Patron updated successfully.[/]");
             }
             catch (ValidationException ex)
@@ -103,15 +105,15 @@ namespace Opcion1LosCules
             }
         }
 
-        public void RemovePatron()
+        public async void RemovePatron()
         {
-            var patron = UIUtils.DisplaySelectableListResult(
-                _library.patronsManager().Items
-            );
+             string patronId = AnsiConsole.Ask<string>("[green]Enter patron Id:[/]");
+
+             var patron = _library.patronsManager().GetPatronById(patronId);
 
             if (patron != null)
             {
-                _library.patronsManager().RemoveItem(patron);
+                await _library.patronsManager().RemovePatron(patronId);
                 AnsiConsole.MarkupLine("[green]Patron removed successfully.[/]");
             }
             else
@@ -120,11 +122,11 @@ namespace Opcion1LosCules
             }
         }
 
-        public void ListPatrons()
+        public async void ListPatrons()
         {
-            var existingPatron = _library.patronsManager().Items;
+            var existingPatron =  await _library.patronsManager().GetAllPatrons();
 
-            if (existingPatron.Count == 0)
+            if (!existingPatron.Any())
                 {
                     AnsiConsole.MarkupLine("[red]No patrons found.[/]");
                     return;
@@ -136,6 +138,7 @@ namespace Opcion1LosCules
             table.AddColumn("[yellow]Contact Details[/]");
             table.AddColumn("[yellow]Current Books Borrowed[/]");
             table.AddColumn("[yellow]Borrowing History[/]");
+            table.AddColumn("[yellow]Patron Id[/]");
 
             var rows = new List<string[]>();
 
@@ -150,7 +153,8 @@ namespace Opcion1LosCules
                             patron.Name,
                             patron.ContactDetails,
                             borrowedBooks,
-                            historyBooks
+                            historyBooks,
+                            patron.Id.ToString()
                         });
                 }
 

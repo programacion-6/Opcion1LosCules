@@ -1,24 +1,46 @@
+using Spectre.Console;
+
 namespace Opcion1LosCules;
-
-public class BooksManager : AManager<Book>
+public class BooksManager : IBookRepository
 {
-    public BooksManager(IStorage<Book> bookStorage)
-        : base(bookStorage, new BookValidator()) { }
+    private readonly BookValidator _bookValidator;
+    private readonly IDatabaseContext _database;
 
-    public override void UpdateItem(Book book)
+    public BooksManager(IDatabaseContext databaseContext)
     {
-        var existingBook = Items.FirstOrDefault(b => b.Title == book.Title);
+        _bookValidator = new BookValidator();
+        _database = databaseContext;
+    }
 
-        if (existingBook != null)
+    public async Task AddBook(Book book)
+    {
+        _bookValidator.Validate(book);
+        if(await _database.Add(book) != 200)
         {
-            existingBook.Author = book.Author;
-            existingBook.ISBN = book.ISBN;
-            existingBook.Genre = book.Genre;
-            existingBook.PublicationYear = book.PublicationYear;
-            existingBook.BorrowingInfo.DueDate = book.BorrowingInfo.DueDate;
-            existingBook.BorrowingInfo.ReturnDate = book.BorrowingInfo.ReturnDate;
-            existingBook.BorrowingInfo.IsBorrowed = book.BorrowingInfo.IsBorrowed;
-            SaveItemsToDB();
+            AnsiConsole.WriteLine("Error to add the book.");
+        }
+    }
+
+    public Task<IEnumerable<Book>> GetAllBooks()
+    {
+        return _database.GetAll<Book>();
+    }
+
+    public Task<Book> GetBookById(string id)
+    {
+        return _database.GetById<Book>(id);
+    }
+
+    public async Task RemoveBook(string id)
+    {
+        await _database.Delete(id);
+    }
+
+    public async Task UpdateBook(string id, Book book)
+    {
+        if(await _database.Update<Book>(id, book) != 200)
+        {
+            AnsiConsole.WriteLine("Error to update the Book.");
         }
     }
 }

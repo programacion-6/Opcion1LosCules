@@ -3,22 +3,15 @@ namespace Opcion1LosCules.Tests
 {
     public class BorrowBookTests
     {
-        private readonly BooksManager _booksManager;
-        private readonly Mock<IStorage<Book>> _mockBookStorage;
-        private readonly PatronsManager _patronsManager;
-        private readonly Mock<IStorage<Patron>> _mockPatronStorage;
+        private readonly IDatabaseContext _database;
         private readonly BorrowBook _borrowBook;
 
         public BorrowBookTests()
         {
-            _mockBookStorage = new Mock<IStorage<Book>>();
-            _mockBookStorage.Setup(x => x.Load()).Returns(new List<Book>());
-            _booksManager = new BooksManager(_mockBookStorage.Object);
-            _mockPatronStorage = new Mock<IStorage<Patron>>();
-            _mockPatronStorage.Setup(x => x.Load()).Returns(new List<Patron>());
-            _patronsManager = new PatronsManager(_mockPatronStorage.Object);
-            _borrowBook = new BorrowBook(_mockBookStorage.Object , _mockPatronStorage.Object);
+            _database = new Database();
+            _borrowBook = new BorrowBook(_database);
         }
+        
         [Fact]
         public void Validate_ShouldReturnTrue_WhenBookIsAvailableAndNotAlreadyBorrowed()
         {

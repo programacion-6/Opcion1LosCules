@@ -92,9 +92,9 @@ namespace Opcion1LosCules
             return obj.GetType().GetProperty(propertyName) != null;
         }
 
-        public void ShowBorrowPatronHistory()
+        public async void ShowBorrowPatronHistory()
         {
-            var existingPatrons = _patronsManager.Items;
+            var existingPatrons = await _patronsManager.GetAllPatrons();
 
             if (!existingPatrons.Any())
             {
@@ -111,21 +111,21 @@ namespace Opcion1LosCules
             }
 
             var reportContext = new ReportContext(new BorrowingHistoryReport(selectedPatron));
-            var report = reportContext.GenerateReport(_booksManager, _patronsManager);
+            var report = await reportContext.GenerateReport(_patronsManager);
             DisplayReport($"Borrowing History Report for {selectedPatron.Name}", report);
         }
 
-        public void ShowCurrentBorrowedBooksReport()
+        public async void ShowCurrentBorrowedBooksReport()
         {
             var reportContext = new ReportContext(new CurrentlyBorrowedBooksReport());
-            var report = reportContext.GenerateReport(_booksManager, _patronsManager);
+            var report = await reportContext.GenerateReport(_patronsManager);
             DisplayReport("Currently Borrowed Books Report", report);
         }
 
-        public void ShowOverdueBooksReport()
+        public async void ShowOverdueBooksReport()
         {
             var reportContext = new ReportContext(new OverdueBooksReport());
-            var report = reportContext.GenerateReport(_booksManager, _patronsManager);
+            var report = await reportContext.GenerateReport(_patronsManager);
             DisplayReport("Overdue Books Report", report);
         }
     }

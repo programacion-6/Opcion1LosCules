@@ -1,13 +1,11 @@
 namespace Opcion1LosCules;
 public class ReturnBook : BorrowingOperation
 {
-    private IStorage<Book> _bookStorage;
-    private IStorage<Patron> _patronStorage;
+    private readonly IDatabaseContext _databaseContext;
 
-    public ReturnBook(IStorage<Book> bookStorage, IStorage<Patron> patronStorage)
+    public ReturnBook(IDatabaseContext databaseContext)
     {
-        _bookStorage = bookStorage;
-        _patronStorage = patronStorage;
+        _databaseContext = databaseContext;
     }
 
     public override bool Validate()
@@ -18,8 +16,7 @@ public class ReturnBook : BorrowingOperation
     public override void UpdateRecords()
     {
         UpdateAndNotify(
-            _bookStorage,
-            _patronStorage,
+            _databaseContext,
             book => book.BorrowingInfo.MarkAsReturned(Date),
             patron => Patron.BorrowedBooks.Remove(Book));
     }

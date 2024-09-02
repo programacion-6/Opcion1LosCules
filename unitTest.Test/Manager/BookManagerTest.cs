@@ -4,37 +4,34 @@ namespace Opcion1LosCules.Tests
     public class BooksManagerTests
     {
         private readonly BooksManager _booksManager;
-        private readonly Mock<IStorage<Book>> _mockBookStorage;
 
         public BooksManagerTests()
         {
-            _mockBookStorage = new Mock<IStorage<Book>>();
-            _mockBookStorage.Setup(x => x.Load()).Returns(new List<Book>());
-            _booksManager = new BooksManager(_mockBookStorage.Object);
+            _booksManager = new BooksManager(new Database());
         }
         [Fact]
-        public void RemoveBook_ShouldDeleteBookFromCollection()
+        public async void RemoveBook_ShouldDeleteBookFromCollection()
         {
             var book = new Book("1984", "George Orwell", "45825", "Dystopian", 1949);
-            _booksManager.AddItem(book);
+            await _booksManager.AddBook(book);
 
-            _booksManager.RemoveItem(book);
+            await _booksManager.RemoveBook(book.Id.ToString());
 
-            Assert.DoesNotContain(book, _booksManager.Items);
+            Assert.DoesNotContain(book, await _booksManager.GetAllBooks());
         }
 
         [Fact]
-        public void GetAllBooks_ShouldReturnAllAddedBooks()
+        public async void GetAllBooks_ShouldReturnAllAddedBooks()
         {
             var book1 = new Book("1984", "George Orwell", "45825", "Dystopian", 1949);
             var book2 = new Book("Brave New World", "Aldous Huxley", "45826", "Science Fiction", 1932);
 
-            _booksManager.AddItem(book1);
-            _booksManager.AddItem(book2);
+            await _booksManager.AddBook(book1);
+            await _booksManager.AddBook(book2);
 
-            var allBooks = _booksManager.Items;
+            var allBooks = await _booksManager.GetAllBooks();
 
-            Assert.Equal(2, allBooks.Count);
+            Assert.Equal(2, allBooks.Count());
             Assert.Contains(book1, allBooks);
             Assert.Contains(book2, allBooks);
         }   

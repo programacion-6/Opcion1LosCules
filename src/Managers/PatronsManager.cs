@@ -1,27 +1,52 @@
 namespace Opcion1LosCules;
 
-using System.Linq;
+using System.Threading.Tasks;
+using Spectre.Console;
 
-public class PatronsManager : AManager<Patron>
+public class PatronsManager : IPatronRepository
 {
-    public PatronsManager(IStorage<Patron> patronStorage)
-        : base(patronStorage, new PatronValidator()) { }
+    private readonly PatronValidator _patronValidator;
+    private readonly IDatabaseContext _database;
 
-    public override void UpdateItem(Patron patron)
+
+    public PatronsManager(IDatabaseContext databaseContext)
     {
-        var existingPatron = Items.FirstOrDefault(p =>
-            p.MembershipNumber == patron.MembershipNumber
-        );
+        _patronValidator = new PatronValidator();
+        _database = databaseContext;
+    }
 
-        if (existingPatron != null)
+    public async Task AddPatron(Patron patron)
+    {
+        _patronValidator.Validate(patron);
+        if(await _database.Add(patron) != 200)
         {
-            existingPatron.Name = patron.Name;
-            existingPatron.MembershipNumber = patron.MembershipNumber;
-            existingPatron.ContactDetails = patron.ContactDetails;
-            existingPatron.BorrowedBooks = patron.BorrowedBooks;
-            existingPatron.BorrowedBooks = patron.BorrowedBooks;
-            existingPatron.HistoryBorrowedBooks = patron.HistoryBorrowedBooks;
-            SaveItemsToDB();
+            AnsiConsole.WriteLine("Error to add the patron.");
+        }
+    }
+
+    public Task<IEnumerable<Patron>> GetAllPatrons()
+    {
+        return _database.GetAll<Patron>();
+    }
+
+    public Task<Patron> GetPatronById(string id)
+    {
+        return _database.GetById<Patron>(id);
+    }
+
+    public async Task RemovePatron(string id)
+    {
+        if(await _database.Delete(id) != 200)
+        {
+            AnsiConsole.WriteLine("Error to Remove the patron.");
+        }
+    }
+
+    public async Task UpdatePatron(string id, Patron patron)
+    {
+        if(await _database.Update(id, patron) != 200)
+        {
+            AnsiConsole.WriteLine("Error to Update the patron.");
         }
     }
 }

@@ -1,7 +1,8 @@
 namespace Opcion1LosCules;
 
-public class Patron 
+public class Patron : IEntity
 {
+    public Guid Id { get; set; } 
     private string _name;
     private int _membershipNumber;
     private string _contactDetails;
@@ -10,6 +11,7 @@ public class Patron
 
     public Patron(string name,int membershipNumber, string contactDetails)
     {
+        Id = Guid.NewGuid();
         _name = name;
         _membershipNumber = membershipNumber;
         _contactDetails = contactDetails;
