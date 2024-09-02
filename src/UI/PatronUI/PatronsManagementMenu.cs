@@ -4,7 +4,6 @@ namespace Opcion1LosCules
     public class PatronsManagementMenu
     {
         private Library _library;
-        private IPatronSearchStrategy _patronSearchStrategy;
 
         public PatronsManagementMenu(Library library) 
         {
@@ -74,11 +73,10 @@ namespace Opcion1LosCules
 
         public void UpdatePatron()
         {
-            int membershipNumber = ValidateMembershipNumber("[green]Enter patron membership number:[/]");
-
-            var existingPatron = _library.patronsManager().Items
-                .FirstOrDefault(p => p.MembershipNumber == membershipNumber);
-
+            var existingPatron = UIUtils.DisplaySelectableListResult(
+                _library.patronsManager().Items
+            );
+            
             if (existingPatron == null)
             {
                 AnsiConsole.MarkupLine("[red]No patron found with that membership number. Please try again.[/]");
@@ -88,7 +86,7 @@ namespace Opcion1LosCules
             var name = ValidateName("[green]Enter patron name:[/]");
             var contactDetails = AnsiConsole.Ask<string>("[green]Enter new contact details (email):[/]");
 
-            var updatedPatron = new Patron(name, membershipNumber, contactDetails);
+            var updatedPatron = new Patron(name, existingPatron.MembershipNumber, contactDetails);
 
             try
             {
@@ -109,10 +107,9 @@ namespace Opcion1LosCules
 
         public void RemovePatron()
         {
-             int membershipNumber = AnsiConsole.Ask<int>("[green]Enter patron membership number:[/]");
-
-             var patron = _library.patronsManager().Items
-                .FirstOrDefault(p => p.MembershipNumber == membershipNumber);
+            var patron = UIUtils.DisplaySelectableListResult(
+                _library.patronsManager().Items
+            );
 
             if (patron != null)
             {
