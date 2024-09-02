@@ -56,4 +56,12 @@ public class Patron
             }
         }
     }
+
+    public override string ToString()
+    {
+        return $"Patron:\n"
+            + $"Name: {Name}\n"
+            + $"MembershipNumber: {MembershipNumber}\n"
+            + $"ContactDetails: {ContactDetails}";
+    }
 }
