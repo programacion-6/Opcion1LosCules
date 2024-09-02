@@ -6,7 +6,7 @@ public class Library
     private PatronsManager _patronsManager;
     private BorrowBook _borrowBook;
     private ReturnBook _returnBook;
-    private BorrowingOperation _borrowingOperation;
+    private BorrowingOperation _borrowingOperation = default!;
     public Library()
     {
         var databaseContext = new Database();
@@ -41,6 +41,4 @@ public class Library
     {
         return _borrowingOperation;
     }
-
-    
 }

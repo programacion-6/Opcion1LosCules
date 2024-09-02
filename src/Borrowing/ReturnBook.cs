@@ -13,18 +13,12 @@ public class ReturnBook : BorrowingOperation
         return Patron.BorrowedBooks.Contains(Book) && !Book.BorrowingInfo.IsAvailable();
     }
 
-    public override async void UpdateRecords()
+    public override void UpdateRecords()
     {
-        Console.WriteLine($"Updating records for returning book {Book.Title}.");
-        
-        Book.BorrowingInfo.MarkAsReturned(Date);
-        Patron.BorrowedBooks.Remove(Book);
-
-        BooksManager booksManager = new BooksManager(_databaseContext);
-        await booksManager.UpdateBook(Book.Id.ToString(), Book);
-        
-        PatronsManager patronsManager = new PatronsManager(_databaseContext);
-        await patronsManager.UpdatePatron(Patron.Id.ToString(), Patron);
+        UpdateAndNotify(
+            _databaseContext,
+            book => book.BorrowingInfo.MarkAsReturned(Date),
+            patron => Patron.BorrowedBooks.Remove(Book));
     }
 
     protected override void NotifyPatron()

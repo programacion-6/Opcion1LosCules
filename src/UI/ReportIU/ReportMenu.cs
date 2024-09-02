@@ -14,31 +14,31 @@ namespace Opcion1LosCules
 
         public void DisplayReportMenu()
         {
-           var option = AnsiConsole.Prompt(
-                    new SelectionPrompt<string>()
-                        .Title("[yellow]Report Menu:[/]")
-                        .AddChoices(
-                            "Show Borrowing History Report for a Patron",
-                            "Show Currently Borrowed Books Report",
-                            "Show Overdue Books Report",
-                            "Exit"));
+            var option = AnsiConsole.Prompt(
+                     new SelectionPrompt<string>()
+                         .Title("[yellow]Report Menu:[/]")
+                         .AddChoices(
+                             "Show Borrowing History Report for a Patron",
+                             "Show Currently Borrowed Books Report",
+                             "Show Overdue Books Report",
+                             "Exit"));
 
-                switch (option)
-                {
-                    case "Show Borrowing History Report for a Patron":
-                        ShowBorrowPatronHistory();
-                        break;
-                    case "Show Currently Borrowed Books Report":
-                        ShowCurrentBorrowedBooksReport();
-                        break;
-                    case "Show Overdue Books Report":
-                        ShowOverdueBooksReport();
-                        break;
-                    case "Exit":
-                        return;
-                    default:
-                        AnsiConsole.MarkupLine("[red]Invalid option. Please try again.[/]");
-                        break;
+            switch (option)
+            {
+                case "Show Borrowing History Report for a Patron":
+                    ShowBorrowPatronHistory();
+                    break;
+                case "Show Currently Borrowed Books Report":
+                    ShowCurrentBorrowedBooksReport();
+                    break;
+                case "Show Overdue Books Report":
+                    ShowOverdueBooksReport();
+                    break;
+                case "Exit":
+                    return;
+                default:
+                    AnsiConsole.MarkupLine("[red]Invalid option. Please try again.[/]");
+                    break;
             }
         }
 
@@ -66,7 +66,7 @@ namespace Opcion1LosCules
                     GetPropertyValue(item, "DueDate")
                 }).ToList();
 
-                UIUtils.PaginateTable(new StandardPagination() ,table, rows);
+                UIUtils.PaginateTable(new StandardPagination(), table, rows);
             }
             else
             {
@@ -76,13 +76,13 @@ namespace Opcion1LosCules
 
         }
 
-         private string GetPropertyValue(object obj, string propertyName)
+        private string GetPropertyValue(object obj, string propertyName)
         {
             var property = obj.GetType().GetProperty(propertyName);
             if (property != null)
             {
                 var value = property.GetValue(obj);
-                return value != null ? value.ToString() : "";
+                return value?.ToString() ?? "";
             }
             return "";
         }
@@ -94,26 +94,25 @@ namespace Opcion1LosCules
 
         public async void ShowBorrowPatronHistory()
         {
-            AnsiConsole.Write("Enter Patron Membership Number: ");
-            if (int.TryParse(Console.ReadLine(), out int membershipNumber))
+            var existingPatrons = await _patronsManager.GetAllPatrons();
+
+            if (!existingPatrons.Any())
             {
-                var patron = (await _patronsManager.GetAllPatrons())
-                                            .FirstOrDefault(p => p.MembershipNumber == membershipNumber);
-                if (patron != null)
-                {
-                    var reportContext = new ReportContext(new BorrowingHistoryReport(patron));
-                    var report = await reportContext.GenerateReport(_patronsManager);
-                    DisplayReport($"Borrowing History Report for {patron.Name}", report);
-                }
-                else
-                {
-                    AnsiConsole.WriteLine("Patron not found.");
-                }
+                AnsiConsole.MarkupLine("[red]No patrons found.[/]");
+                return;
             }
-            else
+
+            var selectedPatron = UIUtils.DisplaySelectableListResult(existingPatrons);
+
+            if (selectedPatron == null)
             {
-                AnsiConsole.WriteLine("Invalid Membership Number.");
+                AnsiConsole.MarkupLine("[red]No patron selected.[/]");
+                return;
             }
+
+            var reportContext = new ReportContext(new BorrowingHistoryReport(selectedPatron));
+            var report = await reportContext.GenerateReport(_patronsManager);
+            DisplayReport($"Borrowing History Report for {selectedPatron.Name}", report);
         }
 
         public async void ShowCurrentBorrowedBooksReport()
