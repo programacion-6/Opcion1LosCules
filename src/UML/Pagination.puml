@@ -4,14 +4,12 @@ package "Pagination System" {
         +void Paginate(Table table, List<String[]> rows, int pageSize)
     }
 
-    class StandardPagination {
+    class StandardPagination implements IPaginationStrategy {
         +void Paginate(Table table, List<String[]> rows, int pageSize)
         -void DisplayTable(Table table, IEnumerable<String[]> currentRows)
         -String GetPaginationOption(int pageIndex, int totalPages)
         -void UpdatePageIndex(String option, ref int pageIndex)
     }
-
-    StandardPagination --> IPaginationStrategy : implements
 }
 
 @enduml
