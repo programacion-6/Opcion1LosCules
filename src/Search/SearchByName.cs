@@ -1,8 +1,18 @@
 namespace Opcion1LosCules;
-public class SearchByName : IPatronSearchStrategy
+
+public class SearchByName : ISearchStrategy<Patron>
 {
-    public List<Patron> Search(string name, List<Patron> patrons)
+    public string Name;
+
+    public SearchByName(string name)
     {
-        return patrons.Where(patron => patron.Name.Contains(name, StringComparison.OrdinalIgnoreCase)).ToList();
+        Name = name;
+    }
+
+    public List<Patron> Search(List<Patron> patrons)
+    {
+        return patrons
+            .Where(patron => patron.Name.Contains(Name, StringComparison.OrdinalIgnoreCase))
+            .ToList();
     }
 }
