@@ -94,6 +94,7 @@ namespace Opcion1LosCules
             var bookId = AnsiConsole.Ask<string>("[green]Enter the Id of the book to update:[/]");
             var existingBook = _library.booksManager().GetBookById(bookId);
 
+
             if (existingBook == null)
             {
                 AnsiConsole.MarkupLine("[red]No book found with that Id. Please try again.[/]");
@@ -127,6 +128,7 @@ namespace Opcion1LosCules
             if (existingBook != null)
             {
                 await _library.booksManager().RemoveBook(existingBook.Id.ToString());
+
                 AnsiConsole.MarkupLine("[green]Book removed successfully.[/]");
             }
             else

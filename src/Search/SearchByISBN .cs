@@ -1,8 +1,18 @@
 namespace Opcion1LosCules;
-public class SearchByISBN : IBookSearchStrategy
+
+public class SearchByISBN : ISearchStrategy<Book>
 {
-    public List<Book> Search(string ISBN, List<Book> books)
+    public string ISBN;
+
+    public SearchByISBN(string isbn)
     {
-        return books.Where(book => book.ISBN.Equals(ISBN, StringComparison.OrdinalIgnoreCase)).ToList();
+        ISBN = isbn;
+    }
+
+    public List<Book> Search(List<Book> books)
+    {
+        return books
+            .Where(book => book.ISBN.Equals(ISBN, StringComparison.OrdinalIgnoreCase))
+            .ToList();
     }
 }

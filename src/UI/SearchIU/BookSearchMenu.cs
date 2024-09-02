@@ -50,23 +50,20 @@ public class BookSearchMenu
 
     public async Task<List<Book>> SearchByTitle(string title)
     {
-        var strategy = new SearchByTitle();
-        var books = await _bookManager.GetAllBooks();
-        return strategy.Search(title, books.ToList());
+        var strategy = new SearchByTitle(title);
+        return strategy.Search((await _bookManager.GetAllBooks()).ToList());
     }
 
     public async Task<List<Book>> SearchByAuthor(string author)
     {
-        var strategy = new SearchByAuthor();
-        var books = await _bookManager.GetAllBooks();
-        return strategy.Search(author, books.ToList());
+        var strategy = new SearchByAuthor(author);
+        return strategy.Search((await _bookManager.GetAllBooks()).ToList());
     }
 
     public async Task<List<Book>> SearchByISBN(string isbn)
     {
-        var strategy = new SearchByISBN();
-        var books = await _bookManager.GetAllBooks();
-        return strategy.Search(isbn, books.ToList());
+        var strategy = new SearchByISBN(isbn);
+        return strategy.Search((await _bookManager.GetAllBooks()).ToList());
     }
 
     private void DisplaySearchResults(List<Book> books)

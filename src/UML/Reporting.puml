@@ -27,5 +27,5 @@ package "Reporting" {
 IReportStrategy <|.. BorrowingHistoryReport
 IReportStrategy <|.. CurrentlyBorrowedBooksReport
 IReportStrategy <|.. OverdueBooksReport
-ReportContext --> IReportStrategy
+ReportContext *-- IReportStrategy
 @enduml

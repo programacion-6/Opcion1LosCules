@@ -42,6 +42,7 @@ namespace Opcion1LosCules.Tests
             await _patronsManager.UpdatePatron(patron.Id.ToString(), patron);
 
             var updatedPatron = (await _patronsManager.GetAllPatrons()).FirstOrDefault(p => p.MembershipNumber == 12345);
+
             Assert.NotNull(updatedPatron);
             Assert.Equal("Alice Doe", updatedPatron.Name);
             Assert.Equal("alice.doe@example.com", updatedPatron.ContactDetails);
@@ -61,8 +62,8 @@ namespace Opcion1LosCules.Tests
         public async void RemovePatron_ShouldRemovePatronFromList()
         {
             var patron = new Patron("John Smith", 11111, "john.smith@example.com");
-            await _patronsManager.AddPatron(patron);
 
+            await _patronsManager.AddPatron(patron);
             await _patronsManager.RemovePatron(patron.Id.ToString());
 
             Assert.DoesNotContain(patron, await _patronsManager.GetAllPatrons());

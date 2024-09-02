@@ -3,7 +3,6 @@ using Spectre.Console;
 public class PatronSearchMenu
 {
     private readonly PatronsManager _patronManager;
-    private List<Patron> _patrons;
         
     public PatronSearchMenu( PatronsManager patronManager)
     {
@@ -46,16 +45,14 @@ public class PatronSearchMenu
 
     public async Task<List<Patron>> SearchByName(string name)
     {
-        var strategy = new SearchByName();
-        var patrons = await _patronManager.GetAllPatrons();
-        return strategy.Search(name, patrons.ToList());
+        var strategy = new SearchByName(name);
+        return strategy.Search((await _patronManager.GetAllPatrons()).ToList());
     }
 
     public async Task<List<Patron>> SearchByMembershipNumber(string membershipNumber)
     {
-        var strategy = new SearchByMembershipNumber();
-        var patrons = await _patronManager.GetAllPatrons();
-        return strategy.Search(membershipNumber, patrons.ToList());
+        var strategy = new SearchByMembershipNumber(int.Parse(membershipNumber));
+        return strategy.Search((await _patronManager.GetAllPatrons()).ToList());
     }
 
     private void DisplaySearchResults(List<Patron> patrons)

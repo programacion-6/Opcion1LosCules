@@ -4,7 +4,6 @@ namespace Opcion1LosCules
     public class PatronsManagementMenu
     {
         private Library _library;
-        private IPatronSearchStrategy _patronSearchStrategy;
 
         public PatronsManagementMenu(Library library) 
         {
@@ -49,7 +48,7 @@ namespace Opcion1LosCules
             return value;
         }
 
-        public void AddPatron()
+        public async void AddPatron()
         {
             var name =  ValidateName("[green]Enter patron name:[/]");
             int membershipNumber = ValidateMembershipNumber("[green]Enter patron membership number:[/]");
@@ -59,7 +58,7 @@ namespace Opcion1LosCules
             
             try
             {
-                _library.patronsManager().AddPatron(patron);
+                await _library.patronsManager().AddPatron(patron);
                 AnsiConsole.MarkupLine("[green]Patron added successfully.[/]");
             }
             catch (ValidationException ex)
@@ -77,6 +76,7 @@ namespace Opcion1LosCules
             string patronId = AnsiConsole.Ask<string>("[green]Enter patron membership Id:[/]");
 
             var existingPatron = _library.patronsManager().GetPatronById(patronId);
+
 
             if (existingPatron == null)
             {
@@ -104,8 +104,6 @@ namespace Opcion1LosCules
                 AnsiConsole.MarkupLine($"[red]An unexpected error occurred: {ex.Message}[/]");
             }
         }
-
-
 
         public async void RemovePatron()
         {
