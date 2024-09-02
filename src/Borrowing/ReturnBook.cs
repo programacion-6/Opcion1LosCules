@@ -17,16 +17,11 @@ public class ReturnBook : BorrowingOperation
 
     public override void UpdateRecords()
     {
-        Console.WriteLine($"Updating records for returning book {Book.Title}.");
-        
-        Book.BorrowingInfo.MarkAsReturned(Date);
-        Patron.BorrowedBooks.Remove(Book);
-
-        BooksManager booksManager = new BooksManager(_bookStorage);
-        booksManager.UpdateItem(Book);
-        
-        PatronsManager patronsManager = new PatronsManager(_patronStorage);
-        patronsManager.UpdateItem(Patron);
+        UpdateAndNotify(
+            _bookStorage,
+            _patronStorage,
+            book => book.BorrowingInfo.MarkAsReturned(Date),
+            patron => Patron.BorrowedBooks.Remove(Book));
     }
 
     protected override void NotifyPatron()

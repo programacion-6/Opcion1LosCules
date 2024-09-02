@@ -1,28 +1,28 @@
 namespace Opcion1LosCules;
 public abstract class BorrowingOperation
 {
-    protected Patron Patron { get; private set; }
-    protected Book Book { get; private set; }
+    protected Patron Patron { get; private set; } = default!;
+    protected Book Book { get; private set; } = default!;
     protected DateTime Date { get; private set; }
 
     private readonly BorrowingSystemValidator _validator;
 
     public BorrowingOperation()
     {
-        _validator = new BorrowingSystemValidator(); 
+        _validator = new BorrowingSystemValidator();
     }
 
-    public Patron GetPatron() 
+    public Patron GetPatron()
     {
         return Patron;
     }
 
-    public Book GetBook() 
+    public Book GetBook()
     {
         return Book;
     }
 
-    public DateTime GetDate() 
+    public DateTime GetDate()
     {
         return Date;
     }
@@ -67,4 +67,17 @@ public abstract class BorrowingOperation
     public abstract bool Validate();
     public abstract void UpdateRecords();
     protected abstract void NotifyPatron();
+    protected void UpdateAndNotify(IStorage<Book> bookStorage, IStorage<Patron> patronStorage, Action<Book> updateBookAction, Action<Patron> updatePatronAction)
+    {
+        Console.WriteLine($"Updating records for book {Book.Title}.");
+
+        updateBookAction(Book);
+        updatePatronAction(Patron);
+
+        BooksManager booksManager = new BooksManager(bookStorage);
+        booksManager.UpdateItem(Book);
+
+        PatronsManager patronsManager = new PatronsManager(patronStorage);
+        patronsManager.UpdateItem(Patron);
+    }
 }
