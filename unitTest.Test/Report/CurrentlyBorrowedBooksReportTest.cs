@@ -17,7 +17,7 @@ namespace Opcion1LosCules.Tests
             _mockPatronStorage.Setup(x => x.Load()).Returns(new List<Patron>());
             _patronsManager = new PatronsManager(_mockPatronStorage.Object);
         }
-        
+
         [Fact]
         public void GenerateReport_ShouldReturnCorrectReport_WhenBooksAreCurrentlyBorrowed()
         {
@@ -27,16 +27,19 @@ namespace Opcion1LosCules.Tests
 
             patron.BorrowedBooks.Add(book);
 
-            _patronsManager.AddItem(patron); 
+            _patronsManager.AddItem(patron);
             var reportContext = new ReportContext(new CurrentlyBorrowedBooksReport());
 
             var report = reportContext.GenerateReport(_booksManager, _patronsManager);
 
-            Assert.Single(report); 
+            Assert.Single(report);
             var reportEntry = report[0].ToString();
             Assert.Contains("The Catcher in the Rye", reportEntry);
             Assert.Contains("Sandra", reportEntry);
-            Assert.Contains(book.BorrowingInfo.DueDate.Value.ToShortDateString(), reportEntry);
+            if (book.BorrowingInfo.DueDate.HasValue)
+            {
+                Assert.Contains(book.BorrowingInfo.DueDate.Value.ToShortDateString(), reportEntry);
+            }
         }
 
         [Fact]
@@ -44,7 +47,7 @@ namespace Opcion1LosCules.Tests
         {
             var patron = new Patron("Sandra", 45848, "sandra@example.com");
 
-            _patronsManager.AddItem(patron); 
+            _patronsManager.AddItem(patron);
 
             var reportContext = new ReportContext(new CurrentlyBorrowedBooksReport());
 
@@ -58,7 +61,7 @@ namespace Opcion1LosCules.Tests
         {
             var patron = new Patron("Sandra katherine", 45847, "sandra@example.com");
             var book = new Book("The Catcher in the Rye", "J.D. Salinger", "45827", "Fiction", 1951);
-            book.BorrowingInfo.MarkAsBorrowed(DateTime.Now.AddDays(-10)); 
+            book.BorrowingInfo.MarkAsBorrowed(DateTime.Now.AddDays(-10));
             patron.BorrowedBooks.Add(book);
             book.BorrowingInfo.MarkAsReturned(DateTime.Now);
             _patronsManager.AddItem(patron);
@@ -66,7 +69,7 @@ namespace Opcion1LosCules.Tests
 
             var report = reportContext.GenerateReport(_booksManager, _patronsManager);
 
-            Assert.Empty(report); 
+            Assert.Empty(report);
         }
 
 

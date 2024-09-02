@@ -5,7 +5,7 @@ using System.Linq;
 public class BookSearchMenu
 {
     private readonly BooksManager _bookManager;
-        
+
     public BookSearchMenu(BooksManager bookManager)
     {
         _bookManager = bookManager;
@@ -18,7 +18,6 @@ public class BookSearchMenu
                     .Title("[yellow]Select search criteria:[/]")
                     .AddChoices("Search by Title", "Search by Author", "Search by ISBN"));
 
-            // Solicitar el término de búsqueda
         var query = AnsiConsole.Ask<string>("[green]Enter search term:[/]");
 
         if (string.IsNullOrWhiteSpace(query))
@@ -26,24 +25,14 @@ public class BookSearchMenu
             AnsiConsole.MarkupLine("[red]Search term cannot be empty.[/]");
             return;
         }
-            
-        List<Book> searchResults = new();
-            
-        switch (option)
+
+        List<Book> searchResults = option switch
         {
-            case "Search by Title":
-                searchResults = SearchByTitle(query);
-                break;
-            case "Search by Author":
-                searchResults = SearchByAuthor(query);
-                break;
-            case "Search by ISBN":
-                searchResults = SearchByISBN(query);
-                break;
-            default:
-                AnsiConsole.MarkupLine("[red]Invalid option.[/]");
-                break;
-        }
+            "Search by Title" => SearchByTitle(query),
+            "Search by Author" => SearchByAuthor(query),
+            "Search by ISBN" => SearchByISBN(query),
+            _ => throw new InvalidOperationException("[red]Invalid option.[/]")
+        };
 
         DisplaySearchResults(searchResults);
     }
@@ -71,9 +60,9 @@ public class BookSearchMenu
         {
             var table = new Table();
 
-                table.AddColumn(new TableColumn("Title"));
-                table.AddColumn(new TableColumn("Author"));
-                table.AddColumn(new TableColumn("ISBN"));
+            table.AddColumn(new TableColumn("Title"));
+            table.AddColumn(new TableColumn("Author"));
+            table.AddColumn(new TableColumn("ISBN"));
 
             foreach (var book in books)
             {
