@@ -45,14 +45,14 @@ public class PatronSearchMenu
 
     public List<Patron> SearchByName(string name)
     {
-        var strategy = new SearchByName();
-        return strategy.Search(name, _patronManager.Items);
+        var strategy = new SearchByName(name);
+        return strategy.Search(_patronManager.Items);
     }
 
     public List<Patron> SearchByMembershipNumber(string membershipNumber)
     {
-        var strategy = new SearchByMembershipNumber();
-        return strategy.Search(membershipNumber, _patronManager.Items);
+        var strategy = new SearchByMembershipNumber(int.Parse(membershipNumber));
+        return strategy.Search(_patronManager.Items);
     }
 
     private void DisplaySearchResults(List<Patron> patrons)

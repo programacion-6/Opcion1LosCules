@@ -11,10 +11,10 @@ namespace Opcion1LosCules.Tests
             new Book("Title2", "Author2", "00002", "Genre2", 2002)
         };
 
-        var searchStrategy = new SearchByISBN();
         string query = "00001";
+        var searchStrategy = new SearchByISBN(query);
 
-        var result = searchStrategy.Search(query, books);
+        var result = searchStrategy.Search(books);
 
         Assert.Single(result);
         Assert.Equal("Title1", result[0].Title);
@@ -28,10 +28,10 @@ namespace Opcion1LosCules.Tests
             new Book("Title1", "Author1", "00001", "Genre1", 2001)
         };
 
-        var searchStrategy = new SearchByISBN();
         string query = "00099";
+        var searchStrategy = new SearchByISBN(query);
 
-        var result = searchStrategy.Search(query, books);
+        var result = searchStrategy.Search(books);
 
         Assert.Empty(result);
     }
@@ -44,10 +44,10 @@ namespace Opcion1LosCules.Tests
             new Book("Title1", "Author1", "00001", "Genre1", 2001)
         };
 
-        var searchStrategy = new SearchByISBN();
         string query = string.Empty;
+        var searchStrategy = new SearchByISBN(query);
 
-        var result = searchStrategy.Search(query, books);
+        var result = searchStrategy.Search(books);
 
         Assert.Empty(result);
     }
@@ -55,10 +55,10 @@ namespace Opcion1LosCules.Tests
         public void Search_EmptyBookList_ReturnsEmptyList()
         {
             var books = new List<Book>();
-            var searchStrategy = new SearchByISBN();
             string query = "00001";
+            var searchStrategy = new SearchByISBN(query);
 
-            var result = searchStrategy.Search(query, books);
+            var result = searchStrategy.Search(books);
 
             Assert.Empty(result);
         }   

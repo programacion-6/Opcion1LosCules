@@ -4,19 +4,18 @@ namespace Opcion1LosCules;
 public class PatronBorrowMenu
 {
     private Library _library;
-    private SearchByISBN _searchByISBN;
-    private SearchByMembershipNumber _searchByMembership;
+    private SearchByISBN? _searchByISBN;
+    private SearchByMembershipNumber? _searchByMembership;
+    
     public PatronBorrowMenu(Library library)
     {
         _library = library;
-        _searchByISBN = new();
-        _searchByMembership = new();
     }
 
     public void BorrowBook()
     {
         List<Patron> patrons = _library.patronsManager().Items;
-        Patron patron = null;
+        Patron? patron = null;
 
         
         while (patron == null)
@@ -29,20 +28,22 @@ public class PatronBorrowMenu
                 continue;
             }
 
-            patron = _searchByMembership.Search(membershipNumber, patrons)?.FirstOrDefault();
+            _searchByMembership = new(int.Parse(membershipNumber));
+            patron = _searchByMembership.Search(patrons)?.FirstOrDefault();
             if (patron == null)
             {
                 AnsiConsole.MarkupLine("[red]Membership number not found. Please try again.[/]");
             }
         }
 
-        Book book = null;
+        Book? book = null;
 
         while (book == null || book.BorrowingInfo.IsBorrowed)
         {
             var isbn = AnsiConsole.Ask<string>("[green]Enter book ISBN to borrow:[/]");
 
-            var books = _searchByISBN.Search(isbn, _library.booksManager().Items);
+            _searchByISBN = new(isbn);
+            var books = _searchByISBN.Search(_library.booksManager().Items);
             book = books?.FirstOrDefault();
 
             if (book == null)
@@ -67,13 +68,14 @@ public class PatronBorrowMenu
 
     public void ReturnBook()
     {
-        Book book = null;
+        Book? book = null;
 
         while (book == null)
         {
             var isbn = AnsiConsole.Ask<string>("[green]Enter book ISBN to return:[/]");
-        
-            var books = _searchByISBN.Search(isbn, _library.booksManager().Items);
+            
+            _searchByISBN = new(isbn);
+            var books = _searchByISBN.Search(_library.booksManager().Items);
             book = books?.FirstOrDefault();
 
             if (book == null)
@@ -82,7 +84,7 @@ public class PatronBorrowMenu
             }
         }
 
-        Patron patron = null;
+        Patron? patron = null;
 
         while (patron == null)
         {
@@ -93,8 +95,9 @@ public class PatronBorrowMenu
                 AnsiConsole.MarkupLine("[red]Invalid membership number. Please enter a positive integer.[/]");
                 continue;
             }
-
-            patron = _searchByMembership.Search(membershipNumber, _library.patronsManager().Items)?.FirstOrDefault();
+            
+            _searchByMembership = new(int.Parse(membershipNumber));
+            patron = _searchByMembership.Search(_library.patronsManager().Items)?.FirstOrDefault();
 
             if (patron == null)
             {

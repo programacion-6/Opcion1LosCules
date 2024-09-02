@@ -4,7 +4,6 @@ namespace Opcion1LosCules
     public class PatronsManagementMenu
     {
         private Library _library;
-        private IPatronSearchStrategy _patronSearchStrategy;
 
         public PatronsManagementMenu(Library library) 
         {
