@@ -1,6 +1,7 @@
 namespace Opcion1LosCules;
 
 using System.Threading.Tasks;
+using Spectre.Console;
 
 public class PatronsManager : IPatronRepository
 {
@@ -19,7 +20,7 @@ public class PatronsManager : IPatronRepository
         _patronValidator.Validate(patron);
         if(await _database.Add(patron) != 200)
         {
-            throw new ArgumentException("Error to add the patron.");
+            AnsiConsole.WriteLine("Error to add the patron.");
         }
     }
 
@@ -37,7 +38,7 @@ public class PatronsManager : IPatronRepository
     {
         if(await _database.Delete(id) != 200)
         {
-            throw new ArgumentException("Error to Remove the patron.");
+            AnsiConsole.WriteLine("Error to Remove the patron.");
         }
     }
 
@@ -45,7 +46,7 @@ public class PatronsManager : IPatronRepository
     {
         if(await _database.Update(id, patron) != 200)
         {
-            throw new ArgumentException("Error to Update the patron.");
+            AnsiConsole.WriteLine("Error to Update the patron.");
         }
     }
 }

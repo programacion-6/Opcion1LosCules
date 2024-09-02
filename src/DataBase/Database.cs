@@ -1,4 +1,5 @@
 using Opcion1LosCules;
+using Spectre.Console;
 
 public class Database : IDatabaseContext
 { 
@@ -21,7 +22,7 @@ public class Database : IDatabaseContext
         }
         else
         {
-            throw new ArgumentException("Unsupported entity type");
+            return Task.FromResult(_badRequestCode);
         }
     }
 
@@ -41,7 +42,7 @@ public class Database : IDatabaseContext
         }
         else
         {
-            throw new ArgumentException("Entity not found or unsupported entity type");
+            return Task.FromResult(_badRequestCode);
         }
     }
 

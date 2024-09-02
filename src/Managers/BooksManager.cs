@@ -18,7 +18,7 @@ public class BooksManager : IBookRepository
         _bookValidator.Validate(book);
         if(await _database.Add(book) != 200)
         {
-            throw new ArgumentException("Error to add the book.");
+            AnsiConsole.WriteLine("Error to add the book.");
         }
     }
 
@@ -41,7 +41,7 @@ public class BooksManager : IBookRepository
     {
         if(await _database.Update<Book>(id, book) != 200)
         {
-            throw new ArgumentException("Error to Update the Book.");
+            AnsiConsole.WriteLine("Error to update the Book.");
         }
     }
 }

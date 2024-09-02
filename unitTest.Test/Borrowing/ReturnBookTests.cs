@@ -3,21 +3,13 @@ namespace Opcion1LosCules.Tests
 {
     public class ReturnBookTests
     {
-        private readonly BooksManager _booksManager;
-        private readonly Mock<IStorage<Book>> _mockBookStorage;
-        private readonly PatronsManager _patronsManager;
-        private readonly Mock<IStorage<Patron>> _mockPatronStorage;
+        private readonly IDatabaseContext _database;
         private readonly ReturnBook _returnBook;
 
         public ReturnBookTests()
         {
-            _mockBookStorage = new Mock<IStorage<Book>>();
-            _mockBookStorage.Setup(x => x.Load()).Returns(new List<Book>());
-            _booksManager = new BooksManager(_mockBookStorage.Object);
-            _mockPatronStorage = new Mock<IStorage<Patron>>();
-            _mockPatronStorage.Setup(x => x.Load()).Returns(new List<Patron>());
-            _patronsManager = new PatronsManager(_mockPatronStorage.Object);
-            _returnBook = new ReturnBook(_mockBookStorage.Object , _mockPatronStorage.Object);
+            _database = new Database();
+            _returnBook = new ReturnBook(_database);
         }
 
         [Fact]
