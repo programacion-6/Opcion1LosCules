@@ -91,9 +91,9 @@ namespace Opcion1LosCules
 
         public void UpdateBook()
         {
-            var title = AnsiConsole.Ask<string>("[green]Enter the title of the book to update:[/]");
-            var existingBook = _library.booksManager().Items
-                .FirstOrDefault(b => b.Title == title);
+            var existingBook = UIUtils.DisplaySelectableListResult(
+                _library.booksManager().Items
+            );
 
             if (existingBook == null)
             {
@@ -101,6 +101,7 @@ namespace Opcion1LosCules
                 return;
             }
 
+            var title = AnsiConsole.Ask<string>("[green]Enter new book title:[/]");
             var isbn = AnsiConsole.Ask<string>("[green]Enter new book ISBN:[/]");
             int publicationYear = ValidateYear("[green]Enter book publication year:[/]");
 
@@ -121,9 +122,9 @@ namespace Opcion1LosCules
 
         public void RemoveBook()
         {
-            var title = AnsiConsole.Ask<string>("[green]Enter the title of the book to remove:[/]");
-            var existingBook = _library.booksManager().Items
-                .FirstOrDefault(b => b.Title == title);
+            var existingBook = UIUtils.DisplaySelectableListResult(
+                _library.booksManager().Items
+            );
 
             if (existingBook != null)
             {
