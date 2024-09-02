@@ -24,21 +24,13 @@ public class PatronSearchMenu
             AnsiConsole.MarkupLine("[red]Search term cannot be empty.[/]");
             return;
         }
-            
-        List<Patron> searchResults = new();
-            
-        switch (option)
-            {
-            case "Search by Name":
-                searchResults = SearchByName(query);
-                break;
-            case "Search by Membership Number":
-                searchResults = SearchByMembershipNumber(query);
-                break;
-            default:
-                AnsiConsole.MarkupLine("[red]Invalid option.[/]");
-                break;
-        }
+
+        List<Patron> searchResults = option switch
+        {
+            "Search by Name" => SearchByName(query),
+            "Search by Membership Number" => SearchByMembershipNumber(query),
+            _ => throw new InvalidOperationException("[red]Invalid option.[/]")
+        };
 
         DisplaySearchResults(searchResults);
     }
