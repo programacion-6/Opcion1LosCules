@@ -103,8 +103,6 @@ namespace Opcion1LosCules
             }
         }
 
-
-
         public void RemovePatron()
         {
             var patron = UIUtils.DisplaySelectableListResult(
