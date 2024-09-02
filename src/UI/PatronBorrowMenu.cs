@@ -1,11 +1,10 @@
 using Spectre.Console;
+
 namespace Opcion1LosCules;
 
 public class PatronBorrowMenu
 {
     private Library _library;
-    private SearchByISBN? _searchByISBN;
-    private SearchByMembershipNumber? _searchByMembership;
     
     public PatronBorrowMenu(Library library)
     {
@@ -14,46 +13,13 @@ public class PatronBorrowMenu
 
     public void BorrowBook()
     {
-        List<Patron> patrons = _library.patronsManager().Items;
-        Patron? patron = null;
+        Patron patron = UIUtils.DisplaySelectableListResult(_library.patronsManager().Items);
+        Book book = UIUtils.DisplaySelectableListResult(_library.booksManager().Items);
 
-        
-        while (patron == null)
+        if (book.BorrowingInfo.IsBorrowed)
         {
-            var membershipNumber = AnsiConsole.Ask<string>("[green]Enter patron membership number:[/]");
-
-            if (!int.TryParse(membershipNumber, out int membershipNumberInt) || membershipNumberInt <= 0)
-            {
-                AnsiConsole.MarkupLine("[red]Invalid membership number. Please enter a positive integer.[/]");
-                continue;
-            }
-
-            _searchByMembership = new(int.Parse(membershipNumber));
-            patron = _searchByMembership.Search(patrons)?.FirstOrDefault();
-            if (patron == null)
-            {
-                AnsiConsole.MarkupLine("[red]Membership number not found. Please try again.[/]");
-            }
-        }
-
-        Book? book = null;
-
-        while (book == null || book.BorrowingInfo.IsBorrowed)
-        {
-            var isbn = AnsiConsole.Ask<string>("[green]Enter book ISBN to borrow:[/]");
-
-            _searchByISBN = new(isbn);
-            var books = _searchByISBN.Search(_library.booksManager().Items);
-            book = books?.FirstOrDefault();
-
-            if (book == null)
-            {
-                AnsiConsole.MarkupLine("[red]Book not found. Please try again.[/]");
-            }
-            else if (book.BorrowingInfo.IsBorrowed)
-            {
-                AnsiConsole.MarkupLine("[red]The book is already borrowed. Please try another one.[/]");
-            }
+            AnsiConsole.MarkupLine("[red]The book is already borrowed. Please try another one.[/]");
+            return;
         }
 
         _library.BorrowBook().SetPatron(patron);
@@ -65,44 +31,20 @@ public class PatronBorrowMenu
         AnsiConsole.MarkupLine("[bold green]Book borrowed successfully.[/]");
     }
 
-
     public void ReturnBook()
     {
-        Book? book = null;
+        Book book = UIUtils.DisplaySelectableListResult(_library.booksManager().Items);
 
-        while (book == null)
-        {
-            var isbn = AnsiConsole.Ask<string>("[green]Enter book ISBN to return:[/]");
-            
-            _searchByISBN = new(isbn);
-            var books = _searchByISBN.Search(_library.booksManager().Items);
-            book = books?.FirstOrDefault();
-
-            if (book == null)
-            {
-                AnsiConsole.MarkupLine("[red]Book not found. Please try again.[/]");
-            }
+        if(book.BorrowingInfo.IsBorrowed == false) {
+            AnsiConsole.MarkupLine("[red]The book is not currently borrowed.[/]");
+            return;
         }
 
-        Patron? patron = null;
+        Patron patron = UIUtils.DisplaySelectableListResult(_library.patronsManager().Items);
 
-        while (patron == null)
-        {
-            var membershipNumber = AnsiConsole.Ask<string>("[green]Enter patron membership number:[/]");
-
-            if (!int.TryParse(membershipNumber, out int membershipNumberInt) || membershipNumberInt <= 0)
-            {
-                AnsiConsole.MarkupLine("[red]Invalid membership number. Please enter a positive integer.[/]");
-                continue;
-            }
-            
-            _searchByMembership = new(int.Parse(membershipNumber));
-            patron = _searchByMembership.Search(_library.patronsManager().Items)?.FirstOrDefault();
-
-            if (patron == null)
-            {
-                AnsiConsole.MarkupLine("[red]Membership number not found. Please try again.[/]");
-            }
+        if(!patron.BorrowedBooks.Contains(book)) {
+            AnsiConsole.MarkupLine("[red]The book is not currently borrowed by this patron.[/]");
+            return;
         }
 
         _library.ReturnBook().SetBook(book);

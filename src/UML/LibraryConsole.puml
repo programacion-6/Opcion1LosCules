@@ -1,4 +1,7 @@
 @startuml Library Console
+
+!include Pagination.puml
+
 package "Library Console" {
     class BookMenu {
         - BooksManagementMenu _bookManagement
@@ -61,8 +64,6 @@ package "Library Console" {
     
     class PatronBorrowMenu {
         - Library _library
-        - SearchByISBN _searchByISBN
-        - SearchByMembershipNumber _searchByMemebership
         + PatronBorrowMenu(Library library)
         + BorrowBook()
         + ReturnBook()
@@ -79,6 +80,11 @@ package "Library Console" {
         + HomePage()
         + DisplayMenu()
     }
+
+    class UIUtils {
+        _+ static void PaginateTable(IPaginationStrategy strategy, Table table, List<string[]> rows, int pageSize)_
+        _+ static T DisplaySelectableListResult<T>(IEnumerable<T> choices)_
+    }
 }
  
 HomePage *-- BookMenu 
@@ -89,4 +95,13 @@ HomePage *-- PatronSearchMenu
 HomePage *-- ReportMenu 
 BookMenu *-- BooksManagementMenu 
 PatronMenu *-- PatronsManagementMenu 
+UIUtils o-- IPaginationStrategy
+
+BooksManagementMenu --> UIUtils
+PatronsManagementMenu --> UIUtils
+ReportMenu --> UIUtils
+PatronBorrowMenu --> UIUtils
+
+BooksManagementMenu o-- StandardPagination
+PatronsManagementMenu o-- StandardPagination
 @enduml

@@ -9,6 +9,7 @@
     !include LibraryConsole.puml
     !include Exceptions.puml
     !include Validators.puml
+    !include Pagination.puml
 
 
 package "Library System" {

@@ -48,4 +48,14 @@ public class Book
         get { return _publicationYear; }
         set { _publicationYear = value; }
     }   
+
+    public override string ToString()
+    {
+        return $"Book:\n"
+            + $"Title: {Title}\n"
+            + $"Author: {Author}\n"
+            + $"ISBN: {ISBN}\n"
+            + $"Genre: {Genre}\n"
+            + $"PublicationYear: {PublicationYear}\n";
+    }
 }
