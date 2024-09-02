@@ -76,7 +76,7 @@ namespace Opcion1LosCules
     
             try
             {
-                _library.booksManager().AddBook(book);
+                _library.booksManager().AddItem(book);
                 AnsiConsole.MarkupLine("[green]Book added successfully.[/]");
             }
             catch (ValidationException ex)
@@ -92,7 +92,7 @@ namespace Opcion1LosCules
         public void UpdateBook()
         {
             var title = AnsiConsole.Ask<string>("[green]Enter the title of the book to update:[/]");
-            var existingBook = _library.booksManager().GetAllBooks()
+            var existingBook = _library.booksManager().Items
                 .FirstOrDefault(b => b.Title == title);
 
             if (existingBook == null)
@@ -115,19 +115,19 @@ namespace Opcion1LosCules
                                    title, isbn,publicationYear);
 
             var updatedBook = new Book(title, author, isbn, genre, publicationYear);
-            _library.booksManager().UpdateBook(updatedBook);
+            _library.booksManager().UpdateItem(updatedBook);
             AnsiConsole.MarkupLine("[green]Book updated successfully.[/]");
         }
 
         public void RemoveBook()
         {
             var title = AnsiConsole.Ask<string>("[green]Enter the title of the book to remove:[/]");
-            var existingBook = _library.booksManager().GetAllBooks()
+            var existingBook = _library.booksManager().Items
                 .FirstOrDefault(b => b.Title == title);
 
             if (existingBook != null)
             {
-                _library.booksManager().RemoveBook(existingBook);
+                _library.booksManager().RemoveItem(existingBook);
                 AnsiConsole.MarkupLine("[green]Book removed successfully.[/]");
             }
             else
@@ -139,7 +139,7 @@ namespace Opcion1LosCules
         public void ListBooks()
         { 
             AnsiConsole.MarkupLine("[yellow]Listing Books by Genre:[/]");
-            var existingBook = _library.booksManager().GetAllBooks()
+            var existingBook = _library.booksManager().Items
                 .OrderBy(book => book.Genre)
                 .ToList();
 
@@ -168,7 +168,7 @@ namespace Opcion1LosCules
                 });
             }
 
-            UIUtils.PaginateTable(table, rows);
+            UIUtils.PaginateTable(new StandardPagination() ,table, rows);
         }
 
     }

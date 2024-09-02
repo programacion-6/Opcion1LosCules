@@ -16,11 +16,11 @@ namespace Opcion1LosCules.Tests
         public void RemoveBook_ShouldDeleteBookFromCollection()
         {
             var book = new Book("1984", "George Orwell", "45825", "Dystopian", 1949);
-            _booksManager.AddBook(book);
+            _booksManager.AddItem(book);
 
-            _booksManager.RemoveBook(book);
+            _booksManager.RemoveItem(book);
 
-            Assert.DoesNotContain(book, _booksManager.GetAllBooks());
+            Assert.DoesNotContain(book, _booksManager.Items);
         }
 
         [Fact]
@@ -29,10 +29,10 @@ namespace Opcion1LosCules.Tests
             var book1 = new Book("1984", "George Orwell", "45825", "Dystopian", 1949);
             var book2 = new Book("Brave New World", "Aldous Huxley", "45826", "Science Fiction", 1932);
 
-            _booksManager.AddBook(book1);
-            _booksManager.AddBook(book2);
+            _booksManager.AddItem(book1);
+            _booksManager.AddItem(book2);
 
-            var allBooks = _booksManager.GetAllBooks();
+            var allBooks = _booksManager.Items;
 
             Assert.Equal(2, allBooks.Count);
             Assert.Contains(book1, allBooks);

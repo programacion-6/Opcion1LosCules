@@ -14,8 +14,8 @@ public class PatronBorrowMenu
 
     public void BorrowBook()
     {
-        List<Patron> patrons = _library.patronsManager().GetAllPatrons();
-        Patron patron = null;
+        List<Patron> patrons = _library.patronsManager().Items;
+        Patron? patron = null;
 
         
         while (patron == null)
@@ -36,14 +36,14 @@ public class PatronBorrowMenu
             }
         }
 
-        Book book = null;
+        Book? book = null;
 
         while (book == null || book.BorrowingInfo.IsBorrowed)
         {
             var isbn = AnsiConsole.Ask<string>("[green]Enter book ISBN to borrow:[/]");
 
             _searchByISBN = new(isbn);
-            var books = _searchByISBN.Search(_library.booksManager().GetAllBooks());
+            var books = _searchByISBN.Search(_library.booksManager().Items);
             book = books?.FirstOrDefault();
 
             if (book == null)
@@ -68,14 +68,14 @@ public class PatronBorrowMenu
 
     public void ReturnBook()
     {
-        Book book = null;
+        Book? book = null;
 
         while (book == null)
         {
             var isbn = AnsiConsole.Ask<string>("[green]Enter book ISBN to return:[/]");
             
             _searchByISBN = new(isbn);
-            var books = _searchByISBN.Search(_library.booksManager().GetAllBooks());
+            var books = _searchByISBN.Search(_library.booksManager().Items);
             book = books?.FirstOrDefault();
 
             if (book == null)
@@ -84,7 +84,7 @@ public class PatronBorrowMenu
             }
         }
 
-        Patron patron = null;
+        Patron? patron = null;
 
         while (patron == null)
         {
@@ -97,7 +97,7 @@ public class PatronBorrowMenu
             }
             
             _searchByMembership = new(int.Parse(membershipNumber));
-            patron = _searchByMembership.Search(_library.patronsManager().GetAllPatrons())?.FirstOrDefault();
+            patron = _searchByMembership.Search(_library.patronsManager().Items)?.FirstOrDefault();
 
             if (patron == null)
             {

@@ -39,10 +39,10 @@ public class BorrowBook : BorrowingOperation
         Patron.HistoryBorrowedBooks.Add(Book);
 
         BooksManager booksManager = new BooksManager(_bookStorage);
-        booksManager.UpdateBook(Book);
+        booksManager.UpdateItem(Book);
 
         PatronsManager patronsManager = new PatronsManager(_patronStorage);
-        patronsManager.UpdatePatron(Patron);
+        patronsManager.UpdateItem(Patron);
     }
 
     public void HistoryBorrowingUpdateRecords()

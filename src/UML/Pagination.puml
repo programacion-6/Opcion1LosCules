@@ -1,0 +1,21 @@
+@startuml Pagination System
+package "Pagination System" {
+    interface IPaginationStrategy {
+        +void Paginate(Table table, List<String[]> rows, int pageSize)
+    }
+
+    class StandardPagination {
+        +void Paginate(Table table, List<String[]> rows, int pageSize)
+        -void DisplayTable(Table table, IEnumerable<String[]> currentRows)
+        -String GetPaginationOption(int pageIndex, int totalPages)
+        -void UpdatePageIndex(String option, ref int pageIndex)
+    }
+
+    class UIUtils {
+        +static void PaginateTable(IPaginationStrategy strategy, Table table, List<String[]> rows, int pageSize = 5)
+    }
+
+    StandardPagination --> IPaginationStrategy : implements
+}
+
+@enduml
