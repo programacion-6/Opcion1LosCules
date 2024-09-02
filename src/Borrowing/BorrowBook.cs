@@ -32,21 +32,23 @@ public class BorrowBook : BorrowingOperation
 
     public override void UpdateRecords()
     {
-        Console.WriteLine($"Updating records for borrowing book {Book.Title}.");
-        
-        Book.BorrowingInfo.MarkAsBorrowed(Date);
-        Patron.BorrowedBooks.Add(Book);
-        Patron.HistoryBorrowedBooks.Add(Book);
-
-        BooksManager booksManager = new BooksManager(_bookStorage);
-        booksManager.UpdateItem(Book);
-
-        PatronsManager patronsManager = new PatronsManager(_patronStorage);
-        patronsManager.UpdateItem(Patron);
+        UpdateAndNotify(
+            _bookStorage,
+            _patronStorage,
+            book =>
+            {
+                book.BorrowingInfo.MarkAsBorrowed(Date);
+                Patron.BorrowedBooks.Add(Book);
+                Patron.HistoryBorrowedBooks.Add(Book);
+            },
+            patron =>
+            {
+                Patron.HistoryBorrowedBooks.Add(Book);
+            });
     }
 
     public void HistoryBorrowingUpdateRecords()
-    {  
+    {
         Patron.HistoryBorrowedBooks.Add(Book);
     }
 
