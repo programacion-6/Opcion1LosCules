@@ -13,8 +13,8 @@ public class PatronBorrowMenu
 
     public async void BorrowBook()
     {
-        Patron patron = UIUtils.DisplaySelectableListResult((await _library.patronsManager().GetAllPatrons()).ToList());
-        Book book = UIUtils.DisplaySelectableListResult((await _library.booksManager().GetAllBooks()).ToList());
+        Patron patron = UIUtils.DisplaySelectableListResult((await _library.patronsManager().GetAll()).ToList());
+        Book book = UIUtils.DisplaySelectableListResult((await _library.booksManager().GetAll()).ToList());
 
         if (book.BorrowingInfo.IsBorrowed)
         {
@@ -34,14 +34,14 @@ public class PatronBorrowMenu
 
     public async void ReturnBook()
     {
-        Book book = UIUtils.DisplaySelectableListResult((await _library.booksManager().GetAllBooks()).ToList());
+        Book book = UIUtils.DisplaySelectableListResult((await _library.booksManager().GetAll()).ToList());
 
         if(book.BorrowingInfo.IsBorrowed == false) {
             AnsiConsole.MarkupLine("[red]The book is not currently borrowed.[/]");
             return;
         }
 
-        Patron patron = UIUtils.DisplaySelectableListResult((await _library.patronsManager().GetAllPatrons()).ToList());
+        Patron patron = UIUtils.DisplaySelectableListResult((await _library.patronsManager().GetAll()).ToList());
 
         if(!patron.BorrowedBooks.Contains(book)) {
             AnsiConsole.MarkupLine("[red]The book is not currently borrowed by this patron.[/]");

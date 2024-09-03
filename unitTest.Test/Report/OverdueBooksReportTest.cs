@@ -24,9 +24,9 @@ namespace Opcion1LosCules.Tests
             var nonOverdueBook = new Book("Cien Años de Soledad", "Gabriel García Márquez", "0987654321", "Realismo Mágico", 1967);
             var patron = new Patron("Juan Pérez", 1, "juan.perez@example.com");
 
-            await _booksManager.AddBook(overdueBook);
-            await _booksManager.AddBook(nonOverdueBook);
-            await _patronsManager.AddPatron(patron);
+            await _booksManager.AddEntity(overdueBook);
+            await _booksManager.AddEntity(nonOverdueBook);
+            await _patronsManager.AddEntity(patron);
 
             _borrowBook.SetBook(overdueBook);
             _borrowBook.SetPatron(patron);
@@ -54,7 +54,7 @@ namespace Opcion1LosCules.Tests
             patron.BorrowedBooks.Add(book1);
             patron.BorrowedBooks.Add(book2);
 
-            await _patronsManager.AddPatron(patron);
+            await _patronsManager.AddEntity(patron);
 
             var reportContext = new ReportContext(new OverdueBooksReport());
 

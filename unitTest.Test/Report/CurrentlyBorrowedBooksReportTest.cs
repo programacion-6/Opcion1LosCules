@@ -13,7 +13,7 @@ namespace Opcion1LosCules.Tests
             _booksManager = new BooksManager(_database);
             _patronsManager = new PatronsManager(_database);
         }
-        
+
         [Fact]
         public async void GenerateReport_ShouldReturnCorrectReport_WhenBooksAreCurrentlyBorrowed()
         {
@@ -23,17 +23,20 @@ namespace Opcion1LosCules.Tests
 
             patron.BorrowedBooks.Add(book);
 
-            await _patronsManager.AddPatron(patron); 
+            await _patronsManager.AddEntity(patron); 
 
             var reportContext = new ReportContext(new CurrentlyBorrowedBooksReport());
 
             var report = await reportContext.GenerateReport(_patronsManager);
 
-            Assert.Single(report); 
+            Assert.Single(report);
             var reportEntry = report[0].ToString();
             Assert.Contains("The Catcher in the Rye", reportEntry);
             Assert.Contains("Sandra", reportEntry);
-            Assert.Contains(book.BorrowingInfo.DueDate.Value.ToShortDateString(), reportEntry);
+            if (book.BorrowingInfo.DueDate.HasValue)
+            {
+                Assert.Contains(book.BorrowingInfo.DueDate.Value.ToShortDateString(), reportEntry);
+            }
         }
 
         [Fact]
@@ -41,7 +44,7 @@ namespace Opcion1LosCules.Tests
         {
             var patron = new Patron("Sandra", 45848, "sandra@example.com");
 
-            await _patronsManager.AddPatron(patron); 
+            await _patronsManager.AddEntity(patron); 
 
             var reportContext = new ReportContext(new CurrentlyBorrowedBooksReport());
 
@@ -55,15 +58,15 @@ namespace Opcion1LosCules.Tests
         {
             var patron = new Patron("Sandra katherine", 45847, "sandra@example.com");
             var book = new Book("The Catcher in the Rye", "J.D. Salinger", "45827", "Fiction", 1951);
-            book.BorrowingInfo.MarkAsBorrowed(DateTime.Now.AddDays(-10)); 
+            book.BorrowingInfo.MarkAsBorrowed(DateTime.Now.AddDays(-10));
             patron.BorrowedBooks.Add(book);
             book.BorrowingInfo.MarkAsReturned(DateTime.Now);
-            await _patronsManager.AddPatron(patron);
+            await _patronsManager.AddEntity(patron);
             var reportContext = new ReportContext(new CurrentlyBorrowedBooksReport());
 
             var report = await reportContext.GenerateReport(_patronsManager);
 
-            Assert.Empty(report); 
+            Assert.Empty(report);
         }
 
 

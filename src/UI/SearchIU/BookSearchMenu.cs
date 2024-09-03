@@ -5,7 +5,7 @@ using System.Linq;
 public class BookSearchMenu
 {
     private readonly BooksManager _bookManager;
-        
+
     public BookSearchMenu(BooksManager bookManager)
     {
         _bookManager = bookManager;
@@ -18,7 +18,6 @@ public class BookSearchMenu
                     .Title("[yellow]Select search criteria:[/]")
                     .AddChoices("Search by Title", "Search by Author", "Search by ISBN"));
 
-            // Solicitar el término de búsqueda
         var query = AnsiConsole.Ask<string>("[green]Enter search term:[/]");
 
         if (string.IsNullOrWhiteSpace(query))
@@ -26,24 +25,14 @@ public class BookSearchMenu
             AnsiConsole.MarkupLine("[red]Search term cannot be empty.[/]");
             return;
         }
-            
-        List<Book> searchResults = new();
-            
-        switch (option)
+
+        List<Book> searchResults = option switch
         {
-            case "Search by Title":
-                searchResults = await SearchByTitle(query);
-                break;
-            case "Search by Author":
-                searchResults = await SearchByAuthor(query);
-                break;
-            case "Search by ISBN":
-                searchResults = await SearchByISBN(query);
-                break;
-            default:
-                AnsiConsole.MarkupLine("[red]Invalid option.[/]");
-                break;
-        }
+            "Search by Title" => await SearchByTitle(query),
+            "Search by Author" => await SearchByAuthor(query),
+            "Search by ISBN" => await SearchByISBN(query),
+            _ => throw new InvalidOperationException("[red]Invalid option.[/]")
+        };
 
         DisplaySearchResults(searchResults);
     }
@@ -51,19 +40,19 @@ public class BookSearchMenu
     public async Task<List<Book>> SearchByTitle(string title)
     {
         var strategy = new SearchByTitle(title);
-        return strategy.Search((await _bookManager.GetAllBooks()).ToList());
+        return strategy.Search((await _bookManager.GetAll()).ToList());
     }
 
     public async Task<List<Book>> SearchByAuthor(string author)
     {
         var strategy = new SearchByAuthor(author);
-        return strategy.Search((await _bookManager.GetAllBooks()).ToList());
+        return strategy.Search((await _bookManager.GetAll()).ToList());
     }
 
     public async Task<List<Book>> SearchByISBN(string isbn)
     {
         var strategy = new SearchByISBN(isbn);
-        return strategy.Search((await _bookManager.GetAllBooks()).ToList());
+        return strategy.Search((await _bookManager.GetAll()).ToList());
     }
 
     private void DisplaySearchResults(List<Book> books)
@@ -72,9 +61,9 @@ public class BookSearchMenu
         {
             var table = new Table();
 
-                table.AddColumn(new TableColumn("Title"));
-                table.AddColumn(new TableColumn("Author"));
-                table.AddColumn(new TableColumn("ISBN"));
+            table.AddColumn(new TableColumn("Title"));
+            table.AddColumn(new TableColumn("Author"));
+            table.AddColumn(new TableColumn("ISBN"));
 
             foreach (var book in books)
             {

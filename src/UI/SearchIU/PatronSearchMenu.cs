@@ -24,21 +24,13 @@ public class PatronSearchMenu
             AnsiConsole.MarkupLine("[red]Search term cannot be empty.[/]");
             return;
         }
-            
-        List<Patron> searchResults = new();
-            
-        switch (option)
-            {
-            case "Search by Name":
-                searchResults = await SearchByName(query);
-                break;
-            case "Search by Membership Number":
-                searchResults = await SearchByMembershipNumber(query);
-                break;
-            default:
-                AnsiConsole.MarkupLine("[red]Invalid option.[/]");
-                break;
-        }
+
+        List<Patron> searchResults = option switch
+        {
+            "Search by Name" => await SearchByName(query),
+            "Search by Membership Number" => await SearchByMembershipNumber(query),
+            _ => throw new InvalidOperationException("[red]Invalid option.[/]")
+        };
 
         DisplaySearchResults(searchResults);
     }
@@ -46,13 +38,13 @@ public class PatronSearchMenu
     public async Task<List<Patron>> SearchByName(string name)
     {
         var strategy = new SearchByName(name);
-        return strategy.Search((await _patronManager.GetAllPatrons()).ToList());
+        return strategy.Search((await _patronManager.GetAll()).ToList());
     }
 
     public async Task<List<Patron>> SearchByMembershipNumber(string membershipNumber)
     {
         var strategy = new SearchByMembershipNumber(int.Parse(membershipNumber));
-        return strategy.Search((await _patronManager.GetAllPatrons()).ToList());
+        return strategy.Search((await _patronManager.GetAll()).ToList());
     }
 
     private void DisplaySearchResults(List<Patron> patrons)

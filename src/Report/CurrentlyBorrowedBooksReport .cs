@@ -4,7 +4,7 @@ public class CurrentlyBorrowedBooksReport : IReportStrategy
 {
     public async Task<List<object>> GenerateReport(PatronsManager patronsManager)
     {
-        var patrons = (await patronsManager.GetAllPatrons()).ToList();
+        var patrons = (await patronsManager.GetAll()).ToList();
         return patrons
             .SelectMany(p => p.BorrowedBooks, (p, b) => new { Patron = p, Book = b })
             .Where(pb =>

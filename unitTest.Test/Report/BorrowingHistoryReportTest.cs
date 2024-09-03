@@ -13,7 +13,7 @@ namespace Opcion1LosCules.Tests
             _booksManager = new BooksManager(_database);
             _patronsManager = new PatronsManager(_database);
         }
-        
+
         [Fact]
         public async void GenerateReport_ShouldReturnCorrectReport_WhenPatronHasHistory()
         {
@@ -25,7 +25,7 @@ namespace Opcion1LosCules.Tests
             var reportContext = new ReportContext(new BorrowingHistoryReport(patron));
             var report = await reportContext.GenerateReport(_patronsManager);
 
-            Assert.Single(report);  
+            Assert.Single(report);
             var reportItem = report[0];
 
             Assert.Contains("The Catcher in the Rye", reportItem.ToString());
@@ -42,7 +42,7 @@ namespace Opcion1LosCules.Tests
             var reportContext = new ReportContext(new BorrowingHistoryReport(patron));
             var report = await reportContext.GenerateReport(_patronsManager);
 
-            Assert.Empty(report);  
+            Assert.Empty(report);
         }
 
         [Fact]
@@ -51,17 +51,17 @@ namespace Opcion1LosCules.Tests
             var patron = new Patron("Sandra", 45845, "sandra@example.com");
             var book1 = new Book("The Catcher in the Rye", "J.D. Salinger", "45825", "Fiction", 1951);
             var book2 = new Book("1984", "George Orwell", "12345", "Dystopian", 1949);
-            
+
             patron.HistoryBorrowedBooks.Add(book1);
             patron.HistoryBorrowedBooks.Add(book2);
-                     
+
             var reportContext = new ReportContext(new BorrowingHistoryReport(patron));
 
             var report = await reportContext.GenerateReport(_patronsManager);
 
-            Assert.Equal(2, report.Count);  
-            Assert.Contains(report, r => r.ToString().Contains("The Catcher in the Rye"));
-            Assert.Contains(report, r => r.ToString().Contains("1984"));
+            Assert.Equal(2, report.Count);
+            Assert.Contains(report, r => (r?.ToString() ?? string.Empty).Contains("The Catcher in the Rye"));
+            Assert.Contains(report, r => (r?.ToString() ?? string.Empty).Contains("1984"));
         }
     }
 }

@@ -1,13 +1,18 @@
 using Spectre.Console;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Opcion1LosCules
 {
     public class PatronsManagementMenu
     {
         private Library _library;
+        private Validator<Patron> _patronValidator;
 
-        public PatronsManagementMenu(Library library) 
+        public PatronsManagementMenu(Library library, Validator<Patron> patronValidator)
         {
             _library = library;
+            _patronValidator = patronValidator;
         }
 
         private string ValidateName(string prompt)
@@ -18,7 +23,7 @@ namespace Opcion1LosCules
                 value = AnsiConsole.Ask<string>(prompt);
                 if (!string.IsNullOrEmpty(value) && value.All(char.IsLetter))
                 {
-                break; 
+                    break;
                 }
                 else
                 {
@@ -50,15 +55,16 @@ namespace Opcion1LosCules
 
         public async void AddPatron()
         {
-            var name =  ValidateName("[green]Enter patron name:[/]");
+            var name = ValidateName("[green]Enter patron name:[/]");
             int membershipNumber = ValidateMembershipNumber("[green]Enter patron membership number:[/]");
 
             var contactDetails = AnsiConsole.Ask<string>("[green]Enter patron contact details (email):[/]");
             var patron = new Patron(name, membershipNumber, contactDetails);
-            
+
             try
             {
-                await _library.patronsManager().AddPatron(patron);
+                _patronValidator.Validate(patron);
+                await _library.patronsManager().AddEntity(patron);
                 AnsiConsole.MarkupLine("[green]Patron added successfully.[/]");
             }
             catch (ValidationException ex)
@@ -73,10 +79,9 @@ namespace Opcion1LosCules
 
         public async void UpdatePatron()
         {
-            string patronId = AnsiConsole.Ask<string>("[green]Enter patron membership Id:[/]");
-
-            var existingPatron = _library.patronsManager().GetPatronById(patronId);
-
+            var existingPatron = UIUtils.DisplaySelectableListResult(
+                await _library.patronsManager().GetAll()
+            );
 
             if (existingPatron == null)
             {
@@ -84,15 +89,15 @@ namespace Opcion1LosCules
                 return;
             }
 
-            var name = ValidateName("[green]Enter patron name:[/]");
-            var membershipNumber = ValidateMembershipNumber("[green]Enter patron membership number:[/]");
+            var name = ValidateName("[green]Enter new patron name:[/]");
             var contactDetails = AnsiConsole.Ask<string>("[green]Enter new contact details (email):[/]");
 
-            var updatedPatron = new Patron(name, membershipNumber, contactDetails);
+            var updatedPatron = new Patron(name, existingPatron.MembershipNumber, contactDetails);
 
             try
             {
-                await _library.patronsManager().UpdatePatron(patronId, updatedPatron);
+                _patronValidator.Validate(updatedPatron);
+                await _library.patronsManager().UpdateEntity(updatedPatron.Id.ToString(), updatedPatron);
                 AnsiConsole.MarkupLine("[green]Patron updated successfully.[/]");
             }
             catch (ValidationException ex)
@@ -109,11 +114,11 @@ namespace Opcion1LosCules
         {
              string patronId = AnsiConsole.Ask<string>("[green]Enter patron Id:[/]");
 
-             var patron = _library.patronsManager().GetPatronById(patronId);
+             var patron = _library.patronsManager().GetById(patronId);
 
             if (patron != null)
             {
-                await _library.patronsManager().RemovePatron(patronId);
+                await _library.patronsManager().RemoveEntity(patronId);
                 AnsiConsole.MarkupLine("[green]Patron removed successfully.[/]");
             }
             else
@@ -124,9 +129,9 @@ namespace Opcion1LosCules
 
         public async void ListPatrons()
         {
-            var existingPatron =  await _library.patronsManager().GetAllPatrons();
+            var existingPatrons =  await _library.patronsManager().GetAll();
 
-            if (!existingPatron.Any())
+            if (!existingPatrons.Any())
                 {
                     AnsiConsole.MarkupLine("[red]No patrons found.[/]");
                     return;
@@ -142,23 +147,22 @@ namespace Opcion1LosCules
 
             var rows = new List<string[]>();
 
-            foreach (var patron in existingPatron)
-                {
-                    var borrowedBooks = patron.BorrowedBooks.Count > 0 ? string.Join(", ", patron.BorrowedBooks.Select(b => b.Title)) : "None";
-                    var historyBooks = patron.HistoryBorrowedBooks.Count > 0 ? string.Join(", ", patron.HistoryBorrowedBooks.Select(b => b.Title)) : "None";
-        
-                    rows.Add(new string[]
-                        {
-                            patron.MembershipNumber.ToString(),
-                            patron.Name,
-                            patron.ContactDetails,
-                            borrowedBooks,
-                            historyBooks,
-                            patron.Id.ToString()
-                        });
-                }
+            foreach (var patron in existingPatrons)
+            {
+                var borrowedBooks = patron.BorrowedBooks.Count > 0 ? string.Join(", ", patron.BorrowedBooks.Select(b => b.Title)) : "None";
+                var historyBooks = patron.HistoryBorrowedBooks.Count > 0 ? string.Join(", ", patron.HistoryBorrowedBooks.Select(b => b.Title)) : "None";
 
-            UIUtils.PaginateTable(new StandardPagination() ,table, rows);
+                rows.Add(new string[]
+                {
+                    patron.MembershipNumber.ToString(),
+                    patron.Name,
+                    patron.ContactDetails,
+                    borrowedBooks,
+                    historyBooks
+                });
+            }
+
+            UIUtils.PaginateTable(new StandardPagination(), table, rows);
         }
     }
 }

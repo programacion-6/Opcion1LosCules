@@ -9,7 +9,7 @@ namespace Opcion1LosCules
         public BookMenu(Library library) 
         {
             _library = library;
-            _bookManagement = new BooksManagementMenu(_library);
+            _bookManagement = new BooksManagementMenu(_library, _library.GetBookValidator());
         }
 
         public void ShowBookMenu()

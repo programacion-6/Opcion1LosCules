@@ -5,31 +5,31 @@ using Spectre.Console;
 
 public class PatronsManager : IEntityRepository<Patron>
 {
-    private readonly Validator<Patron> _patronValidator;
+    private readonly Validator<Patron> _validator;
     private readonly IDatabaseContext _database;
 
 
     public PatronsManager(IDatabaseContext databaseContext)
     {
-        _patronValidator = new PatronValidator();
+        _validator = new Validator<Patron>(CreatePatronValidations().ToList());
         _database = databaseContext;
     }
 
     public async Task AddEntity(Patron patron)
     {
-        _patronValidator.Validate(patron);
+        _validator.Validate(patron);
         if(await _database.Add(patron) != 200)
         {
             AnsiConsole.WriteLine("Error to add the patron.");
         }
     }
 
-    public async Task<IEnumerable<IEntity>> GetAll()
+    public async Task<IEnumerable<Patron>> GetAll()
     {
         return await _database.GetAll<Patron>();
     }
 
-    public async Task<IEntity> GetById(string id)
+    public async Task<Patron> GetById(string id)
     {
         return await _database.GetById<Patron>(id);
     }
@@ -49,4 +49,15 @@ public class PatronsManager : IEntityRepository<Patron>
             AnsiConsole.WriteLine("Error to Update the patron.");
         }
     }
+
+    private static IEnumerable<IValidation<Patron>> CreatePatronValidations()
+        {
+            return new List<IValidation<Patron>>
+            {
+                new PatronNameValidation(),
+                new MembershipNumberValidation(),
+                new ContactDetailsValidation(),
+                new NoOverdueBooksValidation()
+            };
+        }
 }
