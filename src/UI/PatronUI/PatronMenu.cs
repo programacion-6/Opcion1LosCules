@@ -8,7 +8,7 @@ public class PatronMenu
     public PatronMenu(Library library) 
     {
         _library = library;
-        _patronsManagement = new PatronsManagementMenu(_library);
+        _patronsManagement = new PatronsManagementMenu(_library, _library.GetPatronValidator());
     }
 
     public void showPatronMenu()

@@ -1,83 +1,85 @@
-namespace Opcion1LosCules;
-public abstract class BorrowingOperation
+namespace Opcion1LosCules
 {
-    protected Patron Patron { get; private set; } = default!;
-    protected Book Book { get; private set; } = default!;
-    protected DateTime Date { get; private set; }
-
-    private readonly BorrowingSystemValidator _validator;
-
-    public BorrowingOperation()
+    public abstract class BorrowingOperation
     {
-        _validator = new BorrowingSystemValidator();
-    }
+        protected Patron Patron { get; private set; } = default!;
+        protected Book Book { get; private set; } = default!;
+        protected DateTime Date { get; private set; }
 
-    public Patron GetPatron()
-    {
-        return Patron;
-    }
+        private Validator<BorrowingOperation> _validator;
 
-    public Book GetBook()
-    {
-        return Book;
-    }
-
-    public DateTime GetDate()
-    {
-        return Date;
-    }
-
-    public void SetPatron(Patron patron)
-    {
-        Patron = patron;
-    }
-
-    public void SetBook(Book book)
-    {
-        Book = book;
-    }
-
-    public void SetDate(DateTime date)
-    {
-        Date = date;
-    }
-
-    public void Execute()
-    {
-        try
+        public BorrowingOperation()
         {
-            _validator.Validate(this);
+            _validator = ValidatorFactory.CreateBorrowingSystemValidator();
+        }
 
-            if (Validate())
+        public Patron GetPatron()
+        {
+            return Patron;
+        }
+
+        public Book GetBook()
+        {
+            return Book;
+        }
+
+        public DateTime GetDate()
+        {
+            return Date;
+        }
+
+        public void SetPatron(Patron patron)
+        {
+            Patron = patron;
+        }
+
+        public void SetBook(Book book)
+        {
+            Book = book;
+        }
+
+        public void SetDate(DateTime date)
+        {
+            Date = date;
+        }
+
+        public void Execute()
+        {
+            try
             {
-                UpdateRecords();
-                NotifyPatron();
+                _validator.Validate(this);
+
+                if (Validate())
+                {
+                    UpdateRecords();
+                    NotifyPatron();
+                }
+                else
+                {
+                    Console.WriteLine("Operation failed due to specific validation errors.");
+                }
             }
-            else
+            catch (ValidationException ex)
             {
-                Console.WriteLine("Operation failed due to specific validation errors.");
+                Console.WriteLine($"Validation failed: {ex.Message}");
             }
         }
-        catch (ValidationException ex)
+
+        public abstract bool Validate();
+        public abstract void UpdateRecords();
+        protected abstract void NotifyPatron();
+        protected void UpdateAndNotify(IStorage<Book> bookStorage, IStorage<Patron> patronStorage, Action<Book> updateBookAction, Action<Patron> updatePatronAction)
         {
-            Console.WriteLine($"Validation failed: {ex.Message}");
+            Console.WriteLine($"Updating records for book {Book.Title}.");
+
+            updateBookAction(Book);
+            updatePatronAction(Patron);
+
+            BooksManager booksManager = new BooksManager(bookStorage);
+            booksManager.UpdateItem(Book);
+
+            PatronsManager patronsManager = new PatronsManager(patronStorage);
+            patronsManager.UpdateItem(Patron);
         }
-    }
-
-    public abstract bool Validate();
-    public abstract void UpdateRecords();
-    protected abstract void NotifyPatron();
-    protected void UpdateAndNotify(IStorage<Book> bookStorage, IStorage<Patron> patronStorage, Action<Book> updateBookAction, Action<Patron> updatePatronAction)
-    {
-        Console.WriteLine($"Updating records for book {Book.Title}.");
-
-        updateBookAction(Book);
-        updatePatronAction(Patron);
-
-        BooksManager booksManager = new BooksManager(bookStorage);
-        booksManager.UpdateItem(Book);
-
-        PatronsManager patronsManager = new PatronsManager(patronStorage);
-        patronsManager.UpdateItem(Patron);
     }
 }

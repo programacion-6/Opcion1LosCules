@@ -1,33 +1,130 @@
 @startuml Validators
+
 package "Validators" {
-    abstract class Validator {
-        - Validations: Dictionary<string, Func<T, bool>>
+    interface IValidation<T> {
+        + ErrorMessage: string
+        + IsValid(item: T): bool
+    }
+
+    class Validator<T> {
+        - Validations: List<IValidation<T>>
         + Validate(item: T): bool
         - InitializeValidations()
     }
 
-    class BookValidator {
-        - InitializeValidations()
+    class ValidatorFactory {
+        + CreateBookValidator(): Validator<Book>
+        + CreatePatronValidator(): Validator<Patron>
+        + CreateBorrowingSystemValidator(): Validator<BorrowingOperation>
     }
 
-    class BorrowingSystemValidator {
-        - InitializeValidations()
+    class TitleValidation {
+        + ErrorMessage: string
+        + IsValid(item: Book): bool
     }
 
-    class PatronValidator {
-        - InitializeValidations()
+    class AuthorValidation {
+        + ErrorMessage: string
+        + IsValid(item: Book): bool
     }
 
-    Validator <|-- BookValidator
-    Validator <|-- BorrowingSystemValidator
-    Validator <|-- PatronValidator
+    class ISBNValidation {
+        + ErrorMessage: string
+        + IsValid(item: Book): bool
+    }
 
-    BookValidator : + Validate(book: Book): bool
-    BorrowingSystemValidator : + Validate(operation: BorrowingOperation): bool
-    PatronValidator : + Validate(patron: Patron): bool
+    class GenreValidation {
+        + ErrorMessage: string
+        + IsValid(item: Book): bool
+    }
 
-    BookValidator : - InitializeValidations()
-    BorrowingSystemValidator : - InitializeValidations()
-    PatronValidator : - InitializeValidations()
+    class PublicationYearValidation {
+        + ErrorMessage: string
+        + IsValid(item: Book): bool
+    }
+
+    class AvailabilityValidation {
+        + ErrorMessage: string
+        + IsValid(item: Book): bool
+    }
+
+    class PatronNameValidation {
+        + ErrorMessage: string
+        + IsValid(item: Patron): bool
+    }
+
+    class MembershipNumberValidation {
+        + ErrorMessage: string
+        + IsValid(item: Patron): bool
+    }
+
+    class ContactDetailsValidation {
+        + ErrorMessage: string
+        + IsValid(item: Patron): bool
+    }
+
+    class NoOverdueBooksValidation {
+        + ErrorMessage: string
+        + IsValid(item: Patron): bool
+    }
+
+    class PatronRequiredValidation {
+        + ErrorMessage: string
+        + IsValid(item: BorrowingOperation): bool
+    }
+
+    class BookRequiredValidation {
+        + ErrorMessage: string
+        + IsValid(item: BorrowingOperation): bool
+    }
+
+    class DateRequiredValidation {
+        + ErrorMessage: string
+        + IsValid(item: BorrowingOperation): bool
+    }
+
+    class BookAvailableForBorrowingValidation {
+        + ErrorMessage: string
+        + IsValid(item: BorrowingOperation): bool
+    }
+
+    class PatronDoesNotHaveBookValidation {
+        + ErrorMessage: string
+        + IsValid(item: BorrowingOperation): bool
+    }
+
+    class BookBorrowedByPatronValidation {
+        + ErrorMessage: string
+        + IsValid(item: BorrowingOperation): bool
+    }
+
+    class BookNotReturnedValidation {
+        + ErrorMessage: string
+        + IsValid(item: BorrowingOperation): bool
+    }
 }
+
+    ValidatorFactory --> Validator
+    ValidatorFactory --> Validator
+    ValidatorFactory --> Validator
+    
+    IValidation <|-- Validator : Uses
+
+    IValidation <|-- TitleValidation
+    IValidation <|-- AuthorValidation
+    IValidation <|-- ISBNValidation
+    IValidation <|-- GenreValidation
+    IValidation <|-- PublicationYearValidation
+    IValidation <|-- AvailabilityValidation
+    IValidation <|-- PatronNameValidation
+    IValidation <|-- MembershipNumberValidation
+    IValidation <|-- ContactDetailsValidation
+    IValidation <|-- NoOverdueBooksValidation
+    IValidation <|-- PatronRequiredValidation
+    IValidation <|-- BookRequiredValidation
+    IValidation <|-- DateRequiredValidation
+    IValidation <|-- BookAvailableForBorrowingValidation
+    IValidation <|-- PatronDoesNotHaveBookValidation
+    IValidation <|-- BookBorrowedByPatronValidation
+    IValidation <|-- BookNotReturnedValidation
 @enduml

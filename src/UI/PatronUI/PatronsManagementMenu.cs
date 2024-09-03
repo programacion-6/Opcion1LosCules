@@ -1,13 +1,18 @@
 using Spectre.Console;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Opcion1LosCules
 {
     public class PatronsManagementMenu
     {
         private Library _library;
+        private Validator<Patron> _patronValidator;
 
-        public PatronsManagementMenu(Library library) 
+        public PatronsManagementMenu(Library library, Validator<Patron> patronValidator)
         {
             _library = library;
+            _patronValidator = patronValidator;
         }
 
         private string ValidateName(string prompt)
@@ -18,7 +23,7 @@ namespace Opcion1LosCules
                 value = AnsiConsole.Ask<string>(prompt);
                 if (!string.IsNullOrEmpty(value) && value.All(char.IsLetter))
                 {
-                break; 
+                    break;
                 }
                 else
                 {
@@ -50,14 +55,15 @@ namespace Opcion1LosCules
 
         public void AddPatron()
         {
-            var name =  ValidateName("[green]Enter patron name:[/]");
+            var name = ValidateName("[green]Enter patron name:[/]");
             int membershipNumber = ValidateMembershipNumber("[green]Enter patron membership number:[/]");
 
             var contactDetails = AnsiConsole.Ask<string>("[green]Enter patron contact details (email):[/]");
             var patron = new Patron(name, membershipNumber, contactDetails);
-            
+
             try
             {
+                _patronValidator.Validate(patron);
                 _library.patronsManager().AddItem(patron);
                 AnsiConsole.MarkupLine("[green]Patron added successfully.[/]");
             }
@@ -76,20 +82,21 @@ namespace Opcion1LosCules
             var existingPatron = UIUtils.DisplaySelectableListResult(
                 _library.patronsManager().Items
             );
-            
+
             if (existingPatron == null)
             {
                 AnsiConsole.MarkupLine("[red]No patron found with that membership number. Please try again.[/]");
                 return;
             }
 
-            var name = ValidateName("[green]Enter patron name:[/]");
+            var name = ValidateName("[green]Enter new patron name:[/]");
             var contactDetails = AnsiConsole.Ask<string>("[green]Enter new contact details (email):[/]");
 
             var updatedPatron = new Patron(name, existingPatron.MembershipNumber, contactDetails);
 
             try
             {
+                _patronValidator.Validate(updatedPatron);
                 _library.patronsManager().UpdateItem(updatedPatron);
                 AnsiConsole.MarkupLine("[green]Patron updated successfully.[/]");
             }
@@ -122,13 +129,13 @@ namespace Opcion1LosCules
 
         public void ListPatrons()
         {
-            var existingPatron = _library.patronsManager().Items;
+            var existingPatrons = _library.patronsManager().Items;
 
-            if (existingPatron.Count == 0)
-                {
-                    AnsiConsole.MarkupLine("[red]No patrons found.[/]");
-                    return;
-                }
+            if (existingPatrons.Count == 0)
+            {
+                AnsiConsole.MarkupLine("[red]No patrons found.[/]");
+                return;
+            }
 
             var table = new Table();
             table.AddColumn("[yellow]Membership Number[/]");
@@ -139,22 +146,22 @@ namespace Opcion1LosCules
 
             var rows = new List<string[]>();
 
-            foreach (var patron in existingPatron)
-                {
-                    var borrowedBooks = patron.BorrowedBooks.Count > 0 ? string.Join(", ", patron.BorrowedBooks.Select(b => b.Title)) : "None";
-                    var historyBooks = patron.HistoryBorrowedBooks.Count > 0 ? string.Join(", ", patron.HistoryBorrowedBooks.Select(b => b.Title)) : "None";
-        
-                    rows.Add(new string[]
-                        {
-                            patron.MembershipNumber.ToString(),
-                            patron.Name,
-                            patron.ContactDetails,
-                            borrowedBooks,
-                            historyBooks
-                        });
-                }
+            foreach (var patron in existingPatrons)
+            {
+                var borrowedBooks = patron.BorrowedBooks.Count > 0 ? string.Join(", ", patron.BorrowedBooks.Select(b => b.Title)) : "None";
+                var historyBooks = patron.HistoryBorrowedBooks.Count > 0 ? string.Join(", ", patron.HistoryBorrowedBooks.Select(b => b.Title)) : "None";
 
-            UIUtils.PaginateTable(new StandardPagination() ,table, rows);
+                rows.Add(new string[]
+                {
+                    patron.MembershipNumber.ToString(),
+                    patron.Name,
+                    patron.ContactDetails,
+                    borrowedBooks,
+                    historyBooks
+                });
+            }
+
+            UIUtils.PaginateTable(new StandardPagination(), table, rows);
         }
     }
 }
