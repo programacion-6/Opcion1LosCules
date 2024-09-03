@@ -5,6 +5,7 @@ namespace Opcion1LosCules
         protected Patron Patron { get; private set; } = default!;
         protected Book Book { get; private set; } = default!;
         protected DateTime Date { get; private set; }
+        protected DateTime DueDate { get; private set; }
 
         private Validator<BorrowingOperation> _validator;
 
@@ -28,6 +29,11 @@ namespace Opcion1LosCules
             return Date;
         }
 
+        public DateTime GetDueDate()
+        {
+            return DueDate;
+        }
+
         public void SetPatron(Patron patron)
         {
             Patron = patron;
@@ -39,6 +45,11 @@ namespace Opcion1LosCules
         }
 
         public void SetDate(DateTime date)
+        {
+            Date = date;
+        }
+
+        public void SetDueDate(DateTime date)
         {
             Date = date;
         }

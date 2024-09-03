@@ -6,6 +6,7 @@ public class DateRequiredValidation : IValidation<BorrowingOperation>
 
     public bool IsValid(BorrowingOperation operation)
     {
-        return operation.GetDate() != default(DateTime);
+        return operation.GetDate() != default(DateTime)
+            && operation.GetDate() >= operation.GetDueDate();
     }
 }
