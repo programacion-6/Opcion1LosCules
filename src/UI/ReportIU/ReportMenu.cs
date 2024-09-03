@@ -94,7 +94,7 @@ namespace Opcion1LosCules
 
         public async void ShowBorrowPatronHistory()
         {
-            var existingPatrons = await _patronsManager.GetAllPatrons();
+            var existingPatrons = await _patronsManager.GetAll();
 
             if (!existingPatrons.Any())
             {

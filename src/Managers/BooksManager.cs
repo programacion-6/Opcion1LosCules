@@ -1,7 +1,7 @@
 using Spectre.Console;
 
 namespace Opcion1LosCules;
-public class BooksManager : IBookRepository
+public class BooksManager : IEntityRepository<Book>
 {
     private readonly BookValidator _bookValidator;
     private readonly IDatabaseContext _database;
@@ -12,7 +12,7 @@ public class BooksManager : IBookRepository
         _database = databaseContext;
     }
 
-    public async Task AddBook(Book book)
+    public async Task AddEntity(Book book)
     {
         _bookValidator.Validate(book);
         if(await _database.Add(book) != 200)
@@ -21,24 +21,24 @@ public class BooksManager : IBookRepository
         }
     }
 
-    public Task<IEnumerable<Book>> GetAllBooks()
+    public async Task<IEnumerable<IEntity>> GetAll()
     {
-        return _database.GetAll<Book>();
+        return await _database.GetAll<Book>();
     }
 
-    public Task<Book> GetBookById(string id)
+    public async Task<IEntity> GetById(string id)
     {
-        return _database.GetById<Book>(id);
+        return await _database.GetById<Book>(id);
     }
 
-    public async Task RemoveBook(string id)
+    public async Task RemoveEntity(string id)
     {
         await _database.Delete(id);
     }
 
-    public async Task UpdateBook(string id, Book book)
+    public async Task UpdateEntity(string id, Book book)
     {
-        if(await _database.Update<Book>(id, book) != 200)
+        if(await _database.Update(id, book) != 200)
         {
             AnsiConsole.WriteLine("Error to update the Book.");
         }

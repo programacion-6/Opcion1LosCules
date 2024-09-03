@@ -3,9 +3,9 @@ namespace Opcion1LosCules;
 using System.Threading.Tasks;
 using Spectre.Console;
 
-public class PatronsManager : IPatronRepository
+public class PatronsManager : IEntityRepository<Patron>
 {
-    private readonly PatronValidator _patronValidator;
+    private readonly Validator<Patron> _patronValidator;
     private readonly IDatabaseContext _database;
 
 
@@ -15,7 +15,7 @@ public class PatronsManager : IPatronRepository
         _database = databaseContext;
     }
 
-    public async Task AddPatron(Patron patron)
+    public async Task AddEntity(Patron patron)
     {
         _patronValidator.Validate(patron);
         if(await _database.Add(patron) != 200)
@@ -24,17 +24,17 @@ public class PatronsManager : IPatronRepository
         }
     }
 
-    public Task<IEnumerable<Patron>> GetAllPatrons()
+    public async Task<IEnumerable<IEntity>> GetAll()
     {
-        return _database.GetAll<Patron>();
+        return await _database.GetAll<Patron>();
     }
 
-    public Task<Patron> GetPatronById(string id)
+    public async Task<IEntity> GetById(string id)
     {
-        return _database.GetById<Patron>(id);
+        return await _database.GetById<Patron>(id);
     }
 
-    public async Task RemovePatron(string id)
+    public async Task RemoveEntity(string id)
     {
         if(await _database.Delete(id) != 200)
         {
@@ -42,7 +42,7 @@ public class PatronsManager : IPatronRepository
         }
     }
 
-    public async Task UpdatePatron(string id, Patron patron)
+    public async Task UpdateEntity(string id, Patron patron)
     {
         if(await _database.Update(id, patron) != 200)
         {
