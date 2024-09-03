@@ -15,7 +15,7 @@ namespace Opcion1LosCules.Tests
         [Fact]
         public void RemoveBook_ShouldDeleteBookFromCollection()
         {
-            var book = new Book("1984", "George Orwell", "45825", "Dystopian", 1949);
+            var book = new Book("Batman 2", "George Orwell", "45825", "Dystopian", 1949);
             _booksManager.AddItem(book);
 
             _booksManager.RemoveItem(book);
@@ -26,7 +26,7 @@ namespace Opcion1LosCules.Tests
         [Fact]
         public void GetAllBooks_ShouldReturnAllAddedBooks()
         {
-            var book1 = new Book("1984", "George Orwell", "45825", "Dystopian", 1949);
+            var book1 = new Book("Superman 4", "George Orwell", "45825", "Dystopian", 1949);
             var book2 = new Book("Brave New World", "Aldous Huxley", "45826", "Science Fiction", 1932);
 
             _booksManager.AddItem(book1);
