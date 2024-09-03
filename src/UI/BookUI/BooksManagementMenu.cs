@@ -1,13 +1,16 @@
 using Spectre.Console;
+
 namespace Opcion1LosCules
 {
     public class BooksManagementMenu
     {
         private Library _library;
+        private Validator<Book> _bookValidator;
 
-        public BooksManagementMenu(Library library)
+        public BooksManagementMenu(Library library, Validator<Book> bookValidator)
         {
             _library = library;
+            _bookValidator = bookValidator;
         }
 
         private string ValidateInput(string prompt, Func<Book, string> selector, Action<Book, string> setter, string tempTitle, string tempISBN, int tempYear)
@@ -20,7 +23,7 @@ namespace Opcion1LosCules
                 {
                     var tempBook = new Book(tempTitle, "tempAuthor", tempISBN, "tempGenre", tempYear);
                     setter(tempBook, value);
-                    new BookValidator().Validate(tempBook); 
+                    _bookValidator.Validate(tempBook); 
                     break; 
                 }
                 catch (ValidationException ex)
@@ -60,25 +63,23 @@ namespace Opcion1LosCules
 
             int publicationYear = ValidateYear("[green]Enter book publication year:[/]");
 
-
             string isbn = AnsiConsole.Ask<string>("[green]Enter book ISBN:[/]");
 
-            
-    
             string author = ValidateInput("[green]Enter book author:[/]", 
                                     book => book.Author, 
                                     (book, value) => book.Author = value, 
-                                    title, isbn,publicationYear);
+                                    title, isbn, publicationYear);
 
             string genre = ValidateInput("[green]Enter book genre:[/]", 
                                    book => book.Genre, 
                                    (book, value) => book.Genre = value, 
-                                   title, isbn,publicationYear);
+                                   title, isbn, publicationYear);
 
             var book = new Book(title, author, isbn, genre, publicationYear);
     
             try
             {
+                _bookValidator.Validate(book);
                 _library.booksManager().AddItem(book);
                 AnsiConsole.MarkupLine("[green]Book added successfully.[/]");
             }
@@ -111,16 +112,29 @@ namespace Opcion1LosCules
             var author = ValidateInput("[green]Enter book author:[/]", 
                                     book => book.Author, 
                                     (book, value) => book.Author = value, 
-                                    title, isbn,publicationYear);
+                                    title, isbn, publicationYear);
 
             var genre = ValidateInput("[green]Enter book genre:[/]", 
                                    book => book.Genre, 
                                    (book, value) => book.Genre = value, 
-                                   title, isbn,publicationYear);
+                                   title, isbn, publicationYear);
 
             var updatedBook = new Book(title, author, isbn, genre, publicationYear);
-            _library.booksManager().UpdateItem(updatedBook);
-            AnsiConsole.MarkupLine("[green]Book updated successfully.[/]");
+            
+            try
+            {
+                _bookValidator.Validate(updatedBook);
+                _library.booksManager().UpdateItem(updatedBook);
+                AnsiConsole.MarkupLine("[green]Book updated successfully.[/]");
+            }
+            catch (ValidationException ex)
+            {
+                AnsiConsole.MarkupLine($"[red]Failed to update book: {ex.Message}[/]");
+            }
+            catch (Exception ex)
+            {
+                AnsiConsole.MarkupLine($"[red]An unexpected error occurred: {ex.Message}[/]");
+            }
         }
 
         public void RemoveBook()
@@ -143,11 +157,11 @@ namespace Opcion1LosCules
         public void ListBooks()
         { 
             AnsiConsole.MarkupLine("[yellow]Listing Books by Genre:[/]");
-            var existingBook = _library.booksManager().Items
+            var existingBooks = _library.booksManager().Items
                 .OrderBy(book => book.Genre)
                 .ToList();
 
-            if (existingBook.Count == 0)
+            if (existingBooks.Count == 0)
             {
                 AnsiConsole.MarkupLine("[red]No books found.[/]");
                 return;
@@ -161,7 +175,7 @@ namespace Opcion1LosCules
 
             var rows = new List<string[]>();
 
-            foreach (var book in existingBook)
+            foreach (var book in existingBooks)
             {
                 rows.Add(new string[]
                 {
@@ -172,8 +186,7 @@ namespace Opcion1LosCules
                 });
             }
 
-            UIUtils.PaginateTable(new StandardPagination() ,table, rows);
+            UIUtils.PaginateTable(new StandardPagination(), table, rows);
         }
-
     }
 }
