@@ -1,6 +1,6 @@
 using Spectre.Console;
-using System.Collections.Generic;
-using System.Linq;
+using System.Text.RegularExpressions;
+
 
 namespace Opcion1LosCules
 {
@@ -53,12 +53,33 @@ namespace Opcion1LosCules
             return value;
         }
 
+        private string ValidateEmail(string prompt)
+        {
+            string email;
+            var emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.Compiled);
+
+            do
+            {
+                email = AnsiConsole.Ask<string>(prompt);
+                if (emailRegex.IsMatch(email))
+                {
+                    break;
+                }
+                else
+                {
+                    AnsiConsole.MarkupLine("[red]Invalid email format. Please enter a valid email address.[/]");
+                }
+            } while (true);
+
+            return email;
+        }
+
         public void AddPatron()
         {
             var name = ValidateName("[green]Enter patron name:[/]");
             int membershipNumber = ValidateMembershipNumber("[green]Enter patron membership number:[/]");
 
-            var contactDetails = AnsiConsole.Ask<string>("[green]Enter patron contact details (email):[/]");
+            var contactDetails = ValidateEmail("[green]Enter patron contact details (email):[/]");
             var patron = new Patron(name, membershipNumber, contactDetails);
 
             try
@@ -90,7 +111,7 @@ namespace Opcion1LosCules
             }
 
             var name = ValidateName("[green]Enter new patron name:[/]");
-            var contactDetails = AnsiConsole.Ask<string>("[green]Enter new contact details (email):[/]");
+            var contactDetails = ValidateEmail("[green]Enter patron contact details (email):[/]");
 
             var updatedPatron = new Patron(name, existingPatron.MembershipNumber, contactDetails);
 
