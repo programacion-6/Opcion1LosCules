@@ -53,7 +53,10 @@ namespace Opcion1LosCules
 
         public void AddBook()
         {
-            string title = AnsiConsole.Ask<string>("[green]Enter book title:[/]");
+            string title = ValidateInput("[green]Enter book title:[/]", 
+                                        book => book.Title, 
+                                        (book, value) => book.Title = value, 
+                                        "tempTitle", "tempISBN", 2021);
 
             int publicationYear = ValidateYear("[green]Enter book publication year:[/]");
 
