@@ -4,7 +4,12 @@ public class BookValidator : Validator<Book>
 {
     protected override void InitializeValidations()
     {
-        Validations.Add("Title is required.", book => !string.IsNullOrEmpty(book.Title));
+        Validations.Add("Title is required and must contain valid alphabetic or numeric characters.", 
+            book => !string.IsNullOrEmpty(book.Title) 
+                    && book.Title.Any(char.IsLetter)
+                    && book.Title.Any(char.IsLetterOrDigit)
+                    && book.Title.All(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '-'));
+
         Validations.Add("Author is required and must only contain alphabetic characters.", 
             book => !string.IsNullOrEmpty(book.Author) && book.Author.All(c => char.IsLetter(c) || char.IsWhiteSpace(c)));
 
