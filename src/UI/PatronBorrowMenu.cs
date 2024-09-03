@@ -22,9 +22,21 @@ public class PatronBorrowMenu
             return;
         }
 
+         var dueDate = DateTime.TryParse(
+            AnsiConsole.Ask<string>("[yellow]Enter due date (yyyy-MM-dd):[/] "),
+            out DateTime resultDueDate
+        );
+
+        if (!dueDate || resultDueDate < DateTime.Now)
+        {
+            AnsiConsole.MarkupLine("[red]Invalid date.[/]");
+            return;
+        }
+
         _library.BorrowBook().SetPatron(patron);
         _library.BorrowBook().SetBook(book);
         _library.BorrowBook().SetDate(DateTime.Now);
+        _library.BorrowBook().SetDueDate(resultDueDate);
         _library.BorrowBook().GetBook().BorrowingInfo.IsBorrowed = true;
         _library.BorrowBook().UpdateRecords();
 
