@@ -1,22 +1,20 @@
-public abstract class Validator<T>
+namespace Opcion1LosCules;
+public class Validator<T>
 {
-    protected Dictionary<string, Func<T, bool>> Validations { get; }
+    private readonly List<IValidation<T>> _validations;
 
-    protected Validator()
+    public Validator(List<IValidation<T>> validations)
     {
-        Validations =  new Dictionary<string, Func<T, bool>>();
-        InitializeValidations();
+        _validations = validations;
     }
-
-    protected abstract void InitializeValidations();
 
     public bool Validate(T item)
     {
-        foreach (var validation in Validations)
+        foreach (var validation in _validations)
         {
-            if (!validation.Value(item))
+            if (!validation.IsValid(item))
             {
-                throw new ValidationException(validation.Key);
+                throw new ValidationException(validation.ErrorMessage);
             }
         }
         return true;
